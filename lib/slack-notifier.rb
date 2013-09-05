@@ -29,7 +29,7 @@ module Slack
 
       def default_payload
         payload = {}
-        payload[:channel] = team if team
+        payload[:channel] = channel if channel
         payload[:username] = username if username
         payload
       end
