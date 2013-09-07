@@ -9,12 +9,12 @@ describe Slack::Notifier do
     end
 
     it "formats markdown links" do
-      formatted = Slack::Notifier::LinkFormatter.format("Hello World, enjoy [http://example.com](this).")
+      formatted = Slack::Notifier::LinkFormatter.format("Hello World, enjoy [this](http://example.com).")
       expect( formatted ).to include("<http://example.com|this>")
     end
 
     it "formats markdown links with no title" do
-      formatted = Slack::Notifier::LinkFormatter.format("Hello World, enjoy [http://example.com]().")
+      formatted = Slack::Notifier::LinkFormatter.format("Hello World, enjoy [](http://example.com).")
       expect( formatted ).to include("<http://example.com>")
     end
   end

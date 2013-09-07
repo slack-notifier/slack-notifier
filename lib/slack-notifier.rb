@@ -56,8 +56,8 @@ module Slack
             text = Regexp.last_match[2]
             slack_link link, text
           end.gsub( markdown_pattern ) do |match|
-            link = Regexp.last_match[1]
-            text = Regexp.last_match[2]
+            link = Regexp.last_match[2]
+            text = Regexp.last_match[1]
             slack_link link, text
           end
         end
@@ -77,7 +77,7 @@ module Slack
           end
 
           def markdown_pattern
-            /\[(.+?)\]\((.*?)\)/
+            /\[(.*?)\]\((.+?)\)/
           end
       end
 
