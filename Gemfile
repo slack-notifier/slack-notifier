@@ -5,6 +5,7 @@ gemspec
 
 group :development do
   gem 'pry-byebug'
+  gem 'wwtd'
 end
 
 group :test do

@@ -18,6 +18,6 @@ Gem::Specification.new do |s|
   s.require_path  = "lib"
 
   # Networking
-  s.add_dependency("httparty", ["~> 0.11.0"])
+  s.add_dependency("httparty", ["~> 0.11"])
 
 end
