@@ -1,5 +1,7 @@
 A simple wrapper to send notifications to [Slack](https://slack.com/)
 
+[![Build Status](https://travis-ci.org/stevenosloan/slack-notifier.png?branch=master)](https://travis-ci.org/stevenosloan/slack-notifier)
+
 ## Example
 
 ```ruby
