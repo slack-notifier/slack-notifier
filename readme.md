@@ -20,3 +20,27 @@ message = "Hello world, [check](http://example.com) it <a href='http://example.c
 Slack::Notifier::LinkFormatter.format(message)
 # => "Hello world, <http://example.com|check> it <http://example.com|out>"
 ```
+
+Testing
+-------
+
+```bash
+$ rspec
+```
+
+
+Contributing
+------------
+
+If there is any thing you'd like to contribute or fix, please:
+
+- Fork the repo
+- Add tests for any new functionality
+- Make your changes
+- Verify all new &existing tests pass
+- Make a pull request
+
+
+License
+-------
+The slack-notifier gem is distributed under the MIT License.

@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.version       = Slack::Notifier::VERSION
   s.platform      = Gem::Platform::RUBY
 
-  s.summary       = 'A simple wrapper for posting to slack channels'
-  s.description   = %q{ A simple wrapper for posting to slack channels }
+  s.summary       = 'A slim ruby wrapper for posting to slack channels'
+  s.description   = %q{ A slim ruby wrapper for posting to slack channels }
   s.authors       = ["Steven Sloan"]
   s.email         = ["stevenosloan@gmail.com"]
   s.homepage      = "http://github.com/stevenosloan/slack-notifier"
