@@ -13,6 +13,25 @@ notifier.ping "Hello World", channel: "#general"
 # => to the "#general" channel
 ```
 
+#### Setting Defaults
+
+Once a notifier has been initialized, you can set a default channel and/or user so that you no longer have to set them in pings.
+
+```ruby
+notifier.channel = '#default'
+notifier.ping "Hello default"
+# => will message "Hello default"
+# => to the "#default" channel
+```
+
+These defaults are overridable for any individual ping.
+
+```ruby
+notifier.channel = "#default"
+notifier.ping "Hello random", channel: "#random"
+# => will ping the "#random" channel
+```
+
 ## Links
 
 Slack requires links to be formatted a certain way, so slack-notifier will look through your message and attempt to convert any html or markdown links to slack's format.
