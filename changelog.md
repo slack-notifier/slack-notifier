@@ -1,3 +1,7 @@
+# 0.1.1
+- loosen httparty dependency
+- refactor codebase & add specs
+
 # 0.1.0
 - now formats html or markdown links in your message to match slack's format
 
