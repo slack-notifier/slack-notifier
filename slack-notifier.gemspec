@@ -17,7 +17,4 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["spec/**/*.rb"]
   s.require_path  = "lib"
 
-  # Networking
-  s.add_dependency("httparty", ["~> 0.11"])
-
 end

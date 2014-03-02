@@ -5,7 +5,3 @@ rvm:
   - 2.1.0
   - 2.0.0
   - 1.9.3
-gemfile:
-  - gemfiles/httparty.0.11.gemfile
-  - gemfiles/httparty.0.12.gemfile
-  - gemfiles/httparty.0.13.gemfile

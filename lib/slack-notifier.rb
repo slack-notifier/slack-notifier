@@ -1,4 +1,5 @@
-require 'httparty'
+require 'net/http'
+require 'uri'
 require 'json'
 
 require_relative 'slack-notifier/link_formatter'
@@ -25,7 +26,7 @@ module Slack
         raise ArgumentError, "You must set a channel"
       end
 
-      HTTParty.post( endpoint, body: "payload=#{payload.to_json}" )
+      Net::HTTP.post_form endpoint, payload: payload.to_json
     end
 
     private
@@ -38,7 +39,7 @@ module Slack
       end
 
       def endpoint
-        "https://#{team}.slack.com/services/hooks/incoming-webhook?token=#{token}"
+        URI.parse "https://#{team}.slack.com/services/hooks/incoming-webhook?token=#{token}"
       end
 
   end
