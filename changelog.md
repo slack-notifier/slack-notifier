@@ -1,3 +1,5 @@
+- remove HTTParty dependency
+
 # 0.1.1
 - loosen httparty dependency
 - refactor codebase & add specs

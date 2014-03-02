@@ -15,8 +15,15 @@ describe Slack::Notifier do
   end
 
   describe "#ping" do
+    before :each do
+      allow( Net::HTTP ).to receive(:post_form)
+      @endpoint_double = instance_double "URI::HTTP"
+      allow( URI ).to receive(:parse)
+                  .with("https://team.slack.com/services/hooks/incoming-webhook?token=token")
+                  .and_return(@endpoint_double)
+    end
+
     it "passes the message through LinkFormatter" do
-      allow( HTTParty ).to receive(:post)
       expect( Slack::Notifier::LinkFormatter ).to receive(:format)
                                               .with("the message")
 
@@ -24,8 +31,6 @@ describe Slack::Notifier do
     end
 
     it "requires a channel to be set" do
-      allow( HTTParty ).to receive(:post)
-
       expect{
         described_class.new('team','token').ping "the message"
       }.to raise_error
@@ -34,7 +39,6 @@ describe Slack::Notifier do
     context "with a default channel set" do
 
       before :each do
-        allow( HTTParty ).to receive(:post)
         @subject = described_class.new('team','token')
         @subject.channel = 'default'
       end
@@ -46,17 +50,17 @@ describe Slack::Notifier do
       end
 
       it "uses default channel" do
-        expect( HTTParty ).to receive(:post)
-                          .with "https://team.slack.com/services/hooks/incoming-webhook?token=token",
-                                body: 'payload={"text":"the message","channel":"default"}'
+        expect( Net::HTTP ).to receive(:post_form)
+                          .with @endpoint_double,
+                                payload: '{"text":"the message","channel":"default"}'
 
         @subject.ping "the message"
       end
 
       it "allows override channel to be set" do
-        expect( HTTParty ).to receive(:post)
-                          .with "https://team.slack.com/services/hooks/incoming-webhook?token=token",
-                                body: 'payload={"text":"the message","channel":"new"}'
+        expect( Net::HTTP ).to receive(:post_form)
+                          .with @endpoint_double,
+                                payload: '{"text":"the message","channel":"new"}'
 
         @subject.ping "the message", channel: "new"
       end
@@ -64,9 +68,9 @@ describe Slack::Notifier do
     end
 
     it "posts with the correct endpoint & data" do
-        expect( HTTParty ).to receive(:post)
-                          .with "https://team.slack.com/services/hooks/incoming-webhook?token=token",
-                                body: 'payload={"text":"the message","channel":"channel"}'
+        expect( Net::HTTP ).to receive(:post_form)
+                          .with @endpoint_double,
+                                payload: '{"text":"the message","channel":"channel"}'
 
         described_class.new("team","token").ping "the message", channel: "channel"
     end

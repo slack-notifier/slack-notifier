@@ -1,4 +1,4 @@
-A simple wrapper to send notifications to [Slack](https://slack.com/)
+A simple wrapper to send notifications to [Slack](https://slack.com/) webhooks.
 
 [![Build Status](https://travis-ci.org/stevenosloan/slack-notifier.png?branch=master)](https://travis-ci.org/stevenosloan/slack-notifier)  [![Code Climate](https://codeclimate.com/github/stevenosloan/slack-notifier.png)](https://codeclimate.com/github/stevenosloan/slack-notifier)
 
@@ -18,13 +18,14 @@ notifier.ping "Hello World", channel: "#general"
 Once a notifier has been initialized, you can set a default channel and/or user so that you no longer have to set them in pings.
 
 ```ruby
-notifier.channel = '#default'
+notifier.channel  = '#default'
+notifier.username = 'notifier'
 notifier.ping "Hello default"
 # => will message "Hello default"
-# => to the "#default" channel
+# => to the "#default" channel as 'notifier'
 ```
 
-These defaults are overridable for any individual ping.
+These defaults are over-ridable for any individual ping.
 
 ```ruby
 notifier.channel = "#default"
@@ -34,13 +35,40 @@ notifier.ping "Hello random", channel: "#random"
 
 ## Links
 
-Slack requires links to be formatted a certain way, so slack-notifier will look through your message and attempt to convert any html or markdown links to slack's format.
+Slack requires links to be formatted a certain way, so slack-notifier will look through your message and attempt to convert any html or markdown links to slack's format before posting.
+
+Here's what it's doing under the covers:
 
 ```ruby
 message = "Hello world, [check](http://example.com) it <a href='http://example.com'>out</a>"
 Slack::Notifier::LinkFormatter.format(message)
 # => "Hello world, <http://example.com|check> it <http://example.com|out>"
 ```
+
+## Additional parameters
+
+Any key passed to the `ping` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://my.slack.com/services/new/incoming-webhook) for the available parameters.
+
+Setting an icon:
+
+```ruby
+notifier.ping "feeling spooky", icon_emoji: ":ghost:"
+# or
+notifier.ping "feeling chimpy", icon_url: "http://static.mailchimp.com/web/favicon.png"
+```
+
+Adding attachments:
+
+```ruby
+a_ok_note = {
+  fallback: "Everything looks peachy",
+  text: "Everything looks peachy",
+  color: "good"
+}
+notifier.ping "with an attachment", attachments: [a_ok_note]
+```
+
+
 
 Testing
 -------
