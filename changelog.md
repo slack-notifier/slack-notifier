@@ -1,3 +1,4 @@
+# 0.2.0
 - remove HTTParty dependency
 
 # 0.1.1
