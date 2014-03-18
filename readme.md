@@ -33,6 +33,16 @@ notifier.ping "Hello random", channel: "#random"
 # => will ping the "#random" channel
 ```
 
+### Custom hook name
+
+When Slack integrates an app with their website, they replace `incoming-webhook` with the service name.
+This allows you to use this library to integrate a non-DIY service.
+
+```ruby
+notifier = Slack::Notifier.new "yourteam", "yourtokenXX", "custom_hook_name"
+# => Messages will be posted to https://yourteam.slack.com/services/hooks/custom_hook_name
+```
+
 ## Links
 
 Slack requires links to be formatted a certain way, so slack-notifier will look through your message and attempt to convert any html or markdown links to slack's format before posting.
