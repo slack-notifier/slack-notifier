@@ -12,6 +12,11 @@ describe Slack::Notifier do
       subject = described_class.new 'team', 'token'
       expect( subject.token ).to eq 'token'
     end
+
+    it 'sets the optional service hook name' do
+      subject = described_class.new 'team', 'token', 'custom_hook_name'
+      expect( subject.hook_name ).to eq 'custom_hook_name'
+    end
   end
 
   describe "#ping" do
@@ -73,6 +78,17 @@ describe Slack::Notifier do
                                 payload: '{"text":"the message","channel":"channel"}'
 
         described_class.new("team","token").ping "the message", channel: "channel"
+    end
+
+    context 'custom hook name' do
+      it 'posts to the correct endpoint' do
+        allow( Net::HTTP ).to receive(:post_form)
+        @endpoint_double = instance_double "URI::HTTP"
+        allow( URI ).to receive(:parse)
+                    .with("https://team.slack.com/services/hooks/custom_hook_name?token=token")
+                    .and_return(@endpoint_double)
+        described_class.new('team','token','custom_hook_name').ping "the message", channel: 'foo'
+      end
     end
   end
 
