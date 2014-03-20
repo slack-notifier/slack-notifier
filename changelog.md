@@ -1,3 +1,6 @@
+# 0.3.0
+- add custom hook endpoint parameter [@razielgn]
+
 # 0.2.0
 - remove HTTParty dependency
 
