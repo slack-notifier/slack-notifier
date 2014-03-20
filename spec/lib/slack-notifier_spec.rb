@@ -22,10 +22,6 @@ describe Slack::Notifier do
   describe "#ping" do
     before :each do
       allow( Net::HTTP ).to receive(:post_form)
-      @endpoint_double = instance_double "URI::HTTP"
-      allow( URI ).to receive(:parse)
-                  .with("https://team.slack.com/services/hooks/incoming-webhook?token=token")
-                  .and_return(@endpoint_double)
     end
 
     it "passes the message through LinkFormatter" do
@@ -44,6 +40,9 @@ describe Slack::Notifier do
     context "with a default channel set" do
 
       before :each do
+        @endpoint_double = instance_double "URI::HTTP"
+        allow( URI ).to receive(:parse)
+                    .and_return(@endpoint_double)
         @subject = described_class.new('team','token')
         @subject.channel = 'default'
       end
@@ -72,22 +71,33 @@ describe Slack::Notifier do
 
     end
 
-    it "posts with the correct endpoint & data" do
-        expect( Net::HTTP ).to receive(:post_form)
-                          .with @endpoint_double,
-                                payload: '{"text":"the message","channel":"channel"}'
+    context "with default webhook" do
+      it "posts with the correct endpoint & data" do
+          @endpoint_double = instance_double "URI::HTTP"
+          allow( URI ).to receive(:parse)
+                      .with("https://team.slack.com/services/hooks/incoming-webhook?token=token")
+                      .and_return(@endpoint_double)
 
-        described_class.new("team","token").ping "the message", channel: "channel"
+          expect( Net::HTTP ).to receive(:post_form)
+                            .with @endpoint_double,
+                                  payload: '{"text":"the message","channel":"channel"}'
+
+          described_class.new("team","token").ping "the message", channel: "channel"
+      end
     end
 
-    context 'custom hook name' do
-      it 'posts to the correct endpoint' do
-        allow( Net::HTTP ).to receive(:post_form)
+    context "with custom webhook name" do
+      it "posts with the correct endpoint & data" do
         @endpoint_double = instance_double "URI::HTTP"
         allow( URI ).to receive(:parse)
                     .with("https://team.slack.com/services/hooks/custom_hook_name?token=token")
                     .and_return(@endpoint_double)
-        described_class.new('team','token','custom_hook_name').ping "the message", channel: 'foo'
+
+        expect( Net::HTTP ).to receive(:post_form)
+                          .with @endpoint_double,
+                                payload: '{"text":"the message","channel":"channel"}'
+
+        described_class.new("team","token","custom_hook_name").ping "the message", channel: "channel"
       end
     end
   end
