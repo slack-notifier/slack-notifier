@@ -23,10 +23,6 @@ module Slack
       message = LinkFormatter.format(message)
       payload = { text: message }.merge(default_payload).merge(options)
 
-      unless payload.has_key? :channel
-        raise ArgumentError, "You must set a channel"
-      end
-
       Net::HTTP.post_form endpoint, payload: payload.to_json
     end
 
