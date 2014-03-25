@@ -8,9 +8,9 @@ A simple wrapper to send notifications to [Slack](https://slack.com/) webhooks.
 require 'slack-notifier'
 
 notifier = Slack::Notifier.new "yourteam", "yourtokenXX"
-notifier.ping "Hello World", channel: "#general"
+notifier.ping "Hello World"
 # => if your webhook is setup, will message "Hello World"
-# => to the "#general" channel
+# => to the default channel you set in slack
 ```
 
 #### Setting Defaults

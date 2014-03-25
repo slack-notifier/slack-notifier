@@ -1,3 +1,6 @@
+# 0.3.1
+- remove requirement for channel, no longer required by slack [@dlackty]
+
 # 0.3.0
 - add custom hook endpoint parameter [@razielgn]
 
