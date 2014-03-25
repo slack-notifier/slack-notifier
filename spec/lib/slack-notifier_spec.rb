@@ -31,12 +31,6 @@ describe Slack::Notifier do
       described_class.new('team','token').ping "the message", channel: 'foo'
     end
 
-    it "requires a channel to be set" do
-      expect{
-        described_class.new('team','token').ping "the message"
-      }.to raise_error
-    end
-
     context "with a default channel set" do
 
       before :each do
