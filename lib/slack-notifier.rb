@@ -23,7 +23,11 @@ module Slack
       message = LinkFormatter.format(message)
       payload = { text: message }.merge(default_payload).merge(options)
 
-      Net::HTTP.post_form endpoint, payload: payload.to_json
+      req = Net::HTTP::Post.new(endpoint.request_uri)
+      req.set_form_data(payload: payload.to_json)
+      http = Net::HTTP.new(endpoint.host, endpoint.port)
+      http.use_ssl = (endpoint.scheme == "https")
+      http.request(req)
     end
 
     private
