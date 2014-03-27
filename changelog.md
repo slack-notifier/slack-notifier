@@ -1,3 +1,5 @@
+- add Net::HTTP wrapper to include support for ruby 1.9.3
+
 # 0.3.1
 - remove requirement for channel, no longer required by slack [@dlackty]
 

@@ -2,6 +2,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 
+require_relative 'slack-notifier/http_post'
 require_relative 'slack-notifier/link_formatter'
 
 module Slack
@@ -23,7 +24,7 @@ module Slack
       message = LinkFormatter.format(message)
       payload = { text: message }.merge(default_payload).merge(options)
 
-      Net::HTTP.post_form endpoint, payload: payload.to_json
+      HTTPPost.to endpoint, payload: payload.to_json
     end
 
     private
