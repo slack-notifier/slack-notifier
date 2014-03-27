@@ -3,5 +3,6 @@ Gemfile.lock
 .rvmrc
 .ruby-version
 .ruby-gemset
+.env
 *.gem
 coverage

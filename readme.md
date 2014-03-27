@@ -87,6 +87,16 @@ Testing
 $ rspec
 ```
 
+There is also an integration test setup to just double check pinging across the supported rubies. To run:
+
+1. Copy the `.env-example` file to `.env` and replace with your details.
+2. Make sure `bin/test` is executable
+3. then run and watch for the pings in your slack room
+
+```bash
+$ bin/test
+```
+
 
 Contributing
 ------------
