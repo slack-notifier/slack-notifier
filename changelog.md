@@ -1,3 +1,4 @@
+# 0.3.2
 - add Net::HTTP wrapper to include support for ruby 1.9.3
 
 # 0.3.1
