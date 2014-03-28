@@ -94,4 +94,15 @@ describe Slack::Notifier do
     end
   end
 
+  describe "#channel=" do
+    it "sets the given channel" do
+      subject.channel = "#foo"
+      expect( subject.channel ).to eql "#foo"
+    end
+
+    it "adds # prefix to channel" do
+      subject.channel = "foo"
+      expect( subject.channel ).to eql "#foo"
+    end
+  end
 end
