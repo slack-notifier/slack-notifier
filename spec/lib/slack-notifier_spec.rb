@@ -1,15 +1,14 @@
 require 'spec_helper'
 
 describe Slack::Notifier do
+  subject { described_class.new 'team', 'token' }
 
   describe "#initialize" do
     it "sets the given team" do
-      subject = described_class.new 'team', 'token'
       expect( subject.team ).to eq 'team'
     end
 
     it "sets the given token" do
-      subject = described_class.new 'team', 'token'
       expect( subject.token ).to eq 'token'
     end
 
@@ -37,13 +36,12 @@ describe Slack::Notifier do
         @endpoint_double = instance_double "URI::HTTP"
         allow( URI ).to receive(:parse)
                     .and_return(@endpoint_double)
-        @subject = described_class.new('team','token')
-        @subject.channel = 'default'
+        subject.channel = 'default'
       end
 
       it "does not require a channel to ping" do
         expect{
-          @subject.ping "the message"
+          subject.ping "the message"
         }.not_to raise_error
       end
 
@@ -52,7 +50,7 @@ describe Slack::Notifier do
                           .with @endpoint_double,
                                 payload: '{"text":"the message","channel":"default"}'
 
-        @subject.ping "the message"
+        subject.ping "the message"
       end
 
       it "allows override channel to be set" do
@@ -60,7 +58,7 @@ describe Slack::Notifier do
                           .with @endpoint_double,
                                 payload: '{"text":"the message","channel":"new"}'
 
-        @subject.ping "the message", channel: "new"
+        subject.ping "the message", channel: "new"
       end
 
     end
