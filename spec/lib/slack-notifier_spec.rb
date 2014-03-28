@@ -36,7 +36,7 @@ describe Slack::Notifier do
         @endpoint_double = instance_double "URI::HTTP"
         allow( URI ).to receive(:parse)
                     .and_return(@endpoint_double)
-        subject.channel = 'default'
+        subject.channel = '#default'
       end
 
       it "does not require a channel to ping" do
@@ -48,7 +48,7 @@ describe Slack::Notifier do
       it "uses default channel" do
         expect( Slack::Notifier::HTTPPost ).to receive(:to)
                           .with @endpoint_double,
-                                payload: '{"text":"the message","channel":"default"}'
+                                payload: '{"text":"the message","channel":"#default"}'
 
         subject.ping "the message"
       end
