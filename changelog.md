@@ -1,3 +1,6 @@
+# 0.4.0
+- try and correct for a channel name being set without a leading "#" [@dlackty]
+
 # 0.3.2
 - add Net::HTTP wrapper to include support for ruby 1.9.3
 
