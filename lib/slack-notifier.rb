@@ -27,8 +27,8 @@ module Slack
       HTTPPost.to endpoint, payload: payload.to_json
     end
 
-    def channel=(channel)
-      @channel = if channel.start_with?('#')
+    def channel= channel
+      @channel = if channel.start_with? '#', "@"
         channel
       else
         "##{channel}"
