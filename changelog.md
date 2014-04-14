@@ -1,3 +1,6 @@
+# 0.4.1
+- allow default channel's to start with a "@" or "#" [#7]
+
 # 0.4.0
 - try and correct for a channel name being set without a leading "#" [@dlackty]
 
