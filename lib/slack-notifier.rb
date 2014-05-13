@@ -7,17 +7,14 @@ require_relative 'slack-notifier/link_formatter'
 
 module Slack
   class Notifier
+    attr_reader :team, :token, :hook_name, :default_payload
 
-    # these act as defaults
-    # if they are set
-    attr_accessor :channel, :username
-
-    attr_reader :team, :token, :hook_name
-
-    def initialize team, token, hook_name = default_hook_name
+    def initialize team, token, hook_name=default_hook_name, default_payload={}
       @team  = team
       @token = token
       @hook_name = hook_name
+
+      @default_payload = default_payload
     end
 
     def ping message, options={}
@@ -27,25 +24,26 @@ module Slack
       HTTPPost.to endpoint, payload: payload.to_json
     end
 
+    def channel
+      default_payload[:channel]
+    end
+
     def channel= channel
-      @channel = if channel.start_with? '#', "@"
-        channel
-      else
-        "##{channel}"
-      end
+      default_payload[:channel] = channel
+    end
+
+    def username
+      default_payload[:username]
+    end
+
+    def username= username
+      default_payload[:username] = username
     end
 
     private
 
       def default_hook_name
         'incoming-webhook'
-      end
-
-      def default_payload
-        payload = {}
-        payload[:channel]  = channel  if channel
-        payload[:username] = username if username
-        payload
       end
 
       def endpoint

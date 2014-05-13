@@ -99,18 +99,12 @@ describe Slack::Notifier do
       subject.channel = "#foo"
       expect( subject.channel ).to eq "#foo"
     end
+  end
 
-    it "maintains channel prefix if it is '#' or '@'" do
-      subject.channel = "#foo"
-      expect( subject.channel ).to eq "#foo"
-
-      subject.channel = "@foo"
-      expect( subject.channel ).to eq "@foo"
-    end
-
-    it "adds a '#' prefix to channel if it has no prefix" do
-      subject.channel = "foo"
-      expect( subject.channel ).to eq "#foo"
+  describe "#username=" do
+    it "sets the given username" do
+      subject.username = "foo"
+      expect( subject.username ).to eq "foo"
     end
   end
 end

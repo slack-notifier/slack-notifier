@@ -1,3 +1,6 @@
+- allow defaults to be set on initialization
+- remove channel formatting [#8]
+
 # 0.4.1
 - allow default channel's to start with a "@" or "#" [#7]
 
