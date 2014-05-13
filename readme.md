@@ -2,6 +2,7 @@ A simple wrapper to send notifications to [Slack](https://slack.com/) webhooks.
 
 [![Build Status](https://travis-ci.org/stevenosloan/slack-notifier.png?branch=master)](https://travis-ci.org/stevenosloan/slack-notifier)  [![Code Climate](https://codeclimate.com/github/stevenosloan/slack-notifier.png)](https://codeclimate.com/github/stevenosloan/slack-notifier)
 
+
 ## Example
 
 ```ruby
@@ -13,9 +14,21 @@ notifier.ping "Hello World"
 # => to the default channel you set in slack
 ```
 
+
 #### Setting Defaults
 
-Once a notifier has been initialized, you can set a default channel and/or user so that you no longer have to set them in pings.
+On initialization you can set default payloads by passing an options hash.
+
+```ruby
+notifer = Slack::Notifier.new "yourteam", "yourtokenXX",
+                              channel: '#default', username: 'notifier'
+
+notifier.ping "Hello default"
+# => will message "Hello default"
+# => to the "#default" channel as 'notifier'
+```
+
+Once a notifier has been initialized, you can update the default channel and/or user.
 
 ```ruby
 notifier.channel  = '#default'
@@ -33,6 +46,7 @@ notifier.ping "Hello random", channel: "#random"
 # => will ping the "#random" channel
 ```
 
+
 ### Custom hook name
 
 When Slack integrates an app with their website, they replace `incoming-webhook` with the service name.
@@ -42,6 +56,7 @@ This allows you to use this library to integrate a non-DIY service.
 notifier = Slack::Notifier.new "yourteam", "yourtokenXX", "custom_hook_name"
 # => Messages will be posted to https://yourteam.slack.com/services/hooks/custom_hook_name
 ```
+
 
 ## Links
 
@@ -54,6 +69,7 @@ message = "Hello world, [check](http://example.com) it <a href='http://example.c
 Slack::Notifier::LinkFormatter.format(message)
 # => "Hello world, <http://example.com|check> it <http://example.com|out>"
 ```
+
 
 ## Additional parameters
 
