@@ -12,9 +12,14 @@ module Slack
     def initialize team, token, hook_name=default_hook_name, default_payload={}
       @team  = team
       @token = token
-      @hook_name = hook_name
 
-      @default_payload = default_payload
+      if hook_name.is_a? Hash
+        @hook_name = default_hook_name
+        @default_payload = hook_name
+      else
+        @hook_name = hook_name
+        @default_payload = default_payload
+      end
     end
 
     def ping message, options={}

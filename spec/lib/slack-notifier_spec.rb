@@ -16,6 +16,17 @@ describe Slack::Notifier do
       subject = described_class.new 'team', 'token', 'custom_hook_name'
       expect( subject.hook_name ).to eq 'custom_hook_name'
     end
+
+    it 'sets the default_payload options' do
+      subject = described_class.new 'team', 'token', channel: 'foo'
+      expect( subject.channel ).to eq 'foo'
+    end
+
+    it "can set service hook & default_payload options" do
+      subject = described_class.new 'team', 'token', 'hook_name', channel: 'foo'
+      expect( subject.channel ).to eq 'foo'
+      expect( subject.hook_name ).to eq 'hook_name'
+    end
   end
 
   describe "#ping" do
