@@ -1,3 +1,4 @@
+# 0.5.0
 - allow defaults to be set on initialization
 - remove channel formatting [#8]
 
