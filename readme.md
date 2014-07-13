@@ -21,7 +21,7 @@ On initialization you can set default payloads by passing an options hash.
 
 ```ruby
 notifier = Slack::Notifier.new "yourteam", "yourtokenXX",
-                              channel: '#default', username: 'notifier'
+                               channel: '#default', username: 'notifier'
 
 notifier.ping "Hello default"
 # => will message "Hello default"
