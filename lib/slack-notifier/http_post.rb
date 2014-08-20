@@ -33,7 +33,7 @@ module Slack
           if ENV['http_proxy'] != nil
             proxy_url = URI.parse(ENV['http_proxy'])
             proxy_class = Net::HTTP::Proxy(proxy_url.host, proxy_url.port, proxy_url.user, proxy_url.password)
-            http = proxy_class.new host, port
+            http = proxy_class.new uri.host, uri.port
           else
             http = Net::HTTP.new uri.host, uri.port
           end
