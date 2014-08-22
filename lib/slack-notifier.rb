@@ -7,14 +7,14 @@ require_relative 'slack-notifier/link_formatter'
 
 module Slack
   class Notifier
-    attr_reader :team, :token, :client,
+    attr_reader :team, :token, :http_client,
                 :hook_name, :default_payload
 
     def initialize team, token, options={} # hook_name=default_hook_name, default_payload={}
       @team      = team
       @token     = token
-      @client    = options.delete(:http_client) || DefaultHTTPClient
-      @hook_name = options.delete(:hook_name) || default_hook_name
+      @http_client = options.delete(:http_client) || DefaultHTTPClient
+      @hook_name   = options.delete(:hook_name) || default_hook_name
       @default_payload = options
     end
 
@@ -23,7 +23,7 @@ module Slack
       payload = { text: message }.merge(default_payload).merge(options)
 
 
-      client.post endpoint, payload: payload.to_json
+      http_client.post endpoint, payload: payload.to_json
     end
 
     def channel

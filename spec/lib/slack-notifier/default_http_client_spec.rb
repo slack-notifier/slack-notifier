@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Slack::Notifier::DefaultHTTPClient do
 
-  describe "::to" do
+  describe "::post" do
     it "initializes DefaultHTTPClient with the given uri and params then calls" do
       http_post_double = instance_double("Slack::Notifier::DefaultHTTPClient")
 

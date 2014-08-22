@@ -22,6 +22,12 @@ describe Slack::Notifier do
       expect( subject.channel ).to eq 'foo'
     end
 
+    it "sets a custom http client" do
+      client  = double("CustomClient")
+      subject = described_class.new 'team', 'token', http_client: client
+      expect( subject.http_client ).to eq client
+    end
+
     it "can set service hook & default_payload options" do
       subject = described_class.new 'team', 'token', hook_name: 'hook_name', channel: 'foo'
       expect( subject.channel ).to eq 'foo'
@@ -101,6 +107,21 @@ describe Slack::Notifier do
                                 payload: '{"text":"the message","channel":"channel"}'
 
         described_class.new("team","token", hook_name: "custom_hook_name").ping "the message", channel: "channel"
+      end
+    end
+
+    context "with a custom http_client set" do
+      it "uses it" do
+        endpoint_double = instance_double "URI::HTTP"
+        allow( URI ).to receive(:parse)
+                    .with("https://team.slack.com/services/hooks/incoming-webhook?token=token")
+                    .and_return(endpoint_double)
+        client = double("CustomClient")
+        expect( client ).to receive(:post)
+                        .with endpoint_double,
+                        payload: '{"text":"the message"}'
+
+        described_class.new('team','token',http_client: client).ping "the message"
       end
     end
   end
