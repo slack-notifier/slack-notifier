@@ -1,3 +1,4 @@
+- add ability to pass in your own http client
 - [BREAKING!] hook name moves to options array
 
 # 0.5.0

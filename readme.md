@@ -53,7 +53,7 @@ When Slack integrates an app with their website, they replace `incoming-webhook`
 This allows you to use this library to integrate a non-DIY service.
 
 ```ruby
-notifier = Slack::Notifier.new "yourteam", "yourtokenXX", "custom_hook_name"
+notifier = Slack::Notifier.new "yourteam", "yourtokenXX", hook_name: "custom_hook_name"
 # => Messages will be posted to https://yourteam.slack.com/services/hooks/custom_hook_name
 ```
 
@@ -92,6 +92,22 @@ a_ok_note = {
   color: "good"
 }
 notifier.ping "with an attachment", attachments: [a_ok_note]
+```
+
+
+## Custom HTTP Client
+
+There is a packaged default client wrapping Net::HTTP, but your HTTP needs might be a little different. In that case, you can pass in your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net:HTTP.post_form](http://ruby-doc.org/stdlib-2.1.2/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form).
+
+A simple example:
+```
+module Client
+  def self.post uri, opts={}
+    Net::HTTP.post_form uri, opts
+  end
+end
+
+notifier = Slack::Notifier.new 'yourteam', 'yourtoken', http_client: Client
 ```
 
 
