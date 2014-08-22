@@ -13,7 +13,7 @@ describe Slack::Notifier do
     end
 
     it "sets the optional service hook name" do
-      subject = described_class.new 'team', 'token', 'custom_hook_name'
+      subject = described_class.new 'team', 'token', hook_name: 'custom_hook_name'
       expect( subject.hook_name ).to eq 'custom_hook_name'
     end
 
@@ -23,7 +23,7 @@ describe Slack::Notifier do
     end
 
     it "can set service hook & default_payload options" do
-      subject = described_class.new 'team', 'token', 'hook_name', channel: 'foo'
+      subject = described_class.new 'team', 'token', hook_name: 'hook_name', channel: 'foo'
       expect( subject.channel ).to eq 'foo'
       expect( subject.hook_name ).to eq 'hook_name'
     end
@@ -100,7 +100,7 @@ describe Slack::Notifier do
                           .with @endpoint_double,
                                 payload: '{"text":"the message","channel":"channel"}'
 
-        described_class.new("team","token","custom_hook_name").ping "the message", channel: "channel"
+        described_class.new("team","token", hook_name: "custom_hook_name").ping "the message", channel: "channel"
       end
     end
   end

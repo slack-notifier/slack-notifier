@@ -9,17 +9,11 @@ module Slack
   class Notifier
     attr_reader :team, :token, :hook_name, :default_payload
 
-    def initialize team, token, hook_name=default_hook_name, default_payload={}
-      @team  = team
-      @token = token
-
-      if hook_name.is_a? Hash
-        @hook_name = default_hook_name
-        @default_payload = hook_name
-      else
-        @hook_name = hook_name
-        @default_payload = default_payload
-      end
+    def initialize team, token, options={} # hook_name=default_hook_name, default_payload={}
+      @team      = team
+      @token     = token
+      @hook_name = options.delete(:hook_name) || default_hook_name
+      @default_payload = options
     end
 
     def ping message, options={}
