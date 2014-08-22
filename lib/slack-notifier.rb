@@ -2,16 +2,18 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-require_relative 'slack-notifier/http_post'
+require_relative 'slack-notifier/default_http_client'
 require_relative 'slack-notifier/link_formatter'
 
 module Slack
   class Notifier
-    attr_reader :team, :token, :hook_name, :default_payload
+    attr_reader :team, :token, :client,
+                :hook_name, :default_payload
 
     def initialize team, token, options={} # hook_name=default_hook_name, default_payload={}
       @team      = team
       @token     = token
+      @client    = options.delete(:http_client) || DefaultHTTPClient
       @hook_name = options.delete(:hook_name) || default_hook_name
       @default_payload = options
     end
@@ -20,7 +22,8 @@ module Slack
       message = LinkFormatter.format(message)
       payload = { text: message }.merge(default_payload).merge(options)
 
-      HTTPPost.to endpoint, payload: payload.to_json
+
+      client.post endpoint, payload: payload.to_json
     end
 
     def channel

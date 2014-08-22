@@ -1,11 +1,11 @@
 module Slack
   class Notifier
 
-    class HTTPPost
+    class DefaultHTTPClient
 
       class << self
-        def to uri, params
-          HTTPPost.new( uri, params ).call
+        def post uri, params
+          DefaultHTTPClient.new( uri, params ).call
         end
       end
 

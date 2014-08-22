@@ -31,7 +31,7 @@ describe Slack::Notifier do
 
   describe "#ping" do
     before :each do
-      allow( Slack::Notifier::HTTPPost ).to receive(:to)
+      allow( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
     end
 
     it "passes the message through LinkFormatter" do
@@ -57,7 +57,7 @@ describe Slack::Notifier do
       end
 
       it "uses default channel" do
-        expect( Slack::Notifier::HTTPPost ).to receive(:to)
+        expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
                           .with @endpoint_double,
                                 payload: '{"text":"the message","channel":"#default"}'
 
@@ -65,7 +65,7 @@ describe Slack::Notifier do
       end
 
       it "allows override channel to be set" do
-        expect( Slack::Notifier::HTTPPost ).to receive(:to)
+        expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
                           .with @endpoint_double,
                                 payload: '{"text":"the message","channel":"new"}'
 
@@ -81,7 +81,7 @@ describe Slack::Notifier do
                       .with("https://team.slack.com/services/hooks/incoming-webhook?token=token")
                       .and_return(@endpoint_double)
 
-          expect( Slack::Notifier::HTTPPost ).to receive(:to)
+          expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
                             .with @endpoint_double,
                                   payload: '{"text":"the message","channel":"channel"}'
 
@@ -96,7 +96,7 @@ describe Slack::Notifier do
                     .with("https://team.slack.com/services/hooks/custom_hook_name?token=token")
                     .and_return(@endpoint_double)
 
-        expect( Slack::Notifier::HTTPPost ).to receive(:to)
+        expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
                           .with @endpoint_double,
                                 payload: '{"text":"the message","channel":"channel"}'
 
