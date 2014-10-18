@@ -37,7 +37,7 @@ module Slack
         end
 
         def html_pattern
-          / <a (?:.*?) href=['"](.+)['"] (?:.*)> (.+?) <\/a> /x
+          / <a (?:.*?) href=['"](.+?)['"] (?:.*?)> (.+?) <\/a> /x
         end
 
         def markdown_pattern
