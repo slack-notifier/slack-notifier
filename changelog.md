@@ -1,3 +1,6 @@
+# 0.6.1
+- fix bug in link_formatter to allow multiple links in a message
+
 # 0.6.0
 - add ability to pass in your own http client
 - [BREAKING!] hook name moves to options array
