@@ -1,37 +1,22 @@
 require 'spec_helper'
 
 describe Slack::Notifier do
-  subject { described_class.new 'team', 'token' }
+  subject { described_class.new 'http://example.com' }
 
   describe "#initialize" do
-    it "sets the given team" do
-      expect( subject.team ).to eq 'team'
-    end
-
-    it "sets the given token" do
-      expect( subject.token ).to eq 'token'
-    end
-
-    it "sets the optional service hook name" do
-      subject = described_class.new 'team', 'token', hook_name: 'custom_hook_name'
-      expect( subject.hook_name ).to eq 'custom_hook_name'
+    it "sets the given hook_url to the endpoint URI" do
+      expect( subject.endpoint ).to eq URI.parse 'http://example.com'
     end
 
     it "sets the default_payload options" do
-      subject = described_class.new 'team', 'token', channel: 'foo'
+      subject = described_class.new 'http://example.com', channel: 'foo'
       expect( subject.channel ).to eq 'foo'
     end
 
     it "sets a custom http client" do
       client  = double("CustomClient")
-      subject = described_class.new 'team', 'token', http_client: client
+      subject = described_class.new 'http://example.com', http_client: client
       expect( subject.http_client ).to eq client
-    end
-
-    it "can set service hook & default_payload options" do
-      subject = described_class.new 'team', 'token', hook_name: 'hook_name', channel: 'foo'
-      expect( subject.channel ).to eq 'foo'
-      expect( subject.hook_name ).to eq 'hook_name'
     end
   end
 
@@ -44,7 +29,7 @@ describe Slack::Notifier do
       expect( Slack::Notifier::LinkFormatter ).to receive(:format)
                                               .with("the message")
 
-      described_class.new('team','token').ping "the message", channel: 'foo'
+      described_class.new('http://example.com').ping "the message", channel: 'foo'
     end
 
     context "with a default channel set" do
@@ -84,29 +69,14 @@ describe Slack::Notifier do
       it "posts with the correct endpoint & data" do
           @endpoint_double = instance_double "URI::HTTP"
           allow( URI ).to receive(:parse)
-                      .with("https://team.slack.com/services/hooks/incoming-webhook?token=token")
+                      .with("http://example.com")
                       .and_return(@endpoint_double)
 
           expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
                             .with @endpoint_double,
                                   payload: '{"text":"the message","channel":"channel"}'
 
-          described_class.new("team","token").ping "the message", channel: "channel"
-      end
-    end
-
-    context "with custom webhook name" do
-      it "posts with the correct endpoint & data" do
-        @endpoint_double = instance_double "URI::HTTP"
-        allow( URI ).to receive(:parse)
-                    .with("https://team.slack.com/services/hooks/custom_hook_name?token=token")
-                    .and_return(@endpoint_double)
-
-        expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
-                          .with @endpoint_double,
-                                payload: '{"text":"the message","channel":"channel"}'
-
-        described_class.new("team","token", hook_name: "custom_hook_name").ping "the message", channel: "channel"
+          described_class.new("http://example.com").ping "the message", channel: "channel"
       end
     end
 
@@ -114,14 +84,14 @@ describe Slack::Notifier do
       it "uses it" do
         endpoint_double = instance_double "URI::HTTP"
         allow( URI ).to receive(:parse)
-                    .with("https://team.slack.com/services/hooks/incoming-webhook?token=token")
+                    .with("http://example.com")
                     .and_return(endpoint_double)
         client = double("CustomClient")
         expect( client ).to receive(:post)
                         .with endpoint_double,
                         payload: '{"text":"the message"}'
 
-        described_class.new('team','token',http_client: client).ping "the message"
+        described_class.new('http://example.com',http_client: client).ping "the message"
       end
     end
   end

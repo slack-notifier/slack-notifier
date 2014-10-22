@@ -1,3 +1,5 @@
+- [BREAKING!] To follow changes with slack, client is now initialized with a webhook url instead of team & token. For help upgrading read the [upgrade from 0.6.1 guide](docs/upgrade-from-0.6.1.md)
+
 # 0.6.1
 - fix bug in link_formatter to allow multiple links in a message
 

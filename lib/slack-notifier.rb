@@ -7,14 +7,11 @@ require_relative 'slack-notifier/link_formatter'
 
 module Slack
   class Notifier
-    attr_reader :team, :token, :http_client,
-                :hook_name, :default_payload
+    attr_reader :endpoint, :http_client, :default_payload
 
-    def initialize team, token, options={} # hook_name=default_hook_name, default_payload={}
-      @team      = team
-      @token     = token
-      @http_client = options.delete(:http_client) || DefaultHTTPClient
-      @hook_name   = options.delete(:hook_name) || default_hook_name
+    def initialize webhook_url, options={}
+      @endpoint        = URI.parse webhook_url
+      @http_client     = options.delete(:http_client) || DefaultHTTPClient
       @default_payload = options
     end
 
@@ -41,16 +38,6 @@ module Slack
     def username= username
       default_payload[:username] = username
     end
-
-    private
-
-      def default_hook_name
-        'incoming-webhook'
-      end
-
-      def endpoint
-        URI.parse "https://#{team}.slack.com/services/hooks/#{hook_name}?token=#{token}"
-      end
 
   end
 end

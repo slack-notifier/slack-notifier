@@ -8,7 +8,7 @@ A simple wrapper to send notifications to [Slack](https://slack.com/) webhooks.
 ```ruby
 require 'slack-notifier'
 
-notifier = Slack::Notifier.new "yourteam", "yourtokenXX"
+notifier = Slack::Notifier.new "WEBHOOK_URL"
 notifier.ping "Hello World"
 # => if your webhook is setup, will message "Hello World"
 # => to the default channel you set in slack
@@ -20,8 +20,8 @@ notifier.ping "Hello World"
 On initialization you can set default payloads by passing an options hash.
 
 ```ruby
-notifier = Slack::Notifier.new "yourteam", "yourtokenXX",
-                               channel: '#default', username: 'notifier'
+notifier = Slack::Notifier.new "WEBHOOK_URL", channel: '#default',
+                                              username: 'notifier'
 
 notifier.ping "Hello default"
 # => will message "Hello default"
@@ -44,17 +44,6 @@ These defaults are over-ridable for any individual ping.
 notifier.channel = "#default"
 notifier.ping "Hello random", channel: "#random"
 # => will ping the "#random" channel
-```
-
-
-### Custom hook name
-
-When Slack integrates an app with their website, they replace `incoming-webhook` with the service name.
-This allows you to use this library to integrate a non-DIY service.
-
-```ruby
-notifier = Slack::Notifier.new "yourteam", "yourtokenXX", hook_name: "custom_hook_name"
-# => Messages will be posted to https://yourteam.slack.com/services/hooks/custom_hook_name
 ```
 
 
@@ -107,7 +96,7 @@ module Client
   end
 end
 
-notifier = Slack::Notifier.new 'yourteam', 'yourtoken', http_client: Client
+notifier = Slack::Notifier.new 'WEBHOOK_URL', http_client: Client
 ```
 
 
