@@ -50,7 +50,7 @@ describe Slack::Notifier do
       it "uses default channel" do
         expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
                           .with @endpoint_double,
-                                payload: '{"text":"the message","channel":"#default"}'
+                                payload: '{"channel":"#default","text":"the message"}'
 
         subject.ping "the message"
       end
@@ -58,7 +58,7 @@ describe Slack::Notifier do
       it "allows override channel to be set" do
         expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
                           .with @endpoint_double,
-                                payload: '{"text":"the message","channel":"new"}'
+                                payload: '{"channel":"new","text":"the message"}'
 
         subject.ping "the message", channel: "new"
       end
@@ -74,7 +74,7 @@ describe Slack::Notifier do
 
           expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
                             .with @endpoint_double,
-                                  payload: '{"text":"the message","channel":"channel"}'
+                                  payload: '{"channel":"channel","text":"the message"}'
 
           described_class.new("http://example.com").ping "the message", channel: "channel"
       end

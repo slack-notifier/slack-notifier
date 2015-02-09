@@ -18,4 +18,20 @@ describe Slack::Notifier::DefaultHTTPClient do
     # where the internals are run through
   end
 
+  describe "#initialize" do
+    it "allows setting of options for Net::HTTP" do
+      net_http_double = instance_double("Net::HTTP")
+      http_client     = described_class.new( URI.parse('http://example.com'), http_options: { open_timeout: 5 })
+
+      allow( Net::HTTP ).to receive(:new)
+                        .and_return(net_http_double)
+      allow( net_http_double ).to receive(:use_ssl=)
+      allow( net_http_double ).to receive(:request)
+
+      expect( net_http_double ).to receive(:open_timeout=).with(5)
+
+      http_client.call
+    end
+  end
+
 end

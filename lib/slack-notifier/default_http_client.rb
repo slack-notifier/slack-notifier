@@ -9,11 +9,12 @@ module Slack
         end
       end
 
-      attr_reader :uri, :params
+      attr_reader :uri, :params, :http_options
 
       def initialize uri, params
-        @uri    = uri
-        @params = params
+        @uri          = uri
+        @http_options = params.delete(:http_options) || {}
+        @params       = params
       end
 
       def call
@@ -32,6 +33,14 @@ module Slack
         def http_obj
           http = Net::HTTP.new uri.host, uri.port
           http.use_ssl = (uri.scheme == "https")
+
+          http_options.each do |opt, val|
+            if http.respond_to? "#{opt}="
+              http.send "#{opt}=", val
+            else
+              warn "Net::HTTP doesn't respond to `#{opt}=`, ignoring that option"
+            end
+          end
 
           return http
         end

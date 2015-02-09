@@ -84,21 +84,42 @@ notifier.ping "with an attachment", attachments: [a_ok_note]
 ```
 
 
+## HTTP options
+
+With the default HTTP client, you can send along options to customize it's behavior as `:http_options` params when you ping or initialize the notifier.
+
+```ruby
+notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: { open_timeout: 5 }
+notifier.ping "hello", http_options: { open_timeout: 10 }
+```
+
+**Note**: you should only send along options that [`Net::HTTP`](http://ruby-doc.org/stdlib-2.2.0/libdoc/net/http/rdoc/Net/HTTP.html) has as setters, otherwise the option will be ignored and show a warning.
+
+
 ## Custom HTTP Client
 
 There is a packaged default client wrapping Net::HTTP, but your HTTP needs might be a little different. In that case, you can pass in your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net:HTTP.post_form](http://ruby-doc.org/stdlib-2.1.2/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form).
 
 A simple example:
-```
+```ruby
 module Client
-  def self.post uri, opts={}
-    Net::HTTP.post_form uri, opts
+  def self.post uri, params={}
+    Net::HTTP.post_form uri, params
   end
 end
 
 notifier = Slack::Notifier.new 'WEBHOOK_URL', http_client: Client
 ```
 
+It's also encouraged for any custom HTTP implementations to accept the `:http_options` key in params.
+
+**Setting client per ping**
+
+You can also set the http_client per-ping if you need to special case certain pings.
+
+```ruby
+notifier.ping "hello", http_client: CustomClient
+```
 
 
 Testing
