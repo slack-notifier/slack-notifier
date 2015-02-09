@@ -1,3 +1,4 @@
+# 1.1.0
 - add ability to pass `:http_options` to the initializer or `#ping`. this allows you to set options like `read_timeout` or `open_timeout`. See [issue #17](https://github.com/stevenosloan/slack-notifier/issues/17) for more information.
 
 # 1.0.0
