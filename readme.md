@@ -121,6 +121,20 @@ You can also set the http_client per-ping if you need to special case certain pi
 notifier.ping "hello", http_client: CustomClient
 ```
 
+**Setting a No-Op client**
+
+In development (or testing), you may want to watch the behavior of the notifier without posting to slack. This can be handled with a no-op client.
+
+```ruby
+class NoOpHTTPClient
+  def self.post uri, params={}
+    # bonus, you could log or observe posted params here
+  end
+end
+
+notifier = Slack::Notifier.new 'WEBHOOK_URL', http_client: NoOpHTTPClient
+```
+
 
 Testing
 -------
