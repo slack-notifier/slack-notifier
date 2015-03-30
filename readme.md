@@ -1,6 +1,6 @@
 A simple wrapper to send notifications to [Slack](https://slack.com/) webhooks.
 
-[![Build Status](https://travis-ci.org/stevenosloan/slack-notifier.png?branch=master)](https://travis-ci.org/stevenosloan/slack-notifier)  [![Code Climate](https://codeclimate.com/github/stevenosloan/slack-notifier.png)](https://codeclimate.com/github/stevenosloan/slack-notifier)
+[![Build Status](https://travis-ci.org/stevenosloan/slack-notifier.svg?branch=master)](https://travis-ci.org/stevenosloan/slack-notifier)  [![Code Climate](https://codeclimate.com/github/stevenosloan/slack-notifier.svg)](https://codeclimate.com/github/stevenosloan/slack-notifier)
 
 
 ## Example
