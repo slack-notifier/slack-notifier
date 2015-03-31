@@ -59,6 +59,18 @@ Slack::Notifier::LinkFormatter.format(message)
 # => "Hello world, <http://example.com|check> it <http://example.com|out>"
 ```
 
+## Formatting
+
+Slack supports various different formatting options.  For example, if you want to alert an entire channel you include `<!channel>` in your message
+
+```ruby
+message = "<!channel> hey check this out"
+notifier.ping message
+
+#ends up posting "@channel hey check this out" in your Slack channel
+```
+
+You can see [Slacks message documentation here](https://api.slack.com/docs/formatting) 
 
 ## Additional parameters
 
