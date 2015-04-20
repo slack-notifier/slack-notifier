@@ -11,7 +11,7 @@ module Slack
       end
 
       def initialize string
-        @orig = string
+        @orig = fix_encoding string
       end
 
       def formatted
@@ -27,6 +27,14 @@ module Slack
       end
 
       private
+
+        def fix_encoding string
+          transcoding_options = {
+            :invalid => :replace,
+            :undef => :replace,
+            :replace => '?'}
+          string.encode 'UTF-8', transcoding_options
+        end
 
         def slack_link link, text=nil
           out = "<#{link}"
