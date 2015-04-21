@@ -37,6 +37,17 @@ describe Slack::Notifier::LinkFormatter do
       expect( formatted ).to include("<http://example2.com|this2>")
     end
 
+    it "handles invalid unicode sequences" do
+      expect {
+        described_class.format("This sequence is invalid: \255")
+      }.not_to raise_error
+    end
+
+    it "replaces invalid unicode sequences with the unicode replacement character" do
+      formatted = described_class.format("\255")
+      expect(formatted).to eq "\uFFFD"
+    end
+
   end
 
 end
