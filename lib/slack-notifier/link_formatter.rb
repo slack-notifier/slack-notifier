@@ -29,11 +29,10 @@ module Slack
       private
 
         def fix_encoding string
-          transcoding_options = {
+          string.encode 'UTF-8',
             :invalid => :replace,
-            :undef => :replace,
-            :replace => '?'}
-          string.encode 'UTF-8', transcoding_options
+            :undef   => :replace,
+            :replace => "\uFFFD"
         end
 
         def slack_link link, text=nil
