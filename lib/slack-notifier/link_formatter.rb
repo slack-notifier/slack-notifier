@@ -30,9 +30,9 @@ module Slack
 
         def fix_encoding string
           string.encode 'UTF-8',
+            'binary',
             :invalid => :replace,
-            :undef   => :replace,
-            :replace => "\uFFFD"
+            :undef   => :replace
         end
 
         def slack_link link, text=nil
