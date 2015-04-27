@@ -1,3 +1,6 @@
+# 1.2.0
+- Strip invalid UTF-8 characters from message before attempting to format links. They are replaced with the unicode replacement character '[�](http://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character)'. [@ushu #26]
+
 # 1.1.0
 - add ability to pass `:http_options` to the initializer or `#ping`. this allows you to set options like `read_timeout` or `open_timeout`. See [issue #17](https://github.com/stevenosloan/slack-notifier/issues/17) for more information.
 
