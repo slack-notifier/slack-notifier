@@ -4,7 +4,7 @@ gemspec
 
 
 group :development do
-  gem 'pry-byebug'
+  gem 'pry-byebug' if RUBY_VERSION >= '2.0.0'
   gem 'wwtd'
   gem 'travis'
 end
