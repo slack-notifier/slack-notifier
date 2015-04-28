@@ -1,3 +1,5 @@
+require 'string-scrub' if RUBY_VERSION < '2.1.0'
+
 module Slack
   class Notifier
     class LinkFormatter
@@ -11,7 +13,7 @@ module Slack
       end
 
       def initialize string
-        @orig = fix_encoding string
+        @orig = string.scrub
       end
 
       def formatted
@@ -27,13 +29,6 @@ module Slack
       end
 
       private
-
-        def fix_encoding string
-          string.encode 'UTF-8',
-            'binary',
-            :invalid => :replace,
-            :undef   => :replace
-        end
 
         def slack_link link, text=nil
           out = "<#{link}"

@@ -17,4 +17,6 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["spec/**/*.rb"]
   s.require_path  = "lib"
 
+  s.add_dependency("string-scrub", "~> 0.0.5") if RUBY_VERSION < "2.1.0"
+
 end
