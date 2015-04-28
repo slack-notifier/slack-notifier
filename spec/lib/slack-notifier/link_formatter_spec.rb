@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'spec_helper'
 
 describe Slack::Notifier::LinkFormatter do
@@ -46,6 +48,11 @@ describe Slack::Notifier::LinkFormatter do
     it "replaces invalid unicode sequences with the unicode replacement character" do
       formatted = described_class.format("\255")
       expect(formatted).to eq "\uFFFD"
+    end
+
+    it "doesn't replace valid Japanese" do
+      formatted = described_class.format("こんにちは")
+      expect(formatted).to eq "こんにちは"
     end
 
   end
