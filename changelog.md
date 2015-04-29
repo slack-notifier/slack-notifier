@@ -1,3 +1,7 @@
+- use `#scrub` to (more selectively) strip invalid characters from strings before attempting to format. This allows valid japanese (and more) characters to be used. Thanks to @fukayatsu for reporting.
+
+  This checks for the presence of the `scrub` method on string, so if on ruby < 2.1 you'll need to include & require the `string-scrub` gem to handle invalid characters.
+
 # 1.2.0
 - Strip invalid UTF-8 characters from message before attempting to format links. They are replaced with the unicode replacement character '[�](http://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character)'. [@ushu #26]
 

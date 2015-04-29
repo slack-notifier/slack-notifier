@@ -2,9 +2,12 @@ source 'https://rubygems.org'
 
 gemspec
 
-
 group :development do
-  gem 'pry-byebug'
+  if RUBY_VERSION >= '2.0.0'
+    gem 'pry-byebug'
+  else
+    gem 'pry-debugger'
+  end
   gem 'wwtd'
   gem 'travis'
 end
