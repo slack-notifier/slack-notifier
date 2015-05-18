@@ -1,3 +1,4 @@
+# 1.2.1
 - use `#scrub` to (more selectively) strip invalid characters from strings before attempting to format. This allows valid japanese (and more) characters to be used. Thanks to @fukayatsu for reporting.
 
   This checks for the presence of the `scrub` method on string, so if on ruby < 2.1 you'll need to include & require the `string-scrub` gem to handle invalid characters.
