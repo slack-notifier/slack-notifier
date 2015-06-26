@@ -70,7 +70,7 @@ notifier.ping message
 #ends up posting "@channel hey check this out" in your Slack channel
 ```
 
-You can see [Slacks message documentation here](https://api.slack.com/docs/formatting) 
+You can see [Slack's message documentation here](https://api.slack.com/docs/formatting) 
 
 ## Additional parameters
 
@@ -98,7 +98,7 @@ notifier.ping "with an attachment", attachments: [a_ok_note]
 
 ## HTTP options
 
-With the default HTTP client, you can send along options to customize it's behavior as `:http_options` params when you ping or initialize the notifier.
+With the default HTTP client, you can send along options to customize its behavior as `:http_options` params when you ping or initialize the notifier.
 
 ```ruby
 notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: { open_timeout: 5 }
@@ -174,7 +174,7 @@ If there is any thing you'd like to contribute or fix, please:
 - Fork the repo
 - Add tests for any new functionality
 - Make your changes
-- Verify all new &existing tests pass
+- Verify all new & existing tests pass
 - Make a pull request
 
 
