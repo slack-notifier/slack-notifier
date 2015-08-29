@@ -72,6 +72,16 @@ notifier.ping message
 
 You can see [Slack's message documentation here](https://api.slack.com/docs/formatting) 
 
+## Escaping
+
+Since sequences starting with < have special meaning in Slack, you should use `notifier.escape` if your messages may contain &, < or >.
+
+```ruby
+link_text = notifier.escape("User <user@example.com>")
+message = "Write to [#{link_text}](mailto:user@example.com)"
+notifier.ping message
+```
+
 ## Additional parameters
 
 Any key passed to the `ping` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://my.slack.com/services/new/incoming-webhook) for the available parameters.
