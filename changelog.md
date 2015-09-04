@@ -1,5 +1,5 @@
-# 1.3.0 - unreleased
-- Add `#escape` to allow clients to escape special characters
+# 1.3.0
+- Add `#escape` to allow clients to escape special characters [@monkbroc #35]
 
 # 1.2.1
 - use `#scrub` to (more selectively) strip invalid characters from strings before attempting to format. This allows valid japanese (and more) characters to be used. Thanks to @fukayatsu for reporting.
