@@ -46,5 +46,11 @@ module Slack
       default_payload[:username] = username
     end
 
+    HTML_ESCAPE_REGEXP = /[&><]/
+    HTML_ESCAPE = { '&' => '&amp;',  '>' => '&gt;',   '<' => '&lt;' }
+
+    def escape(text)
+      text.gsub(HTML_ESCAPE_REGEXP, HTML_ESCAPE)
+    end
   end
 end

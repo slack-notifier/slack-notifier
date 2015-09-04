@@ -109,4 +109,12 @@ describe Slack::Notifier do
       expect( subject.username ).to eq "foo"
     end
   end
+
+  describe "#escape" do
+    it "escapes sequences of < > &, but not quotes" do
+      message = %q(I've heard "Do > with <" & that sounds ridiculous.)
+      expected = %q(I've heard "Do &gt; with &lt;" &amp; that sounds ridiculous.)
+      expect( subject.escape(message) ).to eq expected
+    end
+  end
 end
