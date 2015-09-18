@@ -2,8 +2,8 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-require_relative 'slack-notifier/default_http_client'
-require_relative 'slack-notifier/link_formatter'
+require File.expand_path('../slack-notifier/default_http_client', __FILE__)
+require File.expand_path('../slack-notifier/link_formatter', __FILE__)
 
 module Slack
   class Notifier
@@ -16,11 +16,11 @@ module Slack
 
     def ping message, options={}
       message      = LinkFormatter.format(message)
-      payload      = default_payload.merge(options).merge(text: message)
+      payload      = default_payload.merge(options).merge(:text => message)
       client       = payload.delete(:http_client) || http_client
       http_options = payload.delete(:http_options)
 
-      params = { payload: payload.to_json }
+      params = { :payload => payload.to_json }
       params[:http_options] = http_options if http_options
 
       client.post endpoint, params
