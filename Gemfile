@@ -10,6 +10,7 @@ group :development do
   end
   gem 'wwtd'
   gem 'travis'
+  gem "table_print"
 end
 
 group :test do

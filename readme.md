@@ -13,6 +13,7 @@ notifier = Slack::Notifier.new "WEBHOOK_URL"
 notifier.ping "Hello World"
 # => if your webhook is setup, will message "Hello World"
 # => to the default channel you set in slack
+# => hound ci test
 ```
 
 
@@ -21,8 +22,8 @@ notifier.ping "Hello World"
 On initialization you can set default payloads by passing an options hash.
 
 ```ruby
-notifier = Slack::Notifier.new "WEBHOOK_URL", channel: '#default',
-                                              username: 'notifier'
+notifier = Slack::Notifier.new "WEBHOOK_URL", :channel => '#default',
+                                              :username => 'notifier'
 
 notifier.ping "Hello default"
 # => will message "Hello default"
@@ -43,7 +44,7 @@ These defaults are over-ridable for any individual ping.
 
 ```ruby
 notifier.channel = "#default"
-notifier.ping "Hello random", channel: "#random"
+notifier.ping "Hello random", :channel => "#random"
 # => will ping the "#random" channel
 ```
 
@@ -71,7 +72,7 @@ notifier.ping message
 #ends up posting "@channel hey check this out" in your Slack channel
 ```
 
-You can see [Slack's message documentation here](https://api.slack.com/docs/formatting) 
+You can see [Slack's message documentation here](https://api.slack.com/docs/formatting)
 
 ## Escaping
 
@@ -90,9 +91,9 @@ Any key passed to the `ping` method is posted to the webhook endpoint. Check out
 Setting an icon:
 
 ```ruby
-notifier.ping "feeling spooky", icon_emoji: ":ghost:"
+notifier.ping "feeling spooky", :icon_emoji => ":ghost:"
 # or
-notifier.ping "feeling chimpy", icon_url: "http://static.mailchimp.com/web/favicon.png"
+notifier.ping "feeling chimpy", :icon_url => "http://static.mailchimp.com/web/favicon.png"
 ```
 
 Adding attachments:
@@ -103,7 +104,7 @@ a_ok_note = {
   text: "Everything looks peachy",
   color: "good"
 }
-notifier.ping "with an attachment", attachments: [a_ok_note]
+notifier.ping "with an attachment", :attachments => [a_ok_note]
 ```
 
 
@@ -112,8 +113,8 @@ notifier.ping "with an attachment", attachments: [a_ok_note]
 With the default HTTP client, you can send along options to customize its behavior as `:http_options` params when you ping or initialize the notifier.
 
 ```ruby
-notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: { open_timeout: 5 }
-notifier.ping "hello", http_options: { open_timeout: 10 }
+notifier = Slack::Notifier.new 'WEBHOOK_URL', :http_options => { open_timeout: 5 }
+notifier.ping "hello", :http_options => { open_timeout: 10 }
 ```
 
 **Note**: you should only send along options that [`Net::HTTP`](http://ruby-doc.org/stdlib-2.2.0/libdoc/net/http/rdoc/Net/HTTP.html) has as setters, otherwise the option will be ignored and show a warning.
@@ -131,7 +132,7 @@ module Client
   end
 end
 
-notifier = Slack::Notifier.new 'WEBHOOK_URL', http_client: Client
+notifier = Slack::Notifier.new 'WEBHOOK_URL', :http_client => Client
 ```
 
 It's also encouraged for any custom HTTP implementations to accept the `:http_options` key in params.
@@ -141,7 +142,7 @@ It's also encouraged for any custom HTTP implementations to accept the `:http_op
 You can also set the http_client per-ping if you need to special case certain pings.
 
 ```ruby
-notifier.ping "hello", http_client: CustomClient
+notifier.ping "hello", :http_client => CustomClient
 ```
 
 **Setting a No-Op client**
@@ -155,7 +156,7 @@ class NoOpHTTPClient
   end
 end
 
-notifier = Slack::Notifier.new 'WEBHOOK_URL', http_client: NoOpHTTPClient
+notifier = Slack::Notifier.new 'WEBHOOK_URL', :http_client => NoOpHTTPClient
 ```
 
 
