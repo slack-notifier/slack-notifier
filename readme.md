@@ -1,7 +1,8 @@
+**A fork of [slack-notifier](https://github.com/stevenosloan/slack-notifier).**
+
+**This fork is compatible with Ruby 1.8.7+**
+
 A simple wrapper to send notifications to [Slack](https://slack.com/) webhooks.
-
-[![Build Status](https://travis-ci.org/stevenosloan/slack-notifier.svg?branch=master)](https://travis-ci.org/stevenosloan/slack-notifier)  [![Code Climate](https://codeclimate.com/github/stevenosloan/slack-notifier.svg)](https://codeclimate.com/github/stevenosloan/slack-notifier)
-
 
 ## Example
 
