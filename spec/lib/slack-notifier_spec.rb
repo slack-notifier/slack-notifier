@@ -32,6 +32,22 @@ describe Slack::Notifier do
       described_class.new('http://example.com').ping "the message", channel: 'foo'
     end
 
+    it "passes attachment messages through LinkFormatter" do
+      expect( Slack::Notifier::LinkFormatter ).to receive(:format)
+                                              .with("the message")
+      expect( Slack::Notifier::LinkFormatter ).to receive(:format)
+                                              .with("attachment message")
+      expect( Slack::Notifier::LinkFormatter ).to receive(:format)
+                                              .with("fallback message")
+
+      described_class.new('http://example.com').ping "the message", channel: 'foo',
+                                                                    attachments: [{
+                                                                      color: "#000",
+                                                                      text: "attachment message",
+                                                                      fallback: "fallback message"
+                                                                    }]
+    end
+
     context "with a default channel set" do
 
       before :each do
