@@ -52,7 +52,7 @@ module Slack
         end
 
         def markdown_pattern
-          /\[(.*?)\]\((.+?)\)/
+          /\[([^\[\]]*?)\]\((https?:\/\/.*?)\)/
         end
 
     end
