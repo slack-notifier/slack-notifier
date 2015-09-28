@@ -37,8 +37,6 @@ describe Slack::Notifier do
                                               .with("the message")
       expect( Slack::Notifier::LinkFormatter ).to receive(:format)
                                               .with("attachment message")
-      expect( Slack::Notifier::LinkFormatter ).to receive(:format)
-                                              .with("fallback message")
 
       described_class.new('http://example.com').ping "the message", channel: 'foo',
                                                                     attachments: [{
