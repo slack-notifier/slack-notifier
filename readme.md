@@ -158,6 +158,21 @@ notifier = Slack::Notifier.new 'WEBHOOK_URL', http_client: NoOpHTTPClient
 ```
 
 
+Versioning
+----------
+
+Since version `1.0` has been released, the aim is to follow [Semantic Versioning](http://semver.org/) as much as possible. However, it is encouraged to check the [changelog](changelog.md) when updating to see what changes have been made.
+
+To summarize the reasoning for versioning:
+
+```
+Given a version number MAJOR.MINOR.PATCH, increment:
+
+- MAJOR version when incompatible API changes are made
+- MINOR version for adding functionality in a backwards-compatible manner or bug fixes that *may* change behavior
+- PATCH version for make backwards-compatible bug fixes
+```
+
 Testing
 -------
 
