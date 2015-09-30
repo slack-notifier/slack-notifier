@@ -47,12 +47,14 @@ module Slack
           return out
         end
 
+        # http://rubular.com/r/19cNXW5qbH
         def html_pattern
           / <a (?:.*?) href=['"](.+?)['"] (?:.*?)> (.+?) <\/a> /x
         end
 
+        # http://rubular.com/r/fLEdmTSghW
         def markdown_pattern
-          /\[([^\[\]]*?)\]\((https?:\/\/.*?)\)/
+          /\[ ([^\[\]]*?) \] \( (https?:\/\/.*?) \) /x
         end
 
     end
