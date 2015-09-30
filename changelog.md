@@ -1,3 +1,4 @@
+# 1.3.1
 - Fix bug with link formatter for markdown links wrapped in square braces [@bhuga #36]
 
 # 1.3.0
