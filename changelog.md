@@ -1,3 +1,5 @@
+- Fix bug with link formatter for markdown links wrapped in square braces [@bhuga #36]
+
 # 1.3.0
 - Add `#escape` to allow clients to escape special characters [@monkbroc #35]
 
