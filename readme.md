@@ -84,7 +84,7 @@ notifier.ping message
 
 ## Additional parameters
 
-Any key passed to the `ping` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://my.slack.com/services/new/incoming-webhook) for the available parameters.
+Any key passed to the `ping` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
 
 Setting an icon:
 
