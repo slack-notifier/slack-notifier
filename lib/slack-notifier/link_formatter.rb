@@ -52,7 +52,7 @@ module Slack
           / <a (?:.*?) href=['"](.+?)['"] (?:.*?)> (.+?) <\/a> /x
         end
 
-        # http://rubular.com/r/fLEdmTSghW
+        # http://rubular.com/r/guJbTK6x1f
         def markdown_pattern
           /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \) /x
         end
