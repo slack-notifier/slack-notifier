@@ -63,8 +63,13 @@ describe Slack::Notifier::LinkFormatter do
       expect(formatted).to eq "こんにちは"
     end
 
-    it "handles email links in markdown" do
+    it "handles mailto links in markdown" do
       formatted = described_class.format("[John](mailto:john@example.com)")
+      expect(formatted).to eq "<mailto:john@example.com|John>"
+    end
+
+    it "handles mailto links in html" do
+      formatted = described_class.format("<a href='mailto:john@example.com'>John</a>")
       expect(formatted).to eq "<mailto:john@example.com|John>"
     end
 
