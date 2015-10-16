@@ -16,6 +16,13 @@ module Slack
 
     def ping message, options={}
       message      = LinkFormatter.format(message)
+      if attachments = options[:attachments] || options["attachments"]
+        attachments.each do |attachment|
+          ["text", :text].each do |key|
+            attachment[key] = LinkFormatter.format(attachment[key]) if attachment.has_key?(key)
+          end
+        end
+      end
       payload      = default_payload.merge(options).merge(text: message)
       client       = payload.delete(:http_client) || http_client
       http_options = payload.delete(:http_options)
