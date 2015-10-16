@@ -54,7 +54,7 @@ module Slack
 
         # http://rubular.com/r/fLEdmTSghW
         def markdown_pattern
-          /\[ ([^\[\]]*?) \] \( (https?:\/\/.*?) \) /x
+          /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \) /x
         end
 
     end
