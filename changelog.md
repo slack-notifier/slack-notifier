@@ -1,3 +1,5 @@
+- Add support for mailto links in markdown formatted links [@keithpitty #43]
+
 # 1.3.1
 - Fix bug with link formatter for markdown links wrapped in square braces [@bhuga #36]
 
