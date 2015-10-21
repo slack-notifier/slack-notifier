@@ -33,7 +33,7 @@ module Slack
         def http_obj
           http = Net::HTTP.new uri.host, uri.port
           http.use_ssl = (uri.scheme == "https")
-          http.verify_mode = OpenSSL::SSL::VERIFY_NONE if net_http.use_ssl? 
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl? 
           
           http_options.each do |opt, val|
             if http.respond_to? "#{opt}="
