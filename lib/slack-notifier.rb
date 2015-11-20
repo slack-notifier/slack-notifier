@@ -20,7 +20,7 @@ module Slack
       end
 
       if attachments = options[:attachments] || options["attachments"]
-        attachments.each do |attachment|
+        wrap_array(attachments).each do |attachment|
           ["text", :text].each do |key|
             attachment[key] = LinkFormatter.format(attachment[key]) if attachment.has_key?(key)
           end
@@ -66,6 +66,16 @@ module Slack
 
     def escape(text)
       text.gsub(HTML_ESCAPE_REGEXP, HTML_ESCAPE)
+    end
+
+    def wrap_array(object)
+      if object.nil?
+        []
+      elsif object.respond_to?(:to_ary)
+        object.to_ary || [object]
+      else
+        [object]
+      end
     end
   end
 end

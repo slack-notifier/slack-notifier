@@ -62,6 +62,19 @@ describe Slack::Notifier do
       }.not_to raise_error
     end
 
+    it "passes attachment messages through LinkFormatter, even if a single value is passed" do
+      expect( Slack::Notifier::LinkFormatter ).to receive(:format)
+                                              .with("a random message")
+      expect( Slack::Notifier::LinkFormatter ).to receive(:format)
+                                              .with("attachment message")
+      attachment = {
+        color: "#000",
+        text: "attachment message",
+        fallback: "fallback message"
+      }
+      subject.ping "a random message", attachments: attachment
+    end
+
     context "with a default channel set" do
 
       before :each do
