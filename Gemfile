@@ -10,9 +10,10 @@ group :development do
   end
   gem 'wwtd'
   gem 'travis'
+  gem 'benchmark-ips'
 end
 
 group :test do
-  gem 'rake',  '~> 10.1'
-  gem 'rspec', '~> 3.0.0'
+  gem 'rake',  '~> 10.4'
+  gem 'rspec', '~> 3.3.0'
 end
