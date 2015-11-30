@@ -1,3 +1,4 @@
+# 1.5.0
 - allow sending with attachments only [#48]
 
 # 1.4.0
