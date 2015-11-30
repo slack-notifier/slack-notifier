@@ -15,7 +15,10 @@ module Slack
     end
 
     def ping message, options={}
-      message      = LinkFormatter.format(message)
+      if message.is_a?(Hash)
+        message, options = nil, message
+      end
+
       if attachments = options[:attachments] || options["attachments"]
         attachments.each do |attachment|
           ["text", :text].each do |key|
@@ -23,9 +26,14 @@ module Slack
           end
         end
       end
-      payload      = default_payload.merge(options).merge(text: message)
+
+      payload      = default_payload.merge(options)
       client       = payload.delete(:http_client) || http_client
       http_options = payload.delete(:http_options)
+
+      unless message.nil?
+        payload.merge!(text: LinkFormatter.format(message))
+      end
 
       params = { payload: payload.to_json }
       params[:http_options] = http_options if http_options

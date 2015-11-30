@@ -46,6 +46,22 @@ describe Slack::Notifier do
                                                                     }]
     end
 
+    it "allows sending only an attachment" do
+      expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post).with(
+        URI.parse('http://example.com'),
+        payload: '{"channel":"foo","attachments":[{"text":"attachment","fallback":"fallback"}]}'
+      )
+
+      expect{
+        described_class.new('http://example.com')
+                       .ping channel: 'foo',
+                             attachments: [{
+                              text: 'attachment',
+                              fallback: 'fallback'
+                             }]
+      }.not_to raise_error
+    end
+
     context "with a default channel set" do
 
       before :each do

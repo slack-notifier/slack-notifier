@@ -1,3 +1,5 @@
+- allow sending with attachments only [#48]
+
 # 1.4.0
 - Format attachment messages with the LinkFormatter  [@bhuga #37]
 - Add support for mailto links in markdown formatted links [@keithpitty #43]
