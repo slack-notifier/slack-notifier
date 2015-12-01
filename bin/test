@@ -5,7 +5,7 @@ YAML.load_file('.env').each do |key,var|
   ENV[key] = var
 end
 
-rubies = YAML.load_file('.travis.yml')['rvm']
+rubies = ["1.9.3", "2.2.3", "jruby-9.0.4.0"]
 rubies.each do |ruby|
 
   # cleanup gemfile.locks

@@ -2,17 +2,19 @@ language: ruby
 sudo: false
 cache: bundler
 bundler_args: "--without development"
+
 rvm:
+- ruby-head
 - 2.2
 - 2.1
 - 2.0
 - 1.9.3
-- jruby-19mode
-- rbx-2.2.7
+- jruby-9.0.4.0
+
 matrix:
   allow_failures:
-    - rvm: jruby-19mode
-    - rvm: rbx-2.2.7
+    - rvm: ruby-head
+
 notifications:
   slack:
     secure: Ld0tGBmwLG/ADOlLjO6ILq98+u/iq5qkuxAwN1E0SBOooALZZEJSc74jEMpgpnb22tk8QimUmLiCTE+8tWKaGiXTrvK6uvvfP6iiL9850NezHCxA3YMuWPnQQtJpTJ4135MMO8gJXu9vcswb9vW9N3v/A7VJdHbVZyT0vIMGas0=
