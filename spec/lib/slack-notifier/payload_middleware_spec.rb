@@ -1,7 +1,7 @@
 RSpec.describe Slack::Notifier::PayloadMiddleware do
 
   after(:each) do
-    described_class.remove_instance_variable(:@registry)
+    described_class.send(:remove_instance_variable, :@registry)
   end
 
   describe "::registry" do

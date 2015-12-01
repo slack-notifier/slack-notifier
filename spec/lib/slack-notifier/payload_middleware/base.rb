@@ -2,7 +2,7 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
 
   after(:each) do
     # cleanup middleware registry
-    Slack::Notifier::PayloadMiddleware.remove_instance_variable(:@registry)
+    Slack::Notifier::PayloadMiddleware.send(:remove_instance_variable, :@registry)
 
     # cleanup object constants
     Object.remove_const(:Subject) if Object.constants.include?(:Subject)

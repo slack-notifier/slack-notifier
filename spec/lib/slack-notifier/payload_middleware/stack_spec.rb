@@ -21,7 +21,7 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
 
   after(:each) do
     # cleanup middleware registry
-    Slack::Notifier::PayloadMiddleware.remove_instance_variable(:@registry)
+    Slack::Notifier::PayloadMiddleware.send(:remove_instance_variable, :@registry)
   end
 
   describe "::initialize" do
