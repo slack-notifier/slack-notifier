@@ -1,3 +1,6 @@
+# 1.5.1
+- allow using a single attachment w/o putting it in an array [@Elektron1c97  #47]
+
 # 1.5.0
 - allow sending with attachments only [#48]
 
