@@ -1,15 +1,14 @@
 #!/usr/bin/env ruby
 
 require 'yaml'
-YAML.load_file('.env').each do |key,var|
+YAML.load_file('.env').each do |key, var|
   ENV[key] = var
 end
 
-rubies = ["1.9.3", "2.2.3", "jruby-9.0.4.0"]
+rubies = ['1.9.3', '2.2.3', 'jruby-9.0.4.0']
 rubies.each do |ruby|
-
   # cleanup gemfile.locks
-  Dir[ 'spec*/**/*.lock' ].each do |lockfile|
+  Dir['spec*/**/*.lock'].each do |lockfile|
     puts "removing #{lockfile}"
     system "rm #{lockfile}"
   end
@@ -18,8 +17,8 @@ rubies.each do |ruby|
     exec "rvm #{ruby} do ruby spec/integration/ping_integration_test.rb"
   end
 
-  trap "INT" do
-    puts "exiting"
+  trap 'INT' do
+    puts 'exiting'
     pid.send(:exit)
   end
 

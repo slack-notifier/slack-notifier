@@ -1,7 +1,6 @@
 module Slack
   class Notifier
     class PayloadMiddleware
-
       class Base
         class << self
           def middleware_name name
@@ -15,11 +14,12 @@ module Slack
           @notifier = notifier
         end
 
+        # rubocop:disable Lint/UnusedMethodArgument
         def call payload={}
           raise NoMethodError, "method `call` not defined for class #{self.class}"
         end
+        # rubocop:enable Lint/UnusedMethodArgument
       end
-
     end
   end
 end

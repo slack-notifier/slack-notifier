@@ -1,7 +1,6 @@
 module Slack
   class Notifier
     class PayloadMiddleware
-
       class Stack
 
         attr_reader :notifier,
@@ -19,13 +18,12 @@ module Slack
         end
 
         def call payload={}
-          stack.inject payload do |payload, middleware|
-            middleware.call(payload)
+          stack.inject payload do |pld, middleware|
+            middleware.call(pld)
           end
         end
 
       end
-
     end
   end
 end

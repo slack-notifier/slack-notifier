@@ -5,7 +5,7 @@ module Slack
 
       class << self
         def post uri, params
-          DefaultHTTPClient.new( uri, params ).call
+          DefaultHTTPClient.new(uri, params).call
         end
       end
 
@@ -27,12 +27,12 @@ module Slack
           req = Net::HTTP::Post.new uri.request_uri
           req.set_form_data params
 
-          return req
+          req
         end
 
         def http_obj
           http = Net::HTTP.new uri.host, uri.port
-          http.use_ssl = (uri.scheme == "https")
+          http.use_ssl = (uri.scheme == 'https')
 
           http_options.each do |opt, val|
             if http.respond_to? "#{opt}="
@@ -42,7 +42,7 @@ module Slack
             end
           end
 
-          return http
+          http
         end
 
     end

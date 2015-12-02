@@ -8,14 +8,14 @@ group :development do
   else
     gem 'pry-debugger'
   end
-  gem 'wwtd'
-  gem 'travis'
+
   gem 'benchmark-ips'
 end
 
 group :test do
-  gem 'rake',  '~> 10.4'
-  gem 'rspec', '~> 3.3.0'
+  gem 'rake',     '~> 10.4'
+  gem 'rspec',    '~> 3.3.0'
+  gem 'rubocop',  '~> 0.35', require: false
 
   if RUBY_VERSION <= '1.9.3'
     gem 'string-scrub'

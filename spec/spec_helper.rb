@@ -1,9 +1,6 @@
 require 'rspec'
 require 'slack-notifier'
-
-if ENV['DEBUG']
-  require 'pry'
-end
+require 'pry' if ENV['DEBUG']
 
 RSpec.configure do |config|
   config.mock_with :rspec do |mocks|

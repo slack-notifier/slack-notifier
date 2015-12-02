@@ -18,17 +18,13 @@ module Slack
         end
       end
 
+      # rubocop:disable Style/MultilineBlockChain
       def formatted
-        @orig.gsub( html_pattern ) do |match|
-          link = Regexp.last_match[1]
-          text = Regexp.last_match[2]
-          slack_link link, text
-        end.gsub( markdown_pattern ) do |match|
-          link = Regexp.last_match[2]
-          text = Regexp.last_match[1]
-          slack_link link, text
+        @orig.gsub(html_pattern) do
+          slack_link Regexp.last_match[1], Regexp.last_match[2]
+        end.gsub(markdown_pattern) do
+          slack_link Regexp.last_match[2], Regexp.last_match[1]
         end
-
       rescue => e
         if RUBY_VERSION < '2.1' && e.message.include?('invalid byte sequence')
           raise e, "#{e.message}. Consider including the 'string-scrub' gem to strip invalid characters"
@@ -36,15 +32,16 @@ module Slack
           raise e
         end
       end
+      # rubocop:enable Style/MultilineBlockChain
 
       private
 
         def slack_link link, text=nil
           out = "<#{link}"
           out << "|#{text}" if text && !text.empty?
-          out << ">"
+          out << '>'
 
-          return out
+          out
         end
 
         # http://rubular.com/r/19cNXW5qbH

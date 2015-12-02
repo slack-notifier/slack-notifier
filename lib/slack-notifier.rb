@@ -16,15 +16,12 @@ module Slack
     end
 
     def ping message, options={}
-      if message.is_a?(Hash)
-        message, options = nil, message
-      end
+      message, options = nil, message if message.is_a?(Hash) # rubocop:disable Style/ParallelAssignment
 
-      if attachments = options[:attachments] || options["attachments"]
-        wrap_array(attachments).each do |attachment|
-          ["text", :text].each do |key|
-            attachment[key] = LinkFormatter.format(attachment[key]) if attachment.has_key?(key)
-          end
+      attachments = options.fetch(:attachments, options['attachments'])
+      wrap_array(attachments).each do |attachment|
+        ['text', :text].each do |key|
+          attachment[key] = LinkFormatter.format(attachment[key]) if attachment.key?(key)
         end
       end
 
@@ -32,9 +29,7 @@ module Slack
       client       = payload.delete(:http_client) || http_client
       http_options = payload.delete(:http_options)
 
-      unless message.nil?
-        payload.merge!(text: LinkFormatter.format(message))
-      end
+      payload.merge!(text: LinkFormatter.format(message)) unless message.nil?
 
       params = { payload: payload.to_json }
       params[:http_options] = http_options if http_options
@@ -63,13 +58,13 @@ module Slack
     end
 
     HTML_ESCAPE_REGEXP = /[&><]/
-    HTML_ESCAPE = { '&' => '&amp;',  '>' => '&gt;',   '<' => '&lt;' }
+    HTML_ESCAPE        = { '&' => '&amp;', '>' => '&gt;', '<' => '&lt;' }
 
-    def escape(text)
+    def escape text
       text.gsub(HTML_ESCAPE_REGEXP, HTML_ESCAPE)
     end
 
-    def wrap_array(object)
+    def wrap_array object
       if object.nil?
         []
       elsif object.respond_to?(:to_ary)

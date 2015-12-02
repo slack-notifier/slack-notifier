@@ -1,8 +1,6 @@
 module Slack
   class Notifier
-
     class PayloadMiddleware
-
       class << self
 
         def registry
@@ -14,9 +12,7 @@ module Slack
         end
 
       end
-
     end
-
   end
 end
 

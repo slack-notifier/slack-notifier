@@ -1,0 +1,59 @@
+AllCops:
+  DisplayCopNames: true
+
+  Include:
+    - 'Rakefile'
+    - 'bin/test'
+
+
+# Style ------------------------------------
+
+Style/FileName:
+  Exclude:
+    - lib/slack-notifier.rb
+    - spec/lib/slack-notifier_spec.rb
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: aligned
+
+Style/MethodDefParentheses:
+  EnforcedStyle: require_no_parentheses_except_multiline
+
+Style/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+
+Style/IndentationConsistency:
+  EnforcedStyle: rails
+
+Style/MultilineOperationIndentation:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+
+# Metrics ----------------------------------
+
+Metrics/LineLength:
+  Max: 128
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+
+# Lint -------------------------------------
+
+Lint/EndAlignment:
+  AlignWith: variable
