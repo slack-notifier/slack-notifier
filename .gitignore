@@ -6,3 +6,4 @@ Gemfile.lock
 .env
 *.gem
 coverage
+spec/examples.txt

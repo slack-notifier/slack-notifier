@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Slack::Notifier do
+RSpec.describe Slack::Notifier do
   subject { described_class.new 'http://example.com' }
 
   describe '#initialize' do
