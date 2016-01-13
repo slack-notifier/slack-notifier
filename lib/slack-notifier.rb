@@ -18,23 +18,18 @@ module Slack
     def ping message, options={}
       message, options = nil, message if message.is_a?(Hash) # rubocop:disable Style/ParallelAssignment
 
-      attachments = options.fetch(:attachments, options['attachments'])
-      wrap_array(attachments).each do |attachment|
-        ['text', :text].each do |key|
-          attachment[key] = LinkFormatter.format(attachment[key]) if attachment.key?(key)
-        end
-      end
-
       payload      = default_payload.merge(options)
       client       = payload.delete(:http_client) || http_client
       http_options = payload.delete(:http_options)
 
-      payload.merge!(text: LinkFormatter.format(message)) unless message.nil?
+      payload.merge!(text: message) if message
 
-      params = { payload: payload.to_json }
+      payload = middleware(:legacy).call(payload)
+      params  = { payload: payload.to_json }
+
       params[:http_options] = http_options if http_options
 
-      client.post endpoint, params
+      client.post endpoint, payload: payload.to_json
     end
 
     def http_client
@@ -64,14 +59,14 @@ module Slack
       text.gsub(HTML_ESCAPE_REGEXP, HTML_ESCAPE)
     end
 
-    def wrap_array object
-      if object.nil?
-        []
-      elsif object.respond_to?(:to_ary)
-        object.to_ary || [object]
-      else
-        [object]
+    private
+
+      def middleware *list
+        stack = PayloadMiddleware::Stack.new(self)
+        stack.set(*list)
+
+        stack
       end
-    end
+
   end
 end
