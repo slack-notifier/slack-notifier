@@ -13,6 +13,9 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
 
   before(:each) do
     # setup our middleware in the registry
+    @registry_backup = Slack::Notifier::PayloadMiddleware.registry.dup
+    Slack::Notifier::PayloadMiddleware.send(:remove_instance_variable, :@registry)
+
     Slack::Notifier::PayloadMiddleware.register return_one, :return_one
     Slack::Notifier::PayloadMiddleware.register return_two, :return_two
     Slack::Notifier::PayloadMiddleware.register return_three, :return_three
@@ -21,6 +24,7 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
   after(:each) do
     # cleanup middleware registry
     Slack::Notifier::PayloadMiddleware.send(:remove_instance_variable, :@registry)
+    Slack::Notifier::PayloadMiddleware.send(:instance_variable_set, :@registry, @registry_backup)
   end
 
   describe '::initialize' do

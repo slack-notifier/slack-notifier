@@ -1,6 +1,12 @@
 RSpec.describe Slack::Notifier::PayloadMiddleware do
+  before(:each) do
+    @registry_backup = described_class.registry.dup
+    Slack::Notifier::PayloadMiddleware.send(:remove_instance_variable, :@registry)
+  end
+
   after(:each) do
     described_class.send(:remove_instance_variable, :@registry)
+    described_class.send(:instance_variable_set, :@registry, @registry_backup)
   end
 
   describe '::registry' do

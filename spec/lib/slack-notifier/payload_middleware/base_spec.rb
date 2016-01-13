@@ -1,4 +1,9 @@
 RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
+  before(:each) do
+    @registry_backup = Slack::Notifier::PayloadMiddleware.registry.dup
+    Slack::Notifier::PayloadMiddleware.send(:remove_instance_variable, :@registry)
+  end
+
   after(:each) do
     # cleanup middleware registry
     Slack::Notifier::PayloadMiddleware.registry
@@ -6,6 +11,7 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
 
     # cleanup object constants
     Object.send(:remove_const, :Subject) if Object.constants.include?(:Subject)
+    Slack::Notifier::PayloadMiddleware.send(:instance_variable_set, :@registry, @registry_backup)
   end
 
   describe '::middleware_name' do
