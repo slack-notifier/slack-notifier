@@ -33,7 +33,7 @@ module Slack
     end
 
     def channel
-      default_payload[:channel]
+      default_payload.fetch :channel
     end
 
     def channel= channel
@@ -41,7 +41,7 @@ module Slack
     end
 
     def username
-      default_payload[:username]
+      default_payload.fetch :username
     end
 
     def username= username
