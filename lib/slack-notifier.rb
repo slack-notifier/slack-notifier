@@ -12,28 +12,24 @@ module Slack
 
     def initialize webhook_url, options={}
       @endpoint        = URI.parse webhook_url
-      @default_payload = options
+      @default_payload = { http_client: DefaultHTTPClient }.merge options
     end
 
     def ping message, options={}
       message, options = nil, message if message.is_a?(Hash) # rubocop:disable Style/ParallelAssignment
 
-      payload      = default_payload.merge(options)
-      client       = payload.delete(:http_client) || http_client
-      http_options = payload.delete(:http_options)
+      params  = {}
+      payload = default_payload.merge(options).tap { |h| h[:text] = message if message }
+      client  = payload.delete(:http_client)
 
-      payload.merge!(text: message) if message
+      params[:http_options] = payload.delete(:http_options) if payload.key?(:http_options)
+      params[:payload]      = middleware(:legacy).call(payload).to_json
 
-      payload = middleware(:legacy).call(payload)
-      params  = { payload: payload.to_json }
-
-      params[:http_options] = http_options if http_options
-
-      client.post endpoint, payload: payload.to_json
+      client.post endpoint, params
     end
 
     def http_client
-      default_payload.fetch :http_client, DefaultHTTPClient
+      default_payload.fetch :http_client
     end
 
     def channel
