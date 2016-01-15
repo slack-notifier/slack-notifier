@@ -19,8 +19,8 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
       class Subject < Slack::Notifier::PayloadMiddleware::Base
       end
 
-      expect(Slack::Notifier::PayloadMiddleware).to receive(:register)
-                                                .with(Subject, :subject)
+      expect(Slack::Notifier::PayloadMiddleware)
+        .to receive(:register).with(Subject, :subject)
 
       class Subject
         middleware_name :subject
@@ -31,8 +31,8 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
       class Subject < Slack::Notifier::PayloadMiddleware::Base
       end
 
-      expect(Slack::Notifier::PayloadMiddleware).to receive(:register)
-                                                .with(Subject, :subject)
+      expect(Slack::Notifier::PayloadMiddleware)
+        .to receive(:register).with(Subject, :subject)
 
       class Subject
         middleware_name 'subject'

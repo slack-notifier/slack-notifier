@@ -12,7 +12,7 @@ module Slack
             end
           end
 
-          payload.merge!(text: LinkFormatter.format(payload[:text])) if payload[:text]
+          payload[:text] = LinkFormatter.format(payload[:text]) if payload[:text]
 
           payload
         end

@@ -16,6 +16,9 @@ Style/FileName:
 Style/MultilineOperationIndentation:
   EnforcedStyle: aligned
 
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: aligned
+
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses_except_multiline
 

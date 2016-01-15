@@ -24,17 +24,18 @@ RSpec.describe Slack::Notifier do
     end
 
     it 'passes the message through LinkFormatter' do
-      expect(Slack::Notifier::LinkFormatter).to receive(:format)
-                                            .with('the message')
+      expect(Slack::Notifier::LinkFormatter)
+        .to receive(:format)
+        .with('the message')
 
       described_class.new('http://example.com').ping 'the message', channel: 'foo'
     end
 
     it 'passes attachment messages through LinkFormatter' do
-      expect(Slack::Notifier::LinkFormatter).to receive(:format)
-                                            .with('the message')
-      expect(Slack::Notifier::LinkFormatter).to receive(:format)
-                                            .with('attachment message')
+      expect(Slack::Notifier::LinkFormatter)
+        .to receive(:format).with('the message')
+      expect(Slack::Notifier::LinkFormatter)
+        .to receive(:format).with('attachment message')
 
       described_class.new('http://example.com').ping 'the message',
                                                      channel: 'foo',
@@ -62,10 +63,9 @@ RSpec.describe Slack::Notifier do
     end
 
     it 'passes attachment messages through LinkFormatter, even if a single value is passed' do
-      expect(Slack::Notifier::LinkFormatter).to receive(:format)
-                                            .with('a random message')
-      expect(Slack::Notifier::LinkFormatter).to receive(:format)
-                                            .with('attachment message')
+      expect(Slack::Notifier::LinkFormatter).to receive(:format).with('a random message')
+      expect(Slack::Notifier::LinkFormatter).to receive(:format).with('attachment message')
+
       attachment = {
         color: '#000',
         text: 'attachment message',
@@ -77,8 +77,7 @@ RSpec.describe Slack::Notifier do
     context 'with a default channel set' do
       before :each do
         @endpoint_double = instance_double 'URI::HTTP'
-        allow(URI).to receive(:parse)
-                  .and_return(@endpoint_double)
+        allow(URI).to receive(:parse).and_return(@endpoint_double)
         subject.channel = '#default'
       end
 
@@ -89,17 +88,19 @@ RSpec.describe Slack::Notifier do
       end
 
       it 'uses default channel' do
-        expect(Slack::Notifier::DefaultHTTPClient).to receive(:post)
-                          .with @endpoint_double,
-                                payload: '{"channel":"#default","text":"the message"}'
+        expect(Slack::Notifier::DefaultHTTPClient)
+          .to receive(:post)
+          .with @endpoint_double,
+                payload: '{"channel":"#default","text":"the message"}'
 
         subject.ping 'the message'
       end
 
       it 'allows override channel to be set' do
-        expect(Slack::Notifier::DefaultHTTPClient).to receive(:post)
-                          .with @endpoint_double,
-                                payload: '{"channel":"new","text":"the message"}'
+        expect(Slack::Notifier::DefaultHTTPClient)
+          .to receive(:post)
+          .with @endpoint_double,
+                payload: '{"channel":"new","text":"the message"}'
 
         subject.ping 'the message', channel: 'new'
       end
@@ -108,13 +109,15 @@ RSpec.describe Slack::Notifier do
     context 'with default webhook' do
       it 'posts with the correct endpoint & data' do
         @endpoint_double = instance_double 'URI::HTTP'
-        allow(URI).to receive(:parse)
-                  .with('http://example.com')
-                  .and_return(@endpoint_double)
+        allow(URI)
+          .to receive(:parse)
+          .with('http://example.com')
+          .and_return(@endpoint_double)
 
-        expect(Slack::Notifier::DefaultHTTPClient).to receive(:post)
-                          .with @endpoint_double,
-                                payload: '{"channel":"channel","text":"the message"}'
+        expect(Slack::Notifier::DefaultHTTPClient)
+          .to receive(:post)
+          .with @endpoint_double,
+                payload: '{"channel":"channel","text":"the message"}'
 
         described_class.new('http://example.com').ping 'the message', channel: 'channel'
       end
@@ -123,13 +126,16 @@ RSpec.describe Slack::Notifier do
     context 'with a custom http_client set' do
       it 'uses it' do
         endpoint_double = instance_double 'URI::HTTP'
-        allow(URI).to receive(:parse)
-                  .with('http://example.com')
-                  .and_return(endpoint_double)
+        allow(URI)
+          .to receive(:parse)
+          .with('http://example.com')
+          .and_return(endpoint_double)
+
         client = double('CustomClient')
-        expect(client).to receive(:post)
-                      .with endpoint_double,
-                            payload: '{"text":"the message"}'
+        expect(client)
+          .to receive(:post)
+          .with endpoint_double,
+                payload: '{"text":"the message"}'
 
         described_class.new('http://example.com', http_client: client).ping 'the message'
       end

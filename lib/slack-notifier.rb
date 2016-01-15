@@ -53,7 +53,7 @@ module Slack
     end
 
     HTML_ESCAPE_REGEXP = /[&><]/
-    HTML_ESCAPE        = { '&' => '&amp;', '>' => '&gt;', '<' => '&lt;' }
+    HTML_ESCAPE        = { '&' => '&amp;', '>' => '&gt;', '<' => '&lt;' }.freeze
 
     def escape text
       text.gsub(HTML_ESCAPE_REGEXP, HTML_ESCAPE)
