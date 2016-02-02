@@ -2,6 +2,12 @@ module Slack
   class Notifier
     class LinkFormatter
 
+      # http://rubular.com/r/19cNXW5qbH
+      HTML_PATTERN = / <a (?:.*?) href=['"](.+?)['"] (?:.*?)> (.+?) <\/a> /x
+
+      # http://rubular.com/r/guJbTK6x1f
+      MARKDOWN_PATTERN = /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \) /x
+
       class << self
 
         def format string
@@ -20,9 +26,9 @@ module Slack
 
       # rubocop:disable Style/MultilineBlockChain
       def formatted
-        @orig.gsub(html_pattern) do
+        @orig.gsub(HTML_PATTERN) do
           slack_link Regexp.last_match[1], Regexp.last_match[2]
-        end.gsub(markdown_pattern) do
+        end.gsub(MARKDOWN_PATTERN) do
           slack_link Regexp.last_match[2], Regexp.last_match[1]
         end
       rescue => e
@@ -42,16 +48,6 @@ module Slack
           out << '>'
 
           out
-        end
-
-        # http://rubular.com/r/19cNXW5qbH
-        def html_pattern
-          / <a (?:.*?) href=['"](.+?)['"] (?:.*?)> (.+?) <\/a> /x
-        end
-
-        # http://rubular.com/r/guJbTK6x1f
-        def markdown_pattern
-          /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \) /x
         end
 
     end
