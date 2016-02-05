@@ -15,6 +15,21 @@ notifier.ping "Hello World"
 ```
 
 
+#### Installation
+
+Install the latest stable release:
+
+```
+$ gem install slack-notifier
+```
+
+Or with [Bundler](http://bundler.io/), add it to your Gemfile:
+
+```ruby
+gem 'slack-notifier'
+```
+
+
 #### Setting Defaults
 
 On initialization you can set default payloads by passing an options hash.
