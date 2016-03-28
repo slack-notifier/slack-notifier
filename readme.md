@@ -43,6 +43,13 @@ notifier.ping "Hello default"
 # => to the "#default" channel as 'notifier'
 ```
 
+To get WEBHOOK_URL you need:
+1. go to https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
+2. choose your team, press configure
+3. in configurations press add configuration
+4. choose channel, press "Add Incoming WebHooks integration"
+
+
 Once a notifier has been initialized, you can update the default channel and/or user.
 
 ```ruby
