@@ -44,6 +44,7 @@ notifier.ping "Hello default"
 ```
 
 To get WEBHOOK_URL you need:
+
 1. go to https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
 2. choose your team, press configure
 3. in configurations press add configuration
