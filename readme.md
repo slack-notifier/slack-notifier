@@ -54,11 +54,14 @@ To get WEBHOOK_URL you need:
 Once a notifier has been initialized, you can update the default channel and/or user.
 
 ```ruby
-notifier.channel  = '#default'
-notifier.username = 'notifier'
+notifier.channel    = '#default'
+notifier.username   = 'notifier'
+notifier.icon_emoji = ':rocket:'
+
 notifier.ping "Hello default"
 # => will message "Hello default"
 # => to the "#default" channel as 'notifier'
+# => and will show the :rocket: emoji
 ```
 
 These defaults are over-ridable for any individual ping.
@@ -93,7 +96,7 @@ notifier.ping message
 #ends up posting "@channel hey check this out" in your Slack channel
 ```
 
-You can see [Slack's message documentation here](https://api.slack.com/docs/formatting) 
+You can see [Slack's message documentation here](https://api.slack.com/docs/formatting)
 
 ## Escaping
 

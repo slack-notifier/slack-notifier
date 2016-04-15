@@ -61,6 +61,14 @@ module Slack
       default_payload[:username] = username
     end
 
+    def icon_emoji
+      default_payload[:icon_emoji]
+    end
+
+    def icon_emoji= emoji
+      default_payload[:icon_emoji]=emoji
+    end
+
     HTML_ESCAPE_REGEXP = /[&><]/
     HTML_ESCAPE = { '&' => '&amp;',  '>' => '&gt;',   '<' => '&lt;' }
 
