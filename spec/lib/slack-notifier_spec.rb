@@ -27,23 +27,23 @@ describe Slack::Notifier do
 
     it "passes the message through LinkFormatter" do
       expect( Slack::Notifier::LinkFormatter ).to receive(:format)
-                                              .with("the message")
+      .with("the message")
 
       described_class.new('http://example.com').ping "the message", channel: 'foo'
     end
 
     it "passes attachment messages through LinkFormatter" do
       expect( Slack::Notifier::LinkFormatter ).to receive(:format)
-                                              .with("the message")
+      .with("the message")
       expect( Slack::Notifier::LinkFormatter ).to receive(:format)
-                                              .with("attachment message")
+      .with("attachment message")
 
       described_class.new('http://example.com').ping "the message", channel: 'foo',
-                                                                    attachments: [{
-                                                                      color: "#000",
-                                                                      text: "attachment message",
-                                                                      fallback: "fallback message"
-                                                                    }]
+      attachments: [{
+                      color: "#000",
+                      text: "attachment message",
+                      fallback: "fallback message"
+      }]
     end
 
     it "allows sending only an attachment" do
@@ -54,19 +54,19 @@ describe Slack::Notifier do
 
       expect{
         described_class.new('http://example.com')
-                       .ping channel: 'foo',
-                             attachments: [{
-                              text: 'attachment',
-                              fallback: 'fallback'
-                             }]
+        .ping channel: 'foo',
+        attachments: [{
+                        text: 'attachment',
+                        fallback: 'fallback'
+        }]
       }.not_to raise_error
     end
 
     it "passes attachment messages through LinkFormatter, even if a single value is passed" do
       expect( Slack::Notifier::LinkFormatter ).to receive(:format)
-                                              .with("a random message")
+      .with("a random message")
       expect( Slack::Notifier::LinkFormatter ).to receive(:format)
-                                              .with("attachment message")
+      .with("attachment message")
       attachment = {
         color: "#000",
         text: "attachment message",
@@ -80,7 +80,7 @@ describe Slack::Notifier do
       before :each do
         @endpoint_double = instance_double "URI::HTTP"
         allow( URI ).to receive(:parse)
-                    .and_return(@endpoint_double)
+        .and_return(@endpoint_double)
         subject.channel = '#default'
       end
 
@@ -92,16 +92,16 @@ describe Slack::Notifier do
 
       it "uses default channel" do
         expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
-                          .with @endpoint_double,
-                                payload: '{"channel":"#default","text":"the message"}'
+        .with @endpoint_double,
+          payload: '{"channel":"#default","text":"the message"}'
 
         subject.ping "the message"
       end
 
       it "allows override channel to be set" do
         expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
-                          .with @endpoint_double,
-                                payload: '{"channel":"new","text":"the message"}'
+        .with @endpoint_double,
+          payload: '{"channel":"new","text":"the message"}'
 
         subject.ping "the message", channel: "new"
       end
@@ -110,16 +110,16 @@ describe Slack::Notifier do
 
     context "with default webhook" do
       it "posts with the correct endpoint & data" do
-          @endpoint_double = instance_double "URI::HTTP"
-          allow( URI ).to receive(:parse)
-                      .with("http://example.com")
-                      .and_return(@endpoint_double)
+        @endpoint_double = instance_double "URI::HTTP"
+        allow( URI ).to receive(:parse)
+        .with("http://example.com")
+        .and_return(@endpoint_double)
 
-          expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
-                            .with @endpoint_double,
-                                  payload: '{"channel":"channel","text":"the message"}'
+        expect( Slack::Notifier::DefaultHTTPClient ).to receive(:post)
+        .with @endpoint_double,
+          payload: '{"channel":"channel","text":"the message"}'
 
-          described_class.new("http://example.com").ping "the message", channel: "channel"
+        described_class.new("http://example.com").ping "the message", channel: "channel"
       end
     end
 
@@ -127,12 +127,12 @@ describe Slack::Notifier do
       it "uses it" do
         endpoint_double = instance_double "URI::HTTP"
         allow( URI ).to receive(:parse)
-                    .with("http://example.com")
-                    .and_return(endpoint_double)
+        .with("http://example.com")
+        .and_return(endpoint_double)
         client = double("CustomClient")
         expect( client ).to receive(:post)
-                        .with endpoint_double,
-                        payload: '{"text":"the message"}'
+        .with endpoint_double,
+          payload: '{"text":"the message"}'
 
         described_class.new('http://example.com',http_client: client).ping "the message"
       end
@@ -152,6 +152,14 @@ describe Slack::Notifier do
       expect( subject.username ).to eq "foo"
     end
   end
+
+  describe "#icon_emoji=" do
+    it "sets the provided icon emoji" do
+      subject.icon_emoji = ":rocket:"
+      expect( subject.icon_emoji ).to eq ":rocket:"
+    end
+  end
+
 
   describe "#escape" do
     it "escapes sequences of < > &, but not quotes" do
