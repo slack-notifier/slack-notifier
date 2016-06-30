@@ -12,6 +12,7 @@ module Slack
     def initialize webhook_url, options={}
       @endpoint        = URI.parse webhook_url
       @default_payload = options
+      yield(self) if block_given?
     end
 
     def ping message, options={}
