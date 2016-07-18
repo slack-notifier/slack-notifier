@@ -14,8 +14,8 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
     Slack::Notifier::PayloadMiddleware.send(:instance_variable_set, :@registry, @registry_backup)
   end
 
-  describe '::middleware_name' do
-    it 'registers class w/ given name' do
+  describe "::middleware_name" do
+    it "registers class w/ given name" do
       class Subject < Slack::Notifier::PayloadMiddleware::Base
       end
 
@@ -27,7 +27,7 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
       end
     end
 
-    it 'uses symbolized name to register' do
+    it "uses symbolized name to register" do
       class Subject < Slack::Notifier::PayloadMiddleware::Base
       end
 
@@ -35,19 +35,19 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
         .to receive(:register).with(Subject, :subject)
 
       class Subject
-        middleware_name 'subject'
+        middleware_name "subject"
       end
     end
   end
 
-  describe '#initialize' do
-    it 'sets given notifier as notifier' do
+  describe "#initialize" do
+    it "sets given notifier as notifier" do
       expect(described_class.new(:notifier).notifier).to eq :notifier
     end
   end
 
-  describe '#call' do
-    it 'raises NoMethodError (expects subclass to define)' do
+  describe "#call" do
+    it "raises NoMethodError (expects subclass to define)" do
       expect do
         described_class.new(:notifier).call
       end.to raise_exception NoMethodError

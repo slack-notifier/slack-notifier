@@ -8,6 +8,9 @@ AllCops:
 
 # Style ------------------------------------
 
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
 Style/FileName:
   Exclude:
     - lib/slack-notifier.rb

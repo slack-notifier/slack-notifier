@@ -1,8 +1,6 @@
 module Slack
   class Notifier
-
     class DefaultHTTPClient
-
       class << self
         def post uri, params
           DefaultHTTPClient.new(uri, params).call
@@ -32,7 +30,7 @@ module Slack
 
         def http_obj
           http = Net::HTTP.new uri.host, uri.port
-          http.use_ssl = (uri.scheme == 'https')
+          http.use_ssl = (uri.scheme == "https")
 
           http_options.each do |opt, val|
             if http.respond_to? "#{opt}="
@@ -44,8 +42,6 @@ module Slack
 
           http
         end
-
     end
-
   end
 end

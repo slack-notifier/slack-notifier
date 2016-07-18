@@ -1,10 +1,10 @@
-require 'net/http'
-require 'uri'
-require 'json'
+require "net/http"
+require "uri"
+require "json"
 
-require_relative 'slack-notifier/default_http_client'
-require_relative 'slack-notifier/link_formatter'
-require_relative 'slack-notifier/payload_middleware'
+require_relative "slack-notifier/default_http_client"
+require_relative "slack-notifier/link_formatter"
+require_relative "slack-notifier/payload_middleware"
 
 module Slack
   class Notifier
@@ -49,7 +49,7 @@ module Slack
     end
 
     HTML_ESCAPE_REGEXP = /[&><]/
-    HTML_ESCAPE        = { '&' => '&amp;', '>' => '&gt;', '<' => '&lt;' }.freeze
+    HTML_ESCAPE        = { "&" => "&amp;", ">" => "&gt;", "<" => "&lt;" }.freeze
 
     def escape text
       text.gsub(HTML_ESCAPE_REGEXP, HTML_ESCAPE)

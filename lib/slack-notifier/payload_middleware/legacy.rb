@@ -5,9 +5,9 @@ module Slack
         middleware_name :legacy
 
         def call payload={}
-          attachments = payload.fetch(:attachments, payload['attachments'])
+          attachments = payload.fetch(:attachments, payload["attachments"])
           wrap_array(attachments).each do |attachment|
-            ['text', :text].each do |key|
+            ["text", :text].each do |key|
               attachment[key] = LinkFormatter.format(attachment[key]) if attachment.key?(key)
             end
           end

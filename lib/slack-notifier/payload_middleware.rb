@@ -16,6 +16,6 @@ module Slack
   end
 end
 
-require_relative 'payload_middleware/stack'
-require_relative 'payload_middleware/base'
-require_relative 'payload_middleware/legacy'
+require_relative "payload_middleware/stack"
+require_relative "payload_middleware/base"
+require_relative "payload_middleware/legacy"
