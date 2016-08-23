@@ -1,6 +1,6 @@
 # encoding: utf-8
 # rubocop:disable Metrics/LineLength
-RSpec.describe Slack::Notifier::LinkFormatter do
+RSpec.describe Slack::Notifier::Util::LinkFormatter do
   describe "::format" do
     it "formats html links" do
       formatted = described_class.format("Hello World, enjoy <a href='http://example.com'>this</a>.")

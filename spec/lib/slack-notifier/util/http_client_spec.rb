@@ -1,7 +1,7 @@
-RSpec.describe Slack::Notifier::DefaultHTTPClient do
+RSpec.describe Slack::Notifier::Util::HTTPClient do
   describe "::post" do
-    it "initializes DefaultHTTPClient with the given uri and params then calls" do
-      http_post_double = instance_double("Slack::Notifier::DefaultHTTPClient")
+    it "initializes Util::HTTPClient with the given uri and params then calls" do
+      http_post_double = instance_double("Slack::Notifier::Util::HTTPClient")
 
       expect(described_class)
         .to receive(:new).with("uri", "params")

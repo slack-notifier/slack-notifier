@@ -8,11 +8,11 @@ module Slack
           attachments = payload.fetch(:attachments, payload["attachments"])
           wrap_array(attachments).each do |attachment|
             ["text", :text].each do |key|
-              attachment[key] = LinkFormatter.format(attachment[key]) if attachment.key?(key)
+              attachment[key] = Util::LinkFormatter.format(attachment[key]) if attachment.key?(key)
             end
           end
 
-          payload[:text] = LinkFormatter.format(payload[:text]) if payload[:text]
+          payload[:text] = Util::LinkFormatter.format(payload[:text]) if payload[:text]
 
           payload
         end

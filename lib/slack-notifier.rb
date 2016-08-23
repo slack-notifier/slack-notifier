@@ -1,9 +1,8 @@
-require "net/http"
 require "uri"
 require "json"
 
-require_relative "slack-notifier/default_http_client"
-require_relative "slack-notifier/link_formatter"
+require_relative "slack-notifier/util/http_client"
+require_relative "slack-notifier/util/link_formatter"
 require_relative "slack-notifier/payload_middleware"
 
 module Slack
@@ -12,7 +11,7 @@ module Slack
 
     def initialize webhook_url, options={}
       @endpoint        = URI.parse webhook_url
-      @default_payload = { http_client: DefaultHTTPClient }.merge options
+      @default_payload = { http_client: Util::HTTPClient }.merge options
     end
 
     def ping message, options={}
