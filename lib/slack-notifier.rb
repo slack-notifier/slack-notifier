@@ -12,6 +12,7 @@ module Slack
     def initialize webhook_url, options={}
       @endpoint        = URI.parse webhook_url
       @default_payload = { http_client: Util::HTTPClient }.merge options
+      middleware.set(:legacy)
     end
 
     def ping message, options={}
@@ -30,7 +31,7 @@ module Slack
       client  = payload.delete(:http_client)
 
       params[:http_options] = payload.delete(:http_options) if payload.key?(:http_options)
-      params[:payload]      = middleware(:legacy).call(payload).to_json
+      params[:payload]      = middleware.call(payload).to_json
 
       client.post endpoint, params
     end
@@ -64,12 +65,8 @@ module Slack
 
     private
 
-      def middleware *list
-        stack = PayloadMiddleware::Stack.new(self)
-        stack.set(*list)
-
-        stack
+      def middleware
+        @middleware ||= PayloadMiddleware::Stack.new(self)
       end
-
   end
 end
