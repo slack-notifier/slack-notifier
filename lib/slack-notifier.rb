@@ -15,10 +15,18 @@ module Slack
     end
 
     def ping message, options={}
-      message, options = nil, message if message.is_a?(Hash) # rubocop:disable Style/ParallelAssignment
+      if message.is_a?(Hash)
+        options = message
+      else
+        options[:text] = message
+      end
 
+      post options
+    end
+
+    def post payload={}
       params  = {}
-      payload = default_payload.merge(options).tap { |h| h[:text] = message if message }
+      payload = default_payload.merge(payload)
       client  = payload.delete(:http_client)
 
       params[:http_options] = payload.delete(:http_options) if payload.key?(:http_options)
