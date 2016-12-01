@@ -4,6 +4,7 @@ require "json"
 require_relative "slack-notifier/util/http_client"
 require_relative "slack-notifier/util/link_formatter"
 require_relative "slack-notifier/payload_middleware"
+require_relative "slack-notifier/config"
 
 module Slack
   class Notifier
