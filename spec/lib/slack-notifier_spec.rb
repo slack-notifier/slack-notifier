@@ -16,6 +16,19 @@ RSpec.describe Slack::Notifier do
       subject = described_class.new "http://example.com", http_client: client
       expect(subject.http_client).to eq client
     end
+
+    describe "when given a block" do
+      it "yields the config object" do
+        test_double = double("Slack::Notifier::Config")
+        allow_any_instance_of(Slack::Notifier).to receive(:config).and_return(test_double)
+
+        expect(test_double).to receive(:test_init_method).with("foo")
+
+        described_class.new "http://example.com" do
+          test_init_method "foo"
+        end
+      end
+    end
   end
 
   describe "#ping" do

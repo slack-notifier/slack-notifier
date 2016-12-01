@@ -3,7 +3,7 @@ require "spec_helper"
 
 RSpec.describe Slack::Notifier do
   before :each do
-    @http_client = double("Slack::Notifier::DefaultHTTPClient")
+    @http_client = double("Slack::Notifier::Util::HTTPClient")
   end
 
   {

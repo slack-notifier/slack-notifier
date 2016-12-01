@@ -10,10 +10,16 @@ module Slack
   class Notifier
     attr_reader :endpoint, :default_payload
 
-    def initialize webhook_url, options={}
+    def initialize webhook_url, options={}, &block
       @endpoint        = URI.parse webhook_url
       @default_payload = { http_client: Util::HTTPClient }.merge options
       middleware.set(:legacy)
+
+      config.instance_exec(&block) if block_given?
+    end
+
+    def config
+      @_config ||= Config.new
     end
 
     def ping message, options={}
