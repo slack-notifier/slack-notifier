@@ -46,6 +46,10 @@ Style/RegexpLiteral:
 Style/SignalException:
   Enabled: false
 
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%w': '[]'
+
 
 # Metrics ----------------------------------
 
