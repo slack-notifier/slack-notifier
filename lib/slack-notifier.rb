@@ -46,7 +46,8 @@ module Slack
     end
 
     def channel
-      default_payload[:channel]
+      c = default_payload[:channel]
+      c.start_with?("#") ? c : "##{c}"
     end
 
     def channel= channel

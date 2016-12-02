@@ -10,7 +10,7 @@ describe Slack::Notifier do
 
     it "sets the default_payload options" do
       subject = described_class.new 'http://example.com', channel: 'foo'
-      expect( subject.channel ).to eq 'foo'
+      expect( subject.channel ).to eq '#foo'
     end
 
     it "sets a custom http client" do
@@ -136,6 +136,18 @@ describe Slack::Notifier do
 
         described_class.new('http://example.com',http_client: client).ping "the message"
       end
+    end
+  end
+
+  describe "#channel" do
+    it "prepends # to the channel if it doesn't exist" do
+      allow(subject).to receive(:default_payload).and_return({channel: "blah"})
+      expect( subject.channel ).to eq "#blah"
+    end
+
+    it "doesn't prepend # to the channel if it already exists" do
+      allow(subject).to receive(:default_payload).and_return({channel: "#blah"})
+      expect( subject.channel ).to eq "#blah"
     end
   end
 
