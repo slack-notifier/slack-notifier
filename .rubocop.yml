@@ -38,9 +38,6 @@ Style/MultilineOperationIndentation:
 Style/Documentation:
   Enabled: false
 
-Style/EmptyLinesAroundClassBody:
-  Enabled: false
-
 Style/RegexpLiteral:
   Enabled: false
 

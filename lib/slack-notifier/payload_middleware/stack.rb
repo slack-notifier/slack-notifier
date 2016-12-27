@@ -3,7 +3,6 @@ module Slack
   class Notifier
     class PayloadMiddleware
       class Stack
-
         attr_reader :notifier,
                     :stack
 
@@ -23,7 +22,6 @@ module Slack
             middleware.call(pld)
           end
         end
-
       end
     end
   end

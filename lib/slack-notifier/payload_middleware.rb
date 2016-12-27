@@ -3,7 +3,6 @@ module Slack
   class Notifier
     class PayloadMiddleware
       class << self
-
         def registry
           @registry ||= {}
         end
@@ -11,7 +10,6 @@ module Slack
         def register middleware, name
           registry[name] = middleware
         end
-
       end
     end
   end
