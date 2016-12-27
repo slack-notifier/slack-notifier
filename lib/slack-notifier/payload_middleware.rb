@@ -19,4 +19,5 @@ end
 
 require_relative "payload_middleware/stack"
 require_relative "payload_middleware/base"
-require_relative "payload_middleware/legacy"
+require_relative "payload_middleware/format_message"
+require_relative "payload_middleware/format_attachments"

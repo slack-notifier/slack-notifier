@@ -2,8 +2,8 @@
 module Slack
   class Notifier
     class PayloadMiddleware
-      class Legacy < Base
-        middleware_name :legacy
+      class FormatAttachments < Base
+        middleware_name :format_attachments
 
         def call payload={}
           attachments = payload.fetch(:attachments, payload["attachments"])
@@ -13,20 +13,20 @@ module Slack
             end
           end
 
-          payload[:text] = Util::LinkFormatter.format(payload[:text]) if payload[:text]
-
           payload
         end
 
-        def wrap_array object
-          if object.nil?
-            []
-          elsif object.respond_to?(:to_ary)
-            object.to_ary || [object]
-          else
-            [object]
+        private
+
+          def wrap_array object
+            if object.nil?
+              []
+            elsif object.respond_to?(:to_ary)
+              object.to_ary || [object]
+            else
+              [object]
+            end
           end
-        end
       end
     end
   end

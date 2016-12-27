@@ -46,7 +46,7 @@ RSpec.describe Slack::Notifier::Config do
     it "is [:legacy] if not set" do
       subject = described_class.new
 
-      expect(subject.middleware).to eq [:legacy]
+      expect(subject.middleware).to eq [:format_message, :format_attachments]
     end
 
     it "takes an array or a splat of args" do
