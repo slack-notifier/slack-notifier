@@ -1,6 +1,8 @@
-require 'rspec'
-require 'slack-notifier'
-require 'pry' if ENV['DEBUG']
+# frozen_string_literal: true
+
+require "rspec"
+require "slack-notifier"
+require "pry" if ENV["DEBUG"]
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -16,10 +18,10 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.disable_monkey_patching!
 
-  config.example_status_persistence_file_path = 'spec/examples.txt'
-  config.warnings = true
+  config.example_status_persistence_file_path = "spec/examples.txt"
+  config.warnings = ENV["DEBUG"] ? false : true
 
-  config.default_formatter = 'doc' if config.files_to_run.one?
+  config.default_formatter = "doc" if config.files_to_run.one?
 
   config.order = :random
   Kernel.srand config.seed
