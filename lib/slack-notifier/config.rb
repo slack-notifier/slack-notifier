@@ -26,7 +26,7 @@ module Slack
         return @middleware if args.empty?
 
         @middleware =
-          if args.length == 1 && args.first.is_a?(Array)
+          if args.length == 1 && args.first.is_a?(Array) || args.first.is_a?(Hash)
             args.first
           else
             args

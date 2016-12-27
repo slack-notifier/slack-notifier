@@ -6,7 +6,8 @@ module Slack
         middleware_name :format_message
 
         def call payload={}
-          payload[:text] = Util::LinkFormatter.format(payload[:text]) if payload[:text]
+          return payload unless payload[:text]
+          payload[:text] = Util::LinkFormatter.format(*[payload[:text], options[:formats]].compact)
 
           payload
         end

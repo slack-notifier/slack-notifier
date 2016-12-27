@@ -43,7 +43,7 @@ RSpec.describe Slack::Notifier::Config do
   end
 
   describe "#middleware" do
-    it "is [:legacy] if not set" do
+    it "is [:format_message, :format_attachments] if not set" do
       subject = described_class.new
 
       expect(subject.middleware).to eq [:format_message, :format_attachments]
@@ -57,6 +57,15 @@ RSpec.describe Slack::Notifier::Config do
 
       subject.middleware [:one, :layer]
       expect(subject.middleware).to eq [:one, :layer]
+    end
+
+    it "allows passing options to middleware stack" do
+      subject = described_class.new
+      subject.middleware one: { opts: :for_one },
+                         two: { opts: :for_two }
+
+      expect(subject.middleware).to eq one: { opts: :for_one },
+                                       two: { opts: :for_two }
     end
   end
 end

@@ -58,6 +58,15 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
       expect(subject.stack.last.call).to eq 2
     end
 
+    it "creates a stack from hashes passing them as opts" do
+      expect(return_one).to receive(:new).with(:notifier, opts: :for_one)
+      expect(return_two).to receive(:new).with(:notifier, opts: :for_two)
+
+      subject = described_class.new(:notifier)
+      subject.set return_one: { opts: :for_one },
+                  return_two: { opts: :for_two }
+    end
+
     it "raises if a middleware is missing" do
       expect do
         described_class.new(:notifier).set(:missing)

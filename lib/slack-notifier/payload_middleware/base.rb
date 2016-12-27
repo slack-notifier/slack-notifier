@@ -9,10 +9,11 @@ module Slack
           end
         end
 
-        attr_reader :notifier
+        attr_reader :notifier, :options
 
-        def initialize notifier
+        def initialize notifier, opts={}
           @notifier = notifier
+          @options  = opts
         end
 
         # rubocop:disable Lint/UnusedMethodArgument

@@ -68,4 +68,17 @@ RSpec.describe Slack::Notifier do
       notifier.post(args)
     end
   end
+
+  it "applies options given to middleware" do
+    client   = class_double("Slack::Notifier::Util::HTTPClient", post: nil)
+    notifier = Slack::Notifier.new "http://example.com" do
+      http_client client
+      middleware format_message: { formats: [] }
+    end
+
+    expect(client).to receive(:post)
+      .with(URI.parse("http://example.com"), payload: { text: "Hello [world](http://example.com)!" }.to_json)
+
+    notifier.post text: "Hello [world](http://example.com)!"
+  end
 end

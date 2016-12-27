@@ -45,6 +45,10 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
     it "sets given notifier as notifier" do
       expect(described_class.new(:notifier).notifier).to eq :notifier
     end
+
+    it "sets given options as opts" do
+      expect(described_class.new(:notifier, opts: :options).options).to eq opts: :options
+    end
   end
 
   describe "#call" do

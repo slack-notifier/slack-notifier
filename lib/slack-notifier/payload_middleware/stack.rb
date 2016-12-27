@@ -12,8 +12,15 @@ module Slack
         end
 
         def set *middlewares
-          @stack = middlewares.flatten.map do |middleware_key|
-            PayloadMiddleware.registry.fetch(middleware_key).new(notifier)
+          middlewares =
+            if middlewares.length == 1 && middlewares.first.is_a?(Hash)
+              middlewares.first
+            else
+              middlewares.flatten
+            end
+
+          @stack = middlewares.map do |key, opts|
+            PayloadMiddleware.registry.fetch(key).new(*[notifier, opts].compact)
           end
         end
 
