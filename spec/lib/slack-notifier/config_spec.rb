@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Slack::Notifier::Config do
-  describe "#endpoint=" do
-    it "sets #endpoint with parsed URI" do
-      subject = described_class.new
-      subject.endpoint = "http://example.com"
-
-      expect(subject.endpoint).to be_a URI
-      expect(subject.endpoint.host).to eq "example.com"
-    end
-  end
-
   describe "#http_client" do
     it "is Util::HTTPClient if not set" do
       subject = described_class.new

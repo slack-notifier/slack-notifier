@@ -1,16 +1,10 @@
 module Slack
   class Notifier
     class Config
-      attr_reader :endpoint
-
       def initialize
         @http_client = Util::HTTPClient
         @defaults    = {}
         @middleware  = [:legacy]
-      end
-
-      def endpoint= url
-        @endpoint = URI.parse url
       end
 
       def http_client client_class=nil
