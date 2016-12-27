@@ -10,28 +10,25 @@ module Slack
         MARKDOWN_PATTERN = /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \) /x
 
         class << self
-
-          def format string
-            LinkFormatter.new(string).formatted
+          def format string, formats=nil
+            LinkFormatter.new(string, formats).formatted
           end
-
         end
 
-        def initialize string
+        attr_reader :formats
+
+        def initialize string, formats=nil
           @orig = if string.respond_to? :scrub
             string.scrub
           else
             string
           end
+          @formats = formats.nil? ? [:html, :markdown] : formats
         end
 
-        # rubocop:disable Style/MultilineBlockChain, Style/GuardClause
+        # rubocop:disable Style/GuardClause
         def formatted
-          @orig.gsub(HTML_PATTERN) do
-            slack_link Regexp.last_match[1], Regexp.last_match[2]
-          end.gsub(MARKDOWN_PATTERN) do
-            slack_link Regexp.last_match[2], Regexp.last_match[1]
-          end
+          sub_markdown_links(sub_html_links(@orig))
         rescue => e
           if RUBY_VERSION < "2.1" && e.message.include?("invalid byte sequence")
             raise e, "#{e.message}. Consider including the 'string-scrub' gem to strip invalid characters"
@@ -39,9 +36,25 @@ module Slack
             raise e
           end
         end
-        # rubocop:enable Style/MultilineBlockChain, Style/GuardClause
+        # rubocop:enable Style/GuardClause
 
         private
+
+          def sub_html_links string
+            return string unless formats.include?(:html)
+
+            string.gsub(HTML_PATTERN) do
+              slack_link Regexp.last_match[1], Regexp.last_match[2]
+            end
+          end
+
+          def sub_markdown_links string
+            return string unless formats.include?(:markdown)
+
+            string.gsub(MARKDOWN_PATTERN) do
+              slack_link Regexp.last_match[2], Regexp.last_match[1]
+            end
+          end
 
           def slack_link link, text=nil
             "<#{link}" \
