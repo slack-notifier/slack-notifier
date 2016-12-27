@@ -32,19 +32,41 @@ RSpec.describe Slack::Notifier::Config do
     end
   end
 
+  describe "#defaults" do
+    it "is an empty hash by default" do
+      subject = described_class.new
+      expect(subject.defaults).to eq({})
+    end
+
+    it "sets a hash to default if given" do
+      subject = described_class.new
+      subject.defaults foo: :bar
+      expect(subject.defaults).to eq foo: :bar
+    end
+
+    it "raises ArgumentError if not given a hash" do
+      subject = described_class.new
+      expect do
+        subject.defaults :nope
+      end.to raise_error ArgumentError
     end
   end
 
-  %w[client defaults middleware].each do |config_method|
-    it "sets the value(s) when called with arguments, returns when called with none" do
-      args = %w[one two]
+  describe "#middleware" do
+    it "is [:legacy] if not set" do
       subject = described_class.new
-      subject.send(config_method, args[0])
 
-      expect( subject.send(config_method) ).to eq args[0]
+      expect(subject.middleware).to eq [:legacy]
+    end
 
-      subject.send(config_method, *args)
-      expect( subject.send(config_method) ).to eq args
+    it "takes an array or a splat of args" do
+      subject = described_class.new
+
+      subject.middleware :layer, :two
+      expect(subject.middleware).to eq [:layer, :two]
+
+      subject.middleware [:one, :layer]
+      expect(subject.middleware).to eq [:one, :layer]
     end
   end
 end

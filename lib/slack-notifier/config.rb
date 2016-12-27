@@ -5,6 +5,8 @@ module Slack
 
       def initialize
         @http_client = Util::HTTPClient
+        @defaults    = {}
+        @middleware  = [:legacy]
       end
 
       def endpoint= url
@@ -21,12 +23,23 @@ module Slack
         end
       end
 
-      %w[client defaults middleware].each do |m|
-        define_method m do |*args|
-          return instance_variable_get("@_#{m}") if args.empty?
+      def defaults new_defaults=nil
+        return @defaults if new_defaults.nil?
 
-          args = args.first if args.length == 1
-          instance_variable_set("@_#{m}", args)
+        if new_defaults.is_a?(Hash)
+          @defaults = new_defaults
+        else
+          raise ArgumentError, "the defaults must be a Hash"
+        end
+      end
+
+      def middleware *args
+        return @middleware if args.empty?
+
+        if args.length == 1 && args.first.is_a?(Array)
+          @middleware = args.first
+        else
+          @middleware = args
         end
       end
     end
