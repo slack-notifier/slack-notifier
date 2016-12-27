@@ -10,20 +10,16 @@ module Slack
         MARKDOWN_PATTERN = /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \) /x
 
         class << self
-          def format string, formats=nil
-            LinkFormatter.new(string, formats).formatted
+          def format string, opts={}
+            LinkFormatter.new(string, opts).formatted
           end
         end
 
         attr_reader :formats
 
-        def initialize string, formats=nil
-          @orig = if string.respond_to? :scrub
-            string.scrub
-          else
-            string
-          end
-          @formats = formats.nil? ? [:html, :markdown] : formats
+        def initialize string, formats: [:html, :markdown]
+          @formats = formats
+          @orig    = string.respond_to?(:scrub) ? string.scrub : string
         end
 
         # rubocop:disable Style/GuardClause

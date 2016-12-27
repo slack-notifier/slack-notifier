@@ -41,6 +41,20 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Base do
     end
   end
 
+  describe "::options" do
+    it "allows setting default options for a middleware" do
+      class Subject < Slack::Notifier::PayloadMiddleware::Base
+        options foo: :bar
+      end
+
+      subject = Subject.new(:notifier)
+      expect(subject.options).to eq foo: :bar
+
+      subject = Subject.new(:notifier, foo: :baz)
+      expect(subject.options).to eq foo: :baz
+    end
+  end
+
   describe "#initialize" do
     it "sets given notifier as notifier" do
       expect(described_class.new(:notifier).notifier).to eq :notifier

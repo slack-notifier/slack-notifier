@@ -5,9 +5,11 @@ module Slack
       class FormatMessage < Base
         middleware_name :format_message
 
+        options formats: [:html, :markdown]
+
         def call payload={}
           return payload unless payload[:text]
-          payload[:text] = Util::LinkFormatter.format(*[payload[:text], options[:formats]].compact)
+          payload[:text] = Util::LinkFormatter.format(payload[:text], options)
 
           payload
         end
