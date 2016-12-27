@@ -77,56 +77,21 @@ RSpec.describe Slack::Notifier do
       subject.post text: "hello", channel: "new", user: "ship"
     end
 
-    # TODO: clean up middleware expectations
+    it "calls the middleware stack with the payload" do
+      subject = notifier_with_defaults
+      stack   = instance_double("Slack::Notifier::PayloadMiddleware::Stack")
+      subject.instance_variable_set(:@middleware, stack)
 
-    it "allows sending only an attachment" do
+      expect(stack).to receive(:call)
+        .with(channel: "default", user: "rocket")
+        .and_return(test: "stack")
+
       expect(mock_http).to receive(:post).with(
         URI.parse("http://example.com"),
-        payload: '{"channel":"foo","attachments":[{"text":"attachment","fallback":"fallback"}]}'
+        payload: '{"test":"stack"}'
       )
 
-      expect do
-        subject.post channel: "foo",
-                     attachments: [{
-                       text: "attachment",
-                       fallback: "fallback"
-                     }]
-      end.not_to raise_error
-    end
-
-    it "passes the message through LinkFormatter" do
-      expect(Slack::Notifier::Util::LinkFormatter)
-        .to receive(:format)
-        .with("the message")
-
-      described_class.new("http://example.com").post text: "the message", channel: "foo"
-    end
-
-    it "passes attachment messages through LinkFormatter" do
-      expect(Slack::Notifier::Util::LinkFormatter)
-        .to receive(:format).with("the message")
-      expect(Slack::Notifier::Util::LinkFormatter)
-        .to receive(:format).with("attachment message")
-
-      described_class.new("http://example.com").post text: "the message",
-                                                     channel: "foo",
-                                                     attachments: [{
-                                                       color: "#000",
-                                                       text: "attachment message",
-                                                       fallback: "fallback message"
-                                                     }]
-    end
-
-    it "passes attachment messages through LinkFormatter, even if a single value is passed" do
-      expect(Slack::Notifier::Util::LinkFormatter).to receive(:format).with("a random message")
-      expect(Slack::Notifier::Util::LinkFormatter).to receive(:format).with("attachment message")
-
-      attachment = {
-        color: "#000",
-        text: "attachment message",
-        fallback: "fallback message"
-      }
-      subject.post text: "a random message", attachments: attachment
+      subject.post
     end
   end
 end
