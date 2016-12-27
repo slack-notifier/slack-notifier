@@ -1,25 +1,30 @@
+# frozen_string_literal: true
+
 RSpec.describe Slack::Notifier do
-  subject { described_class.new "http://example.com" }
+  let(:mock_http) do
+    class_double("Slack::Notifier::Util::HTTPClient", post: :posted)
+  end
+
+  subject { described_class.new "http://example.com", http_client: mock_http }
 
   describe "#initialize" do
     it "sets the given hook_url to the endpoint URI" do
-      expect(subject.endpoint).to eq URI.parse "http://example.com"
+      expect(subject.endpoint).to eq URI.parse("http://example.com")
     end
 
     it "sets the default_payload options" do
       subject = described_class.new "http://example.com", channel: "foo"
-      expect(subject.channel).to eq "foo"
+      expect(subject.config.defaults[:channel]).to eq "foo"
     end
 
     it "sets a custom http client" do
-      client  = double("CustomClient")
-      subject = described_class.new "http://example.com", http_client: client
-      expect(subject.http_client).to eq client
+      subject = described_class.new "http://example.com", http_client: mock_http
+      expect(subject.config.http_client).to eq mock_http
     end
 
     describe "when given a block" do
       it "yields the config object" do
-        test_double = double("Slack::Notifier::Config")
+        test_double = double("Slack::Notifier::Config", defaults: {}, middleware: [])
         allow_any_instance_of(Slack::Notifier).to receive(:config).and_return(test_double)
 
         expect(test_double).to receive(:test_init_method).with("foo")
@@ -32,8 +37,61 @@ RSpec.describe Slack::Notifier do
   end
 
   describe "#ping" do
-    before :each do
-      allow(Slack::Notifier::Util::HTTPClient).to receive(:post)
+    it "calls #post with the message as the text key in #post" do
+      subject = described_class.new "http://example.com"
+      expect(subject).to receive(:post).with text: "message"
+
+      subject.ping "message"
+    end
+  end
+
+  describe "#post" do
+    def notifier_with_defaults
+      mock_client = mock_http
+      described_class.new "http://example.com" do
+        defaults channel: "default",
+                 user:    "rocket"
+        http_client mock_client
+      end
+    end
+
+    it "uses the defaults set on initialization" do
+      subject = notifier_with_defaults
+
+      expect(mock_http).to receive(:post).with(
+        URI.parse("http://example.com"),
+        payload: '{"channel":"default","user":"rocket","text":"hello"}'
+      )
+
+      subject.post text: "hello"
+    end
+
+    it "allows overriding the set defaults" do
+      subject = notifier_with_defaults
+
+      expect(mock_http).to receive(:post).with(
+        URI.parse("http://example.com"),
+        payload: '{"channel":"new","user":"ship","text":"hello"}'
+      )
+
+      subject.post text: "hello", channel: "new", user: "ship"
+    end
+
+    # TODO: clean up middleware expectations
+
+    it "allows sending only an attachment" do
+      expect(mock_http).to receive(:post).with(
+        URI.parse("http://example.com"),
+        payload: '{"channel":"foo","attachments":[{"text":"attachment","fallback":"fallback"}]}'
+      )
+
+      expect do
+        subject.post channel: "foo",
+                     attachments: [{
+                       text: "attachment",
+                       fallback: "fallback"
+                     }]
+      end.not_to raise_error
     end
 
     it "passes the message through LinkFormatter" do
@@ -41,7 +99,7 @@ RSpec.describe Slack::Notifier do
         .to receive(:format)
         .with("the message")
 
-      described_class.new("http://example.com").ping "the message", channel: "foo"
+      described_class.new("http://example.com").post text: "the message", channel: "foo"
     end
 
     it "passes attachment messages through LinkFormatter" do
@@ -50,29 +108,13 @@ RSpec.describe Slack::Notifier do
       expect(Slack::Notifier::Util::LinkFormatter)
         .to receive(:format).with("attachment message")
 
-      described_class.new("http://example.com").ping "the message",
+      described_class.new("http://example.com").post text: "the message",
                                                      channel: "foo",
                                                      attachments: [{
                                                        color: "#000",
                                                        text: "attachment message",
                                                        fallback: "fallback message"
                                                      }]
-    end
-
-    it "allows sending only an attachment" do
-      expect(Slack::Notifier::Util::HTTPClient).to receive(:post).with(
-        URI.parse("http://example.com"),
-        payload: '{"channel":"foo","attachments":[{"text":"attachment","fallback":"fallback"}]}'
-      )
-
-      expect do
-        described_class.new("http://example.com")
-                       .ping channel: "foo",
-                             attachments: [{
-                               text: "attachment",
-                               fallback: "fallback"
-                             }]
-      end.not_to raise_error
     end
 
     it "passes attachment messages through LinkFormatter, even if a single value is passed" do
@@ -84,96 +126,7 @@ RSpec.describe Slack::Notifier do
         text: "attachment message",
         fallback: "fallback message"
       }
-      subject.ping "a random message", attachments: attachment
-    end
-
-    context "with a default channel set" do
-      before :each do
-        @endpoint_double = instance_double "URI::HTTP"
-        allow(URI).to receive(:parse).and_return(@endpoint_double)
-        subject.channel = "#default"
-      end
-
-      it "does not require a channel to ping" do
-        expect do
-          subject.ping "the message"
-        end.not_to raise_error
-      end
-
-      it "uses default channel" do
-        expect(Slack::Notifier::Util::HTTPClient)
-          .to receive(:post)
-          .with @endpoint_double,
-                payload: '{"channel":"#default","text":"the message"}'
-
-        subject.ping "the message"
-      end
-
-      it "allows override channel to be set" do
-        expect(Slack::Notifier::Util::HTTPClient)
-          .to receive(:post)
-          .with @endpoint_double,
-                payload: '{"channel":"new","text":"the message"}'
-
-        subject.ping "the message", channel: "new"
-      end
-    end
-
-    context "with default webhook" do
-      it "posts with the correct endpoint & data" do
-        @endpoint_double = instance_double "URI::HTTP"
-        allow(URI)
-          .to receive(:parse)
-          .with("http://example.com")
-          .and_return(@endpoint_double)
-
-        expect(Slack::Notifier::Util::HTTPClient)
-          .to receive(:post)
-          .with @endpoint_double,
-                payload: '{"channel":"channel","text":"the message"}'
-
-        described_class.new("http://example.com").ping "the message", channel: "channel"
-      end
-    end
-
-    context "with a custom http_client set" do
-      it "uses it" do
-        endpoint_double = instance_double "URI::HTTP"
-        allow(URI)
-          .to receive(:parse)
-          .with("http://example.com")
-          .and_return(endpoint_double)
-
-        client = double("CustomClient")
-        expect(client)
-          .to receive(:post)
-          .with endpoint_double,
-                payload: '{"text":"the message"}'
-
-        described_class.new("http://example.com", http_client: client).ping "the message"
-      end
-    end
-  end
-
-  describe "#channel=" do
-    it "sets the given channel" do
-      subject.channel = "#foo"
-      expect(subject.channel).to eq "#foo"
-    end
-  end
-
-  describe "#username=" do
-    it "sets the given username" do
-      subject.username = "foo"
-      expect(subject.username).to eq "foo"
-    end
-  end
-
-  describe "#escape" do
-    it "escapes sequences of < > &, but not quotes" do
-      message  = %q(I've heard "Do > with <" & that sounds ridiculous.)
-      expected = %q(I've heard "Do &gt; with &lt;" &amp; that sounds ridiculous.)
-      expect(subject.escape(message)).to eq expected
+      subject.post text: "a random message", attachments: attachment
     end
   end
 end

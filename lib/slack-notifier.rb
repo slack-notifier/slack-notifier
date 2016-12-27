@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "uri"
 require "json"
 
@@ -8,14 +10,16 @@ require_relative "slack-notifier/config"
 
 module Slack
   class Notifier
-    attr_reader :endpoint, :default_payload
+    attr_reader :endpoint
 
     def initialize webhook_url, options={}, &block
-      @endpoint        = URI.parse webhook_url
-      @default_payload = { http_client: Util::HTTPClient }.merge options
-      middleware.set(:legacy)
+      @endpoint = URI.parse webhook_url
 
+      config.http_client(options.delete(:http_client)) if options.key?(:http_client)
+      config.defaults options
       config.instance_exec(&block) if block_given?
+
+      middleware.set config.middleware
     end
 
     def config
@@ -34,33 +38,13 @@ module Slack
 
     def post payload={}
       params  = {}
-      payload = default_payload.merge(payload)
-      client  = payload.delete(:http_client)
+      client  = payload.delete(:http_client) || config.http_client
+      payload = config.defaults.merge(payload)
 
       params[:http_options] = payload.delete(:http_options) if payload.key?(:http_options)
       params[:payload]      = middleware.call(payload).to_json
 
       client.post endpoint, params
-    end
-
-    def http_client
-      default_payload.fetch :http_client
-    end
-
-    def channel
-      default_payload.fetch :channel
-    end
-
-    def channel= channel
-      default_payload[:channel] = channel
-    end
-
-    def username
-      default_payload.fetch :username
-    end
-
-    def username= username
-      default_payload[:username] = username
     end
 
     HTML_ESCAPE_REGEXP = /[&><]/
