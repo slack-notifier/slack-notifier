@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe Slack::Notifier::Util::HTTPClient do
   describe "::post" do
     it "initializes Util::HTTPClient with the given uri and params then calls" do

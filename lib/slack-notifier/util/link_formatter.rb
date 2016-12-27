@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Slack
   class Notifier
     module Util
@@ -24,7 +25,7 @@ module Slack
           end
         end
 
-        # rubocop:disable Style/MultilineBlockChain
+        # rubocop:disable Style/MultilineBlockChain, Style/GuardClause
         def formatted
           @orig.gsub(HTML_PATTERN) do
             slack_link Regexp.last_match[1], Regexp.last_match[2]
@@ -38,16 +39,14 @@ module Slack
             raise e
           end
         end
-        # rubocop:enable Style/MultilineBlockChain
+        # rubocop:enable Style/MultilineBlockChain, Style/GuardClause
 
         private
 
           def slack_link link, text=nil
-            out = "<#{link}"
-            out << "|#{text}" if text && !text.empty?
-            out << ">"
-
-            out
+            "<#{link}" \
+            "#{text && !text.empty? ? "|#{text}" : ''}" \
+            ">"
           end
       end
     end

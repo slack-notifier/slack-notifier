@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe Slack::Notifier::PayloadMiddleware do
   before(:each) do
     @registry_backup = described_class.registry.dup
