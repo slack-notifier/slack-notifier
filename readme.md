@@ -26,24 +26,26 @@ $ gem install slack-notifier
 Or with [Bundler](http://bundler.io/), add it to your Gemfile:
 
 ```ruby
-gem 'slack-notifier'
+gem "slack-notifier"
 ```
 
 
 #### Setting Defaults
 
-On initialization you can set default payloads by passing an options hash.
+On initialization you can set default payloads by calling `defaults` in an initialization block:
 
 ```ruby
-notifier = Slack::Notifier.new "WEBHOOK_URL", channel: '#default',
-                                              username: 'notifier'
+notifier = Slack::Notifier.new "WEBHOOK_URL" do
+  defaults channel: "#default",
+           username: "notifier"
+end
 
 notifier.ping "Hello default"
 # => will message "Hello default"
 # => to the "#default" channel as 'notifier'
 ```
 
-To get WEBHOOK_URL you need:
+To get the WEBHOOK_URL you need:
 
 1. go to https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
 2. choose your team, press configure
@@ -51,20 +53,16 @@ To get WEBHOOK_URL you need:
 4. choose channel, press "Add Incoming WebHooks integration"
 
 
-Once a notifier has been initialized, you can update the default channel and/or user.
+You can also set defaults through an options hash:
 
 ```ruby
-notifier.channel  = '#default'
-notifier.username = 'notifier'
-notifier.ping "Hello default"
-# => will message "Hello default"
-# => to the "#default" channel as 'notifier'
+notifier = Slack::Notifier.new "WEBHOOK_URL", channel: "#default",
+                                              username: "notifier"
 ```
 
 These defaults are over-ridable for any individual ping.
 
 ```ruby
-notifier.channel = "#default"
 notifier.ping "Hello random", channel: "#random"
 # => will ping the "#random" channel
 ```
@@ -72,13 +70,13 @@ notifier.ping "Hello random", channel: "#random"
 
 ## Links
 
-Slack requires links to be formatted a certain way, so slack-notifier will look through your message and attempt to convert any html or markdown links to slack's format before posting.
+Slack requires links to be formatted a certain way, so the default middlware stack of slack-notifier will look through your message and attempt to convert any html or markdown links to slack's format before posting.
 
 Here's what it's doing under the covers:
 
 ```ruby
 message = "Hello world, [check](http://example.com) it <a href='http://example.com'>out</a>"
-Slack::Notifier::LinkFormatter.format(message)
+Slack::Notifier::Util::LinkFormatter.format(message)
 # => "Hello world, <http://example.com|check> it <http://example.com|out>"
 ```
 
@@ -93,28 +91,28 @@ notifier.ping message
 #ends up posting "@channel hey check this out" in your Slack channel
 ```
 
-You can see [Slack's message documentation here](https://api.slack.com/docs/formatting) 
+You can see [Slack's message documentation here](https://api.slack.com/docs/formatting)
 
 ## Escaping
 
-Since sequences starting with < have special meaning in Slack, you should use `notifier.escape` if your messages may contain &, < or >.
+Since sequences starting with < have special meaning in Slack, you should use `Slack::Notifier::Util::Escape.html` if your messages may contain &, < or >.
 
 ```ruby
-link_text = notifier.escape("User <user@example.com>")
+link_text = Slack::Notifier::Util::Escape.html("User <user@example.com>")
 message = "Write to [#{link_text}](mailto:user@example.com)"
 notifier.ping message
 ```
 
 ## Additional parameters
 
-Any key passed to the `ping` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
+Any key passed to the `post` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
 
 Setting an icon:
 
 ```ruby
-notifier.ping "feeling spooky", icon_emoji: ":ghost:"
+notifier.post text: "feeling spooky", icon_emoji: ":ghost:"
 # or
-notifier.ping "feeling chimpy", icon_url: "http://static.mailchimp.com/web/favicon.png"
+notifier.post text: "feeling chimpy", icon_url: "http://static.mailchimp.com/web/favicon.png"
 ```
 
 Adding attachments:
@@ -125,17 +123,17 @@ a_ok_note = {
   text: "Everything looks peachy",
   color: "good"
 }
-notifier.ping "with an attachment", attachments: [a_ok_note]
+notifier.post text: "with an attachment", attachments: [a_ok_note]
 ```
 
 
 ## HTTP options
 
-With the default HTTP client, you can send along options to customize its behavior as `:http_options` params when you ping or initialize the notifier.
+With the default HTTP client, you can send along options to customize its behavior as `:http_options` params when you post or initialize the notifier.
 
 ```ruby
 notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: { open_timeout: 5 }
-notifier.ping "hello", http_options: { open_timeout: 10 }
+notifier.post text: "hello", http_options: { open_timeout: 10 }
 ```
 
 **Note**: you should only send along options that [`Net::HTTP`](http://ruby-doc.org/stdlib-2.2.0/libdoc/net/http/rdoc/Net/HTTP.html) has as setters, otherwise the option will be ignored and show a warning.
@@ -153,17 +151,19 @@ module Client
   end
 end
 
-notifier = Slack::Notifier.new 'WEBHOOK_URL', http_client: Client
+notifier = Slack::Notifier.new 'WEBHOOK_URL' do
+  http_client Client
+end
 ```
 
 It's also encouraged for any custom HTTP implementations to accept the `:http_options` key in params.
 
-**Setting client per ping**
+**Setting client per post**
 
-You can also set the http_client per-ping if you need to special case certain pings.
+You can also set the http_client per-post if you need to special case certain pings.
 
 ```ruby
-notifier.ping "hello", http_client: CustomClient
+notifier.post text: "hello", http_client: CustomClient
 ```
 
 **Setting a No-Op client**
@@ -177,8 +177,96 @@ class NoOpHTTPClient
   end
 end
 
-notifier = Slack::Notifier.new 'WEBHOOK_URL', http_client: NoOpHTTPClient
+notifier = Slack::Notifier.new 'WEBHOOK_URL' do
+  http_client NoOpHTTPClient
+end
 ```
+
+
+## Middleware
+
+By default slack-notifier ships with middleware to format links in the message & text field of attachments. You can configure the middleware a notifier will us on initialization:
+
+```ruby
+notifier = Slack::Notifier.new "WEBHOOK_URL" do
+  middleware format_message: { formats: [:html] }
+end
+# this example will *only* use the format_message middleware and only format :html links
+
+notifier.post text: "Hello <a href='http://example.com'>world</a>! [visit this](http://example.com)"
+# => will post "Hello <http://example.com|world>! [visit this](http://example.com)"
+```
+
+The middleware can be set with a their name, or by name and options. They will be triggered in order.
+
+```ruby
+notifier = Slack::Notifier.new "WEBHOOK_URL" do
+  middleware :format_message, :format_attachements
+end
+# will run format_message then format_attachments with default options
+
+notifier = Slack::Notifier.new "WEBHOOK_URL" do
+  middleware format_message: { formats: [:html] },
+             format_attachements: { formats: [:markdown] }
+end
+# will run format_message w/ formats [:html] then format_attachements with formats [:markdown]
+```
+
+Available middleware:
+
+**`format_message`**
+
+This middleware takes the `:text` key of the payload and runs it through the [`Linkformatter`](#links). You can configure which link formats to look for with a `:formats` option. You can set `[:html]` (only html links), `[:markdown]` (only markdown links) or `[:html, :markdown]` (the default, will format both).
+
+**`format_attachments`**
+
+This middleware takes the `:text` key of any attachment and runs it through the [`Linkformatter`](#links). You can configure which link formats to look for with a `:formats` option. You can set `[:html]` (only html links), `[:markdown]` (only markdown links) or `[:html, :markdown]` (the default, will format both).
+
+
+### Writing your own Middleware
+
+Middleware is fairly straightforward, it is any class that inherits from `Slack::Notifier::PayloadMiddleware::Base` and responds to `#call`. It will always be given the payload as a hash and should return the modified payload as a hash.
+
+For example, lets say we want to replace words in every message, we could write a middleware like this:
+
+```ruby
+class SwapWords < Slack::Notifier::PayloadMiddleware::Base
+  middleware_name :swap_words # this is the key we use when setting
+                              # the middleware stack for a notifier
+
+  options pairs: ["hipchat" => "slack"] # the options takes a hash that will
+                                        # serve as the default if not given any
+                                        # when initialized
+
+  def call payload={}
+    return payload unless payload[:text] # noope if there is no message to work on
+
+    # not efficient, but it's an example :)
+    options[:pairs].each do |from, to|
+      payload[:text] = payload[:text].gsub from, to
+    end
+
+    payload # always return the payload from your middleware
+  end
+end
+
+
+notifier = Slack::Notifier "WEBHOOK_URL" do
+  middleware :swap_words # setting our stack w/ just defaults
+end
+notifier.ping "hipchat is awesome!"
+# => pings slack with "slack is awesome!"
+
+notifier = Slack::Notifier "WEBHOOK_URL" do
+  # here we set new options for the middleware
+  middleware swap_words: { pairs: ["hipchat" => "slack",
+                                   "awesome" => "really awesome"]}
+end
+
+notifier.ping "hipchat is awesome!"
+# => pings slack with "slack is really awesome!"
+```
+
 
 
 Versioning

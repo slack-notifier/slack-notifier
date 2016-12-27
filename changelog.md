@@ -1,3 +1,29 @@
+# 2.0.0
+
+[BREAKING] This is a fairly large change to how defaults are set and how messages are processed.
+
+**Setting Defaults**
+
+Setter methods are no longer available for setting defaults on a notifier instance, you'll now set defaults with a block on initialization.
+
+```ruby
+# previously in 1.x
+notifier = Slack::Notifier.new WEBHOOK_URL, http_client: CustomClient
+notifier.channel = "sup"
+
+# in 2.x
+notifier = Slack::Notifier.new WEBHOOK_URL do
+  http_client CustomClient
+  defaults channel: "sup"
+end
+```
+
+Read more about [setting defaults in the readme](../readme.md#setting-defaults)
+
+**Message Processing**
+
+Message are now processed through a configurable middleware stack. By default it acts exactly the same as the 1.x versions. [More information is available in the readme](../readme.md#middleware)
+
 # 1.5.1
 - allow using a single attachment w/o putting it in an array [@Elektron1c97  #47]
 
