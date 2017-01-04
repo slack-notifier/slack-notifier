@@ -18,11 +18,11 @@ notifier = Slack::Notifier.new WEBHOOK_URL do
 end
 ```
 
-Read more about [setting defaults in the readme](../readme.md#setting-defaults)
+Read more about [setting defaults in the readme](readme.md#setting-defaults)
 
 **Message Processing**
 
-Message are now processed through a configurable middleware stack. By default it acts exactly the same as the 1.x versions. [More information is available in the readme](../readme.md#middleware)
+Message are now processed through a configurable middleware stack. By default it acts exactly the same as the 1.x versions. [More information is available in the readme](readme.md#middleware)
 
 # 1.5.1
 - allow using a single attachment w/o putting it in an array [@Elektron1c97  #47]
