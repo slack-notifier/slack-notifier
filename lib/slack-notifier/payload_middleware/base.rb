@@ -24,11 +24,9 @@ module Slack
           @options  = self.class.default_opts.merge opts
         end
 
-        # rubocop:disable Lint/UnusedMethodArgument
-        def call payload={}
+        def call _payload={}
           raise NoMethodError, "method `call` not defined for class #{self.class}"
         end
-        # rubocop:enable Lint/UnusedMethodArgument
       end
     end
   end
