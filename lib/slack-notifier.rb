@@ -28,8 +28,10 @@ module Slack
 
     def ping message, options={}
       if message.is_a?(Hash)
+        message[:text] = add_ats(message[:text], options.delete(:at)) if options[:at]
         options = message
       else
+        message = add_ats(message, options.delete(:at)) if options[:at]
         options[:text] = message
       end
 
@@ -49,6 +51,15 @@ module Slack
 
     private
 
+      def add_ats(message, ats)
+        special_commands = [:here, :channel, :everyone, :group]
+        ats = Array(ats)
+        ats.reverse.reduce(message) do |message, at|
+          command_chr = special_commands.include?(at) ? '!' : '@'
+          "<#{command_chr}#{at}> #{message}"
+        end
+      end
+    
       def middleware
         @middleware ||= PayloadMiddleware::Stack.new(self)
       end
