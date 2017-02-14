@@ -5,7 +5,7 @@ module Slack
       def initialize
         @http_client = Util::HTTPClient
         @defaults    = {}
-        @middleware  = [:format_message, :format_attachments]
+        @middleware  = [:format_message, :format_attachments, :at]
       end
 
       def http_client client=nil

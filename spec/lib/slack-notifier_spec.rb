@@ -43,20 +43,6 @@ RSpec.describe Slack::Notifier do
 
       subject.ping "message"
     end
-
-    it "calls #post with the message as the text key with at arrays in #post" do
-      subject = described_class.new "http://example.com"
-      expect(subject).to receive(:post).with text: "<@john> <@ken> <!here> message"
-
-      subject.ping "message", at: [:john, :ken, :here]
-    end
-
-    it "calls #post with the message as the text key with single at in #post" do
-      subject = described_class.new "http://example.com"
-      expect(subject).to receive(:post).with text: "<@alice> message"
-
-      subject.ping "message", at: :alice
-    end
   end
 
   describe "#post" do
