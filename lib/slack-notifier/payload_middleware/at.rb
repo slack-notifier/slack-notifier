@@ -1,29 +1,35 @@
+# frozen_string_literal: true
+
 module Slack
   class Notifier
     class PayloadMiddleware
       class At < Base
-
-        SPECIAL_COMMANDS = [:here, :channel, :everyone, :group]
-
         middleware_name :at
 
         options at: []
 
         def call payload={}
-          return payload unless payload[:text]
-          payload[:text] = add_ats(payload[:text], payload.delete(:at))
+          return payload unless payload[:at]
+
+          payload[:text] = "#{format_ats(payload.delete(:at))}#{payload[:text]}"
           payload
         end
 
         private
 
-        def add_ats(message, ats)
-          ats = Array(ats)
-          ats.reverse.reduce(message) do |message, at|
-            command_chr = SPECIAL_COMMANDS.include?(at) ? '!' : '@'
-            "<#{command_chr}#{at}> #{message}"
+          def format_ats ats
+            Array(ats).map { |at| "<#{at_cmd_char(at)}#{at}> " }
+                      .join("")
           end
-        end
+
+          def at_cmd_char at
+            case at
+            when :here, :channel, :everyone, :group
+              "!"
+            else
+              "@"
+            end
+          end
       end
     end
   end
