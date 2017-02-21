@@ -5,7 +5,7 @@ YAML.load_file('.env').each do |key, var|
   ENV[key] = var
 end
 
-rubies = ['1.9.3', '2.3.1', 'jruby-9.1.2.0']
+rubies = ['2.0.0', '2.1', '2.2', '2.3.3', '2.4.0']
 rubies.each do |ruby|
   # cleanup gemfile.locks
   Dir['spec*/**/*.lock'].each do |lockfile|
