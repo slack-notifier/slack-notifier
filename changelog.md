@@ -1,3 +1,5 @@
+- addition of :at middleware to simplify notifying users & rooms [@kazuooooo #66]
+
 # 2.0.0
 
 [BREAKING] This is a fairly large change to how defaults are set and how messages are processed.

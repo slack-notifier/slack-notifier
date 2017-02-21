@@ -222,6 +222,19 @@ This middleware takes the `:text` key of the payload and runs it through the [`L
 
 This middleware takes the `:text` key of any attachment and runs it through the [`Linkformatter`](#links). You can configure which link formats to look for with a `:formats` option. You can set `[:html]` (only html links), `[:markdown]` (only markdown links) or `[:html, :markdown]` (the default, will format both).
 
+**`at`**
+
+This simplifies the process of notifying users and rooms to messages. By adding an `:at` key to the payload w/ an array of symbols the appropriately formatted commands will be prepended to the message. It will accept a single name, or an array.
+
+For example:
+
+```ruby
+notifier.post text: "hello", at: :casper
+# => "<@casper> hello"
+
+notifier.post text: "hello", at: [:here, :waldo]
+# => "<!here> <@waldo> hello"
+```
 
 ### Writing your own Middleware
 
