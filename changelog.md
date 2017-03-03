@@ -1,3 +1,4 @@
+# 2.1.0
 - addition of :at middleware to simplify notifying users & rooms [@kazuooooo #66]
 
 # 2.0.0
