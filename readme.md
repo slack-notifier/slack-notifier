@@ -201,15 +201,15 @@ The middleware can be set with a their name, or by name and options. They will b
 
 ```ruby
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
-  middleware :format_message, :format_attachements
+  middleware :format_message, :format_attachments
 end
 # will run format_message then format_attachments with default options
 
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
   middleware format_message: { formats: [:html] },
-             format_attachements: { formats: [:markdown] }
+             format_attachments: { formats: [:markdown] }
 end
-# will run format_message w/ formats [:html] then format_attachements with formats [:markdown]
+# will run format_message w/ formats [:html] then format_attachments with formats [:markdown]
 ```
 
 Available middleware:
