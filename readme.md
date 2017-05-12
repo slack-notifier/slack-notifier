@@ -138,6 +138,18 @@ notifier.post text: "hello", http_options: { open_timeout: 10 }
 
 **Note**: you should only send along options that [`Net::HTTP`](http://ruby-doc.org/stdlib-2.2.0/libdoc/net/http/rdoc/Net/HTTP.html) has as setters, otherwise the option will be ignored and show a warning.
 
+### Proxies
+
+`:http_options` can be used if you need to connect to Slack via an HTTP proxy.
+For example, to connect through a local squid proxy the following options would be used.
+
+```ruby
+notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: {
+                                                              proxy_address:  'localhost',
+                                                              proxy_port:     3128,
+                                                              proxy_from_env: false
+                                                            }
+```
 
 ## Custom HTTP Client
 
