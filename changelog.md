@@ -1,3 +1,6 @@
+# 2.2.0
+- raise exception when API responds with an error [@siegy22]
+
 # 2.1.0
 - addition of :at middleware to simplify notifying users & rooms [@kazuooooo #66]
 

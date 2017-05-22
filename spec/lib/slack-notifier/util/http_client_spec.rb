@@ -24,11 +24,31 @@ RSpec.describe Slack::Notifier::Util::HTTPClient do
 
       allow(Net::HTTP).to receive(:new).and_return(net_http_double)
       allow(net_http_double).to receive(:use_ssl=)
-      allow(net_http_double).to receive(:request)
+      allow(net_http_double).to receive(:request).with(anything) do
+        Net::HTTPOK.new("GET", "200", "OK")
+      end
 
       expect(net_http_double).to receive(:open_timeout=).with(5)
 
       http_client.call
+    end
+  end
+
+  describe "#call" do
+    it "raises an error when the response is unsuccessful" do
+      net_http_double = instance_double("Net::HTTP")
+      http_client = described_class.new URI.parse("http://example.com"), {}
+      bad_request = Net::HTTPBadRequest.new("GET", "400", "Bad Request")
+
+      allow(bad_request).to receive(:body).and_return("something_bad")
+      allow(Net::HTTP).to receive(:new).and_return(net_http_double)
+      allow(net_http_double).to receive(:use_ssl=)
+      allow(net_http_double).to receive(:request).with(anything) do
+        bad_request
+      end
+
+      expect { http_client.call }.to raise_error(Slack::Notifier::APIError,
+                                                 /something_bad \(HTTP Code 400\)/)
     end
   end
 end
