@@ -2,10 +2,11 @@
 
 require "net/http"
 
-class Slack::Notifier::APIError < StandardError; end
 
 module Slack
   class Notifier
+    class APIError < StandardError; end
+
     module Util
       class HTTPClient
         class << self
