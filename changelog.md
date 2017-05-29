@@ -1,3 +1,6 @@
+# 2.2.1
+- fix loading error caused by uninitialized constant [@pocke #78]
+
 # 2.2.0
 - raise exception when API responds with an error [@siegy22]
 
