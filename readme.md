@@ -14,6 +14,20 @@ notifier.ping "Hello World"
 # => to the default channel you set in slack
 ```
 
+#### Installation
+
+Install the latest stable release:
+
+```
+$ gem install slack-notifier
+```
+
+In Rails, add it to your Gemfile:
+
+```ruby
+gem 'slack-notifier'
+```
+
 
 #### Installation
 
