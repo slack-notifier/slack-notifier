@@ -40,6 +40,7 @@ module Slack
       params  = {}
       client  = payload.delete(:http_client) || config.http_client
       payload = config.defaults.merge(payload)
+      payload = recursive_compact(payload)
 
       params[:http_options] = payload.delete(:http_options) if payload.key?(:http_options)
       params[:payload]      = middleware.call(payload).to_json
@@ -51,6 +52,10 @@ module Slack
 
       def middleware
         @middleware ||= PayloadMiddleware::Stack.new(self)
+      end
+
+      def recursive_compact(hsh)
+        hsh.delete_if {|k,v| recursive_compact(v) if v.is_a?(Hash); v.nil? }
       end
   end
 end
