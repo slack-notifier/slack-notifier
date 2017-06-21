@@ -24,6 +24,8 @@ module Slack
 
         # rubocop:disable Style/GuardClause
         def formatted
+          return @orig unless @orig.respond_to?(:gsub)
+
           sub_markdown_links(sub_html_links(@orig))
         rescue => e
           if RUBY_VERSION < "2.1" && e.message.include?("invalid byte sequence")
