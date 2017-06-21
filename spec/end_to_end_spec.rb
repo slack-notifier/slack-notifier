@@ -32,7 +32,7 @@ RSpec.describe Slack::Notifier do
     { payload: { text: "hello", channel: "hodor" } },
 
     { text: nil, attachments: [{ text: "attachment message" }] } =>
-    { payload: { attachments: [{ text: "attachment message" }] } },
+    { payload: { text: nil, attachments: [{ text: "attachment message" }] } },
 
     { text: "the message", channel: "foo", attachments: [{ color: "#000",
                                                            text: "attachment message",
@@ -61,6 +61,7 @@ RSpec.describe Slack::Notifier do
                      text: nil,
                      fallback: "fallback message" } } =>
     { payload: { attachments: { color: "#000",
+                                text: nil,
                                 fallback: "fallback message" } } },
 
     { text: "hello", http_options: { timeout: 5 } } =>
