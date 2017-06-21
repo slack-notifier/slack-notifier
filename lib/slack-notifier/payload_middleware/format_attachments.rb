@@ -8,15 +8,21 @@ module Slack
         options formats: [:html, :markdown]
 
         def call payload={}
-          attachments = payload.fetch(:attachments, payload["attachments"])
-          wrap_array(attachments).each do |attachment|
+          payload = payload.dup
+          attachments = payload.delete(:attachments)
+          attachments = payload.delete("attachments") unless attachments
+
+          attachments = wrap_array(attachments).map do |attachment|
             ["text", :text].each do |key|
               if attachment.key?(key)
                 attachment[key] = Util::LinkFormatter.format(attachment[key], options)
               end
             end
+
+            attachment
           end
 
+          payload[:attachments] = attachments if attachments && !attachments.empty?
           payload
         end
 

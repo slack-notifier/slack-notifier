@@ -53,16 +53,16 @@ RSpec.describe Slack::Notifier do
     { attachments: { color: "#000",
                      text: "attachment message [hodor](http://winterfell.com)",
                      fallback: "fallback message" } } =>
-    { payload: { attachments: { color: "#000",
+    { payload: { attachments: [{ color: "#000",
                                 text: "attachment message <http://winterfell.com|hodor>",
-                                fallback: "fallback message" } } },
+                                fallback: "fallback message" }] } },
 
     { attachments: { color: "#000",
                      text: nil,
                      fallback: "fallback message" } } =>
-    { payload: { attachments: { color: "#000",
+    { payload: { attachments: [{ color: "#000",
                                 text: nil,
-                                fallback: "fallback message" } } },
+                                fallback: "fallback message" }] } },
 
     { text: "hello", http_options: { timeout: 5 } } =>
     { http_options: { timeout: 5 }, payload: { text: "hello" } }

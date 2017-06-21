@@ -26,6 +26,18 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::FormatAttachments do
     subject.call(attachments: { text: "hello" })
   end
 
+  it "wraps attachment into array if given as a single hash" do
+    params  = {
+      attachments: { text: "hello" }
+    }
+    payload = {
+      attachments: [{ text: "hello" }]
+    }
+    subject = described_class.new(:notifier);
+
+    expect(subject.call(params)).to eq payload
+  end
+
   it "returns the payload unmodified if not :attachments key" do
     payload = { foo: :bar }
     subject = described_class.new(:notifier)
