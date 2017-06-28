@@ -1,3 +1,4 @@
+# 2.2.2
 - fix wrapping of attachments passed as a hash
 - fix error in `LinkFormatter` if a text payload was nil [#81]
 
