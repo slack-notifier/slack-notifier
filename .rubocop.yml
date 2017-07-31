@@ -64,4 +64,4 @@ Metrics/MethodLength:
 # Lint -------------------------------------
 
 Lint/EndAlignment:
-  AlignWith: variable
+  EnforcedStyleAlignWith: variable
