@@ -248,6 +248,17 @@ notifier.post text: "hello", at: [:here, :waldo]
 # => "<!here> <@waldo> hello"
 ```
 
+**`channels`**
+
+If the `channel` argument of a payload is an array this splits the payload to be posted to each channel.
+
+For example:
+
+```ruby
+notifier.post text: "hello", channel: ["default", "all_the_things"]
+# => will post "hello" to the default and all_the_things channel
+```
+
 ### Writing your own Middleware
 
 Middleware is fairly straightforward, it is any class that inherits from `Slack::Notifier::PayloadMiddleware::Base` and responds to `#call`. It will always be given the payload as a hash and should return the modified payload as a hash.
@@ -296,16 +307,15 @@ If your middleware returns an array, that will split the message into multiple p
 
 ```ruby
 class MultiChannel < Slack::Notifier::PayloadMiddleware::Base
-  middleware_name :multi_channels
+  middleware_name :channels
 
   def call payload={}
-    if payload[:channel].respond_to?(:to_ary)
-      return payload[:channel].map do |channel|
-        payload[:channel] = channel
-        payload
-      end
-    else
-      return payload
+    return payload unless payload[:channel].respond_to?(:to_ary)
+
+    payload[:channel].to_ary.map do |channel|
+      pld = payload.dup
+      pld[:channel] = channel
+      pld
     end
   end
 end
