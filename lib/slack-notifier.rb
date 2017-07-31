@@ -42,9 +42,11 @@ module Slack
       payload = config.defaults.merge(payload)
 
       params[:http_options] = payload.delete(:http_options) if payload.key?(:http_options)
-      params[:payload]      = middleware.call(payload).to_json
 
-      client.post endpoint, params
+      middleware.call(payload).each do |pld|
+        params[:payload] = pld.to_json
+        client.post endpoint, params
+      end
     end
 
     private

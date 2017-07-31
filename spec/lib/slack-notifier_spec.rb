@@ -84,7 +84,7 @@ RSpec.describe Slack::Notifier do
 
       expect(stack).to receive(:call)
         .with(channel: "default", user: "rocket")
-        .and_return(test: "stack")
+        .and_return([test: "stack"])
 
       expect(mock_http).to receive(:post).with(
         URI.parse("http://example.com"),

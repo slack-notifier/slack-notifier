@@ -292,6 +292,24 @@ notifier.ping "hipchat is awesome!"
 # => pings slack with "slack is really awesome!"
 ```
 
+If your middleware returns an array, that will split the message into multiple pings. An example for pinging multiple channels:
+
+```ruby
+class MultiChannel < Slack::Notifier::PayloadMiddleware::Base
+  middleware_name :multi_channels
+
+  def call payload={}
+    if payload[:channel].respond_to?(:to_ary)
+      return payload[:channel].map do |channel|
+        payload[:channel] = channel
+        payload
+      end
+    else
+      return payload
+    end
+  end
+end
+```
 
 
 Versioning

@@ -4,6 +4,10 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
     double(call: 1)
   end
 
+  let(:return_one_twice) do
+    double(call: [1, 1])
+  end
+
   let(:return_two) do
     double(call: 2)
   end
@@ -18,6 +22,7 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
     Slack::Notifier::PayloadMiddleware.send(:remove_instance_variable, :@registry)
 
     Slack::Notifier::PayloadMiddleware.register return_one, :return_one
+    Slack::Notifier::PayloadMiddleware.register return_one_twice, :return_one_twice
     Slack::Notifier::PayloadMiddleware.register return_two, :return_two
     Slack::Notifier::PayloadMiddleware.register return_three, :return_three
   end
@@ -87,7 +92,28 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
       expect(return_three).to receive(:call).with(1)
       expect(return_two).to receive(:call).with(3)
 
-      expect(subject.call(5)).to eq 2
+      expect(subject.call(5)).to eq [2]
+    end
+
+    it "allows any middleware to return an array but other's don't need special behavior" do
+      allow(return_one_twice).to receive(:new).and_return(return_one_twice)
+      allow(return_two).to receive(:new).and_return(return_two)
+
+      subject = described_class.new(:notifier)
+      subject.set(:return_one_twice, :return_two)
+
+      expect(subject.call(5)).to eq [2, 2]
+    end
+
+    it "handles multiple middleware splitting payload" do
+      allow(return_one_twice).to receive(:new).and_return(return_one_twice)
+      allow(return_two).to receive(:new).and_return(return_two)
+
+      subject = described_class.new(:notifier)
+      subject.set(:return_one_twice, :return_one_twice, :return_two)
+
+      expect(subject.call(5)).to eq [2, 2, 2, 2]
+
     end
   end
 end
