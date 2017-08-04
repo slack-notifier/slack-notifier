@@ -287,13 +287,13 @@ class SwapWords < Slack::Notifier::PayloadMiddleware::Base
 end
 
 
-notifier = Slack::Notifier "WEBHOOK_URL" do
+notifier = Slack::Notifier.new "WEBHOOK_URL" do
   middleware :swap_words # setting our stack w/ just defaults
 end
 notifier.ping "hipchat is awesome!"
 # => pings slack with "slack is awesome!"
 
-notifier = Slack::Notifier "WEBHOOK_URL" do
+notifier = Slack::Notifier.new "WEBHOOK_URL" do
   # here we set new options for the middleware
   middleware swap_words: { pairs: ["hipchat" => "slack",
                                    "awesome" => "really awesome"]}
