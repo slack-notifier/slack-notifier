@@ -1,3 +1,6 @@
+# 2.3.1
+- use `map` to return the array of responses instead of payload in `ping` & `post` [@yhatt #88]
+
 # 2.3.0
 - feat: add `channels` middleware to split payloads to ping multiple channels [#40]
 - feat: support any middleware splittin payload into an array to allow multiple payloads from a single process.
