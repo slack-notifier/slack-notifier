@@ -91,7 +91,8 @@ RSpec.describe Slack::Notifier do
         payload: '{"test":"stack"}'
       )
 
-      subject.post
+      responses = subject.post
+      expect(responses).to eq([:posted])
     end
   end
 end

@@ -43,7 +43,7 @@ module Slack
 
       params[:http_options] = payload.delete(:http_options) if payload.key?(:http_options)
 
-      middleware.call(payload).each do |pld|
+      middleware.call(payload).map do |pld|
         params[:payload] = pld.to_json
         client.post endpoint, params
       end
