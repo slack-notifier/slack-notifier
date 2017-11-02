@@ -6,8 +6,8 @@ module Slack
         # http://rubular.com/r/19cNXW5qbH
         HTML_PATTERN = / <a (?:.*?) href=['"](.+?)['"] (?:.*?)> (.+?) <\/a> /x
 
-        # http://rubular.com/r/guJbTK6x1f
-        MARKDOWN_PATTERN = /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \) /x
+        # http://rubular.com/r/VwtT4SFB2v
+        MARKDOWN_PATTERN = /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \)(?![\[\w]*\)) /x
 
         class << self
           def format string, opts={}

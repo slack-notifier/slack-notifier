@@ -71,6 +71,12 @@ RSpec.describe Slack::Notifier::Util::LinkFormatter do
       expect(formatted).to eq "<mailto:john@example.com|John>"
     end
 
+    it "handles links with trailing parentheses" do
+      formatted = described_class.format("Hello World, enjoy [foo(bar)](http://example.com/foo(bar))<a href='http://example.com/bar(foo)'>bar(foo)</a>")
+      expect(formatted).to include("http://example.com/foo(bar)|foo(bar)")
+      expect(formatted).to include("http://example.com/bar(foo)|bar(foo)")
+    end
+
     context "with a configured stack" do
       it "only formats html if html is the only item in formats" do
         formatted = described_class.format("Hello World, enjoy [this](http://example.com)<a href='http://example2.com'>this2</a>.", formats: [:html])
