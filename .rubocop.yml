@@ -53,6 +53,9 @@ Layout/SpaceAroundEqualsInParameterDefault:
 Layout/IndentationConsistency:
   EnforcedStyle: rails
 
+Layout/DotPosition:
+  EnforcedStyle: leading
+
 # Metrics ----------------------------------
 
 Metrics/LineLength:
