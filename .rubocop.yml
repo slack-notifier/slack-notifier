@@ -6,34 +6,22 @@ AllCops:
     - 'Rakefile'
     - 'bin/test'
 
+# Naming ------------------------------------
+
+Naming/FileName:
+  Exclude:
+    - lib/slack-notifier.rb
+    - spec/lib/slack-notifier_spec.rb
+    - slack-notifier.gemspec
+    - Gemfile
 
 # Style ------------------------------------
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/FileName:
-  Exclude:
-    - lib/slack-notifier.rb
-    - spec/lib/slack-notifier_spec.rb
-
-Style/MultilineOperationIndentation:
-  EnforcedStyle: aligned
-
-Style/MultilineMethodCallIndentation:
-  EnforcedStyle: aligned
-
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses_except_multiline
-
-Style/SpaceAroundEqualsInParameterDefault:
-  EnforcedStyle: no_space
-
-Style/IndentationConsistency:
-  EnforcedStyle: rails
-
-Style/MultilineOperationIndentation:
-  Enabled: false
 
 Style/Documentation:
   Enabled: false
@@ -48,6 +36,22 @@ Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%w': '[]'
 
+# Layout ----------------------------------
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: aligned
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: aligned
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+
+Layout/IndentationConsistency:
+  EnforcedStyle: rails
 
 # Metrics ----------------------------------
 
@@ -60,6 +64,9 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Enabled: false
 
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
 
 # Lint -------------------------------------
 

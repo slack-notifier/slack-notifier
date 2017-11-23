@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 # encoding: utf-8
+
 require "spec_helper"
 
 RSpec.describe Slack::Notifier do
@@ -54,15 +55,15 @@ RSpec.describe Slack::Notifier do
                      text: "attachment message [hodor](http://winterfell.com)",
                      fallback: "fallback message" } } =>
     { payload: { attachments: [{ color: "#000",
-                                text: "attachment message <http://winterfell.com|hodor>",
-                                fallback: "fallback message" }] } },
+                                 text: "attachment message <http://winterfell.com|hodor>",
+                                 fallback: "fallback message" }] } },
 
     { attachments: { color: "#000",
                      text: nil,
                      fallback: "fallback message" } } =>
     { payload: { attachments: [{ color: "#000",
-                                text: nil,
-                                fallback: "fallback message" }] } },
+                                 text: nil,
+                                 fallback: "fallback message" }] } },
 
     { text: "hello", http_options: { timeout: 5 } } =>
     { http_options: { timeout: 5 }, payload: { text: "hello" } }

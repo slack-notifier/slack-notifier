@@ -1,16 +1,17 @@
 # frozen_string_literal: true
+
 module Slack
   class Notifier
     class PayloadMiddleware
       class FormatAttachments < Base
         middleware_name :format_attachments
 
-        options formats: [:html, :markdown]
+        options formats: %i[html markdown]
 
         def call payload={}
           payload = payload.dup
           attachments = payload.delete(:attachments)
-          attachments = payload.delete("attachments") unless attachments
+          attachments ||= payload.delete("attachments")
 
           attachments = wrap_array(attachments).map do |attachment|
             ["text", :text].each do |key|

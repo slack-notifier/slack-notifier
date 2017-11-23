@@ -2,7 +2,6 @@
 
 require "net/http"
 
-
 module Slack
   class Notifier
     class APIError < StandardError; end
@@ -23,6 +22,7 @@ module Slack
           @params       = params
         end
 
+        # rubocop:disable Layout/IndentHeredoc
         def call
           http_obj.request(request_obj).tap do |response|
             unless response.is_a?(Net::HTTPSuccess)
@@ -33,6 +33,7 @@ MSG
             end
           end
         end
+        # rubocop:enable Layout/IndentHeredoc
 
         private
 

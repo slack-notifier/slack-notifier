@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 # encoding: utf-8
+
 require_relative "../../lib/slack-notifier"
 
 ruby = if defined?(JRUBY_VERSION)

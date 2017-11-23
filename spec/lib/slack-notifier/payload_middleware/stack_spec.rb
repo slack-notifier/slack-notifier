@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
   let(:return_one) do
     double(call: 1)
@@ -113,7 +114,6 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::Stack do
       subject.set(:return_one_twice, :return_one_twice, :return_two)
 
       expect(subject.call(5)).to eq [2, 2, 2, 2]
-
     end
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Slack::Notifier::PayloadMiddleware::FormatMessage do
   it "passes the text through linkformatter with options[:formats]" do
     subject = described_class.new(:notifier, formats: [:html])
@@ -8,7 +9,7 @@ RSpec.describe Slack::Notifier::PayloadMiddleware::FormatMessage do
 
     subject = described_class.new(:notifier)
     expect(Slack::Notifier::Util::LinkFormatter).to receive(:format)
-      .with("hello", formats: [:html, :markdown])
+      .with("hello", formats: %i[html markdown])
     subject.call(text: "hello")
 
     subject = described_class.new(:notifier, formats: [:markdown])

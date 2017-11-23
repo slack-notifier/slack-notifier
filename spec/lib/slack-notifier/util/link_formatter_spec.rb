@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 # encoding: utf-8
+
 # rubocop:disable Metrics/LineLength
 RSpec.describe Slack::Notifier::Util::LinkFormatter do
   describe "::format" do
@@ -56,7 +57,7 @@ RSpec.describe Slack::Notifier::Util::LinkFormatter do
       end
     end
 
-    it 'doesn\'t replace valid Japanese' do
+    it "doesn't replace valid Japanese" do
       formatted = described_class.format("こんにちは")
       expect(formatted).to eq "こんにちは"
     end
@@ -125,7 +126,7 @@ RSpec.describe Slack::Notifier::Util::LinkFormatter do
           "Hello world, <mailto:john@example.com|John>.",
 
         "Hello World, enjoy [foo(bar)](http://example.com/foo(bar))<a href='http://example.com/bar(foo)'>bar(foo)</a>" =>
-          "Hello World, enjoy <http://example.com/foo(bar)|foo(bar)><http://example.com/bar(foo)|bar(foo)>",
+          "Hello World, enjoy <http://example.com/foo(bar)|foo(bar)><http://example.com/bar(foo)|bar(foo)>"
       }
 
       input_output.each do |input, output|

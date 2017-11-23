@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Slack::Notifier::Util::HTTPClient do
   describe "::post" do
     it "initializes Util::HTTPClient with the given uri and params then calls" do
@@ -6,7 +7,7 @@ RSpec.describe Slack::Notifier::Util::HTTPClient do
 
       expect(described_class)
         .to receive(:new).with("uri", "params")
-        .and_return(http_post_double)
+                         .and_return(http_post_double)
       expect(http_post_double).to receive(:call)
 
       described_class.post "uri", "params"

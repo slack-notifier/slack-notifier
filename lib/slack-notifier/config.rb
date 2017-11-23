@@ -1,15 +1,16 @@
 # frozen_string_literal: true
+
 module Slack
   class Notifier
     class Config
       def initialize
         @http_client = Util::HTTPClient
         @defaults    = {}
-        @middleware  = [
-          :format_message,
-          :format_attachments,
-          :at,
-          :channels,
+        @middleware  = %i[
+          format_message
+          format_attachments
+          at
+          channels
         ]
       end
 

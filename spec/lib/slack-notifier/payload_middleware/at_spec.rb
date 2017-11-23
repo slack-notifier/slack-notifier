@@ -3,7 +3,7 @@
 RSpec.describe Slack::Notifier::PayloadMiddleware::At do
   it "can handle array at" do
     subject = described_class.new(:notifier)
-    payload = { text: "hello", at: [:john, :ken, :here] }
+    payload = { text: "hello", at: %i[john ken here] }
 
     expect(subject.call(payload)).to eq text: "<@john> <@ken> <!here> hello"
   end

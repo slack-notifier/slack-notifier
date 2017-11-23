@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Slack
   class Notifier
     module Util
@@ -26,7 +27,6 @@ module Slack
             (?! [#{VALID_PATH_CHARS}]* \) )
         }x
 
-
         class << self
           def format string, opts={}
             LinkFormatter.new(string, opts).formatted
@@ -35,12 +35,12 @@ module Slack
 
         attr_reader :formats
 
-        def initialize string, formats: [:html, :markdown]
+        def initialize string, formats: %i[html markdown]
           @formats = formats
           @orig    = string.respond_to?(:scrub) ? string.scrub : string
         end
 
-        # rubocop:disable Style/GuardClause
+        # rubocop:disable Style/GuardClause, Lint/RescueWithoutErrorClass
         def formatted
           return @orig unless @orig.respond_to?(:gsub)
 

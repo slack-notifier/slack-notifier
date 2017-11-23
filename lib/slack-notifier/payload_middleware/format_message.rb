@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 module Slack
   class Notifier
     class PayloadMiddleware
       class FormatMessage < Base
         middleware_name :format_message
 
-        options formats: [:html, :markdown]
+        options formats: %i[html markdown]
 
         def call payload={}
           return payload unless payload[:text]

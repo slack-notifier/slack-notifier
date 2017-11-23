@@ -46,17 +46,17 @@ RSpec.describe Slack::Notifier::Config do
     it "is [:format_message, :format_attachments, :at] if not set" do
       subject = described_class.new
 
-      expect(subject.middleware).to eq [:format_message, :format_attachments, :at, :channels]
+      expect(subject.middleware).to eq %i[format_message format_attachments at channels]
     end
 
     it "takes an array or a splat of args" do
       subject = described_class.new
 
       subject.middleware :layer, :two
-      expect(subject.middleware).to eq [:layer, :two]
+      expect(subject.middleware).to eq %i[layer two]
 
-      subject.middleware [:one, :layer]
-      expect(subject.middleware).to eq [:one, :layer]
+      subject.middleware %i[one layer]
+      expect(subject.middleware).to eq %i[one layer]
     end
 
     it "allows passing options to middleware stack" do

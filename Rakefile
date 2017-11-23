@@ -7,4 +7,4 @@ rubocop = RuboCop::RakeTask.new
 rubocop.fail_on_error = false
 RSpec::Core::RakeTask.new(:spec)
 
-task default: [:rubocop, :spec]
+task default: %i[rubocop spec]
