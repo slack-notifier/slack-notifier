@@ -4,10 +4,28 @@ module Slack
     module Util
       class LinkFormatter
         # http://rubular.com/r/19cNXW5qbH
-        HTML_PATTERN = / <a (?:.*?) href=['"](.+?)['"] (?:.*?)> (.+?) <\/a> /x
+        HTML_PATTERN = %r{
+          <a
+          (?:.*?)
+          href=['"](.+?)['"]
+          (?:.*?)>
+          (.+?)
+          </a>
+        }x
 
-        # http://rubular.com/r/VwtT4SFB2v
-        MARKDOWN_PATTERN = /\[ ([^\[\]]*?) \] \( ((https?:\/\/.*?) | (mailto:.*?)) \)(?![\[\w]*\)) /x
+        # the path portion of a url can contain these characters
+        VALID_PATH_CHARS = '\w\-\.\~\/\?\#\='
+
+        # Attempt at only matching pairs of parens per
+        # the markdown spec http://spec.commonmark.org/0.27/#links
+        #
+        # http://rubular.com/r/y107aevxqT
+        MARKDOWN_PATTERN = %r{
+            \[ ([^\[\]]*?) \]
+            \( ((https?://.*?) | (mailto:.*?)) \)
+            (?! [#{VALID_PATH_CHARS}]* \) )
+        }x
+
 
         class << self
           def format string, opts={}

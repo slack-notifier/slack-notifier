@@ -77,6 +77,62 @@ RSpec.describe Slack::Notifier::Util::LinkFormatter do
       expect(formatted).to include("http://example.com/bar(foo)|bar(foo)")
     end
 
+    it "formats a number of differently formatted links" do
+      input_output = {
+        "Hello World, enjoy [this](http://example.com)." =>
+          "Hello World, enjoy <http://example.com|this>.",
+
+        "Hello World, enjoy [[this](http://example.com) in brackets]." =>
+          "Hello World, enjoy [<http://example.com|this> in brackets].",
+
+        "Hello World, enjoy ([this](http://example.com) in parens)." =>
+          "Hello World, enjoy (<http://example.com|this> in parens).",
+
+        "Hello World, enjoy [](http://example.com)." =>
+          "Hello World, enjoy <http://example.com>.",
+
+        "Hello World, enjoy [link with query](http://example.com?foo=bar)." =>
+          "Hello World, enjoy <http://example.com?foo=bar|link with query>.",
+
+        "Hello World, enjoy [link with fragment](http://example.com/#foo-bar)." =>
+          "Hello World, enjoy <http://example.com/#foo-bar|link with fragment>.",
+
+        "Hello World, enjoy [link with parens](http://example.com/foo(bar)/baz)." =>
+          "Hello World, enjoy <http://example.com/foo(bar)/baz|link with parens>.",
+
+        "Hello World, enjoy [link with query](http://example.com/(parens)?foo=bar)." =>
+          "Hello World, enjoy <http://example.com/(parens)?foo=bar|link with query>.",
+
+        "Hello World, enjoy [link with parens](http://example.com/baz?bang=foo(bar))." =>
+          "Hello World, enjoy <http://example.com/baz?bang=foo(bar)|link with parens>.",
+
+        "Hello World, enjoy [link with fragment](http://example.com/(parens)#foo-bar)." =>
+          "Hello World, enjoy <http://example.com/(parens)#foo-bar|link with fragment>.",
+
+        "Hello World, enjoy [link with fragment](http://example.com/#foo-bar=(baz))." =>
+          "Hello World, enjoy <http://example.com/#foo-bar=(baz)|link with fragment>.",
+
+        "Hello World, enjoy [this](http://example.com?foo=bar)[this2](http://example2.com)." =>
+          "Hello World, enjoy <http://example.com?foo=bar|this><http://example2.com|this2>.",
+
+        "Hello World, enjoy [this](http://example.com?foo=bar) [this2](http://example2.com/#fragment)." =>
+          "Hello World, enjoy <http://example.com?foo=bar|this> <http://example2.com/#fragment|this2>.",
+
+        "Hello World, enjoy [this](http://example.com)<a href='http://example2.com'>this2</a>." =>
+          "Hello World, enjoy <http://example.com|this><http://example2.com|this2>.",
+
+        "Hello world, [John](mailto:john@example.com)." =>
+          "Hello world, <mailto:john@example.com|John>.",
+
+        "Hello World, enjoy [foo(bar)](http://example.com/foo(bar))<a href='http://example.com/bar(foo)'>bar(foo)</a>" =>
+          "Hello World, enjoy <http://example.com/foo(bar)|foo(bar)><http://example.com/bar(foo)|bar(foo)>",
+      }
+
+      input_output.each do |input, output|
+        expect(described_class.format(input)).to eq output
+      end
+    end
+
     context "with a configured stack" do
       it "only formats html if html is the only item in formats" do
         formatted = described_class.format("Hello World, enjoy [this](http://example.com)<a href='http://example2.com'>this2</a>.", formats: [:html])
