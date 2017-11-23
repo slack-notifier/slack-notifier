@@ -40,19 +40,16 @@ module Slack
           @orig    = string.respond_to?(:scrub) ? string.scrub : string
         end
 
-        # rubocop:disable Style/GuardClause, Lint/RescueWithoutErrorClass
+        # rubocop:disable Lint/RescueWithoutErrorClass
         def formatted
           return @orig unless @orig.respond_to?(:gsub)
 
           sub_markdown_links(sub_html_links(@orig))
         rescue => e
-          if RUBY_VERSION < "2.1" && e.message.include?("invalid byte sequence")
-            raise e, "#{e.message}. Consider including the 'string-scrub' gem to strip invalid characters"
-          else
-            raise e
-          end
+          raise e unless RUBY_VERSION < "2.1" && e.message.include?("invalid byte sequence")
+          raise e, "#{e.message}. Consider including the 'string-scrub' gem to strip invalid characters"
         end
-        # rubocop:enable Style/GuardClause
+        # rubocop:enable Lint/RescueWithoutErrorClass
 
         private
 
