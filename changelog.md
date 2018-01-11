@@ -1,3 +1,8 @@
+# 2.3.2
+- Improve compatability with CommonMark spec for markdown link formatting [@revolter #91]
+
+  Still not 100% compliant, but it is now much closer.
+
 # 2.3.1
 - use `map` to return the array of responses instead of payload in `ping` & `post` [@yhatt #88]
 
