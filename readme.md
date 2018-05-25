@@ -197,7 +197,7 @@ end
 
 ## Middleware
 
-By default slack-notifier ships with middleware to format links in the message & text field of attachments. You can configure the middleware a notifier will us on initialization:
+By default slack-notifier ships with middleware to format links in the message & text field of attachments. You can configure the middleware a notifier will use on initialization:
 
 ```ruby
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
