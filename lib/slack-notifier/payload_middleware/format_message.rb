@@ -9,10 +9,10 @@ module Slack
         options formats: %i[html markdown]
 
         def call payload={}
-          return payload unless payload[:text]
+          return payload.to_s unless payload[:text]
           payload[:text] = Util::LinkFormatter.format(payload[:text], options)
 
-          payload
+          payload.to_s
         end
       end
     end
