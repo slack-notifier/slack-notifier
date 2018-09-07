@@ -262,6 +262,14 @@ notifier.post text: "hello", channel: ["default", "all_the_things"]
 # => will post "hello" to the default and all_the_things channel
 ```
 
+To send a message directly to a user, their username [no longer works](https://github.com/stevenosloan/slack-notifier/issues/51#issuecomment-414138622). Instead you'll need to get the user's ID and set that as the channel.
+
+At the time of writing, one way to get a user's ID is to:
+
+- go to their profile
+- click **...** ("More actions")
+- click **Copy Member ID**
+
 ### Writing your own Middleware
 
 Middleware is fairly straightforward, it is any class that inherits from `Slack::Notifier::PayloadMiddleware::Base` and responds to `#call`. It will always be given the payload as a hash and should return the modified payload as a hash.
