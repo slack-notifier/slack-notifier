@@ -14,17 +14,15 @@ module Slack
           </a>
         }x
 
-        # the path portion of a url can contain these characters
-        VALID_PATH_CHARS = '\w\-\.\~\/\?\#\='
+        VALID_URI_CHARS = '\w\-\.\~\:\/\?\#\[\]\@\!\$\&\'\*\+\,\;\='
 
         # Attempt at only matching pairs of parens per
         # the markdown spec http://spec.commonmark.org/0.27/#links
         #
-        # http://rubular.com/r/y107aevxqT
+        # https://rubular.com/r/WfdZ1arvF6PNWO
         MARKDOWN_PATTERN = %r{
             \[ ([^\[\]]*?) \]
-            \( ((https?://.*?) | (mailto:.*?)) \)
-            (?! [#{VALID_PATH_CHARS}]* \) )
+            \( ( (?:https?:\/\/|mailto:) (?:[#{VALID_URI_CHARS}]*?|[#{VALID_URI_CHARS}]*?\([#{VALID_URI_CHARS}]*?\)[#{VALID_URI_CHARS}]*?) ) \)
         }x
 
         class << self
