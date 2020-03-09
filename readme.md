@@ -106,6 +106,26 @@ message = "Write to [#{link_text}](mailto:user@example.com)"
 notifier.ping message
 ```
 
+## Reply in thread
+
+To reply in a thread, you need the message ID and its channel name. From slack, if you right click the dots  and select "Copy link", you can extract the message ID (aka `ts`) and use it as a `thread_ts` 
+
+![Screenshot 2020-03-09 at 10 46 57](https://user-images.githubusercontent.com/7388889/76201322-5e952000-61f3-11ea-9e47-4e7f80b22d2b.png)
+
+Be careful ! For this to work correctly, you must only use this on the very first message that started the thread, and not on a reply sent in the thread.
+
+```ruby
+# slack_message_request = 'https://myjobglasses.slack.com/archives/[Channel ID]/p[Message TS without dot]'
+slack_message_request = 'https://myjobglasses.slack.com/archives/DD3F2GGG4/p1583742420167800'
+
+slack_channel = "#general" # You must add the channel name or it won't work (it is also contained in the slack_message_request but as an ID and not its name)
+
+notifier.ping("Reply in thread", 
+    thread_ts: slack_message_request[/[^\/p]*$/].insert(-7, '.'),
+    channel: slack_channel,
+)
+```
+
 ## Additional parameters
 
 Any key passed to the `post` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
