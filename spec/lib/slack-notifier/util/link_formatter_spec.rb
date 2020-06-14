@@ -36,6 +36,11 @@ RSpec.describe Slack::Notifier::Util::LinkFormatter do
       expect(formatted).to include("<http://example2.com|this2>")
     end
 
+    it "handles markdown links contain [ and ]" do
+      formatted = described_class.format("Hello World, enjoy [this and [that]](http://example.com).")
+      expect(formatted).to include("<http://example.com|this and [that]>")
+    end
+
     it "handles mixed html & markdown links" do
       formatted = described_class.format("Hello World, enjoy [this](http://example.com)<a href='http://example2.com'>this2</a>.")
       expect(formatted).to include("<http://example.com|this>")
