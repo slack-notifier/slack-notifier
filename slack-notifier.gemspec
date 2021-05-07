@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.description   = " A slim ruby wrapper for posting to slack webhooks "
   s.authors       = ["Steven Sloan"]
   s.email         = ["stevenosloan@gmail.com"]
-  s.homepage      = "http://github.com/stevenosloan/slack-notifier"
+  s.homepage      = "https://github.com/slack-notifier/slack-notifier"
   s.license       = "MIT"
 
   s.files         = Dir["{lib}/**/*.rb"]
