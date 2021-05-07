@@ -4,7 +4,20 @@ require "net/http"
 
 module Slack
   class Notifier
-    class APIError < StandardError; end
+    class APIError < StandardError
+      attr_reader :response
+
+      def initialize(response)
+        @response = response
+      end
+
+      def message
+        <<-MSG
+The slack API returned an error: #{@response.body} (HTTP Code #{@response.code})
+Check the "Handling Errors" section on https://api.slack.com/incoming-webhooks for more information
+MSG
+      end
+    end
 
     module Util
       class HTTPClient
@@ -26,10 +39,7 @@ module Slack
         def call
           http_obj.request(request_obj).tap do |response|
             unless response.is_a?(Net::HTTPSuccess)
-              raise Slack::Notifier::APIError, <<-MSG
-The slack API returned an error: #{response.body} (HTTP Code #{response.code})
-Check the "Handling Errors" section on https://api.slack.com/incoming-webhooks for more information
-MSG
+              raise Slack::Notifier::APIError.new(response)
             end
           end
         end
