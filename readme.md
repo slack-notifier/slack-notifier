@@ -106,6 +106,34 @@ message = "Write to [#{link_text}](mailto:user@example.com)"
 notifier.ping message
 ```
 
+## Blocks
+
+This plugin supports the [Slack blocks format](https://app.slack.com/block-kit-builder/) and [block kit builder](https://app.slack.com/block-kit-builder/). This is useful for displaying buttons, dropdowns, and images.
+
+```ruby
+blocks = [
+  {
+    "type": "image",
+    "title": {
+      "type": "plain_text",
+      "text": "image1",
+      "emoji": true
+    },
+    "image_url": "https://api.slack.com/img/blocks/bkb_template_images/onboardingComplex.jpg",
+    "alt_text": "image1"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "Hey there 👋 I'm TaskBot. I'm here to help you create and manage tasks in Slack.\nThere are two ways to quickly create tasks:"
+    }
+  }
+]
+
+notifier.post(blocks: blocks)
+```
+
 ## Additional parameters
 
 Any key passed to the `post` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
