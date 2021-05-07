@@ -1,3 +1,7 @@
+# 2.4.0
+
+- Make keyword argument usage compatible for ruby 3.x [@walski #123, @yuuu #119]
+
 # 2.3.2
 - Improve compatability with CommonMark spec for markdown link formatting [@revolter #91]
 
