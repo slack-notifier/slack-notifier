@@ -3,6 +3,17 @@
 
 # rubocop:disable Metrics/LineLength
 RSpec.describe Slack::Notifier::Util::LinkFormatter do
+  describe "initialize & formatted" do
+    it "can be initialized without format args" do
+      subject = described_class.new("Hello World")
+      expect(subject.formatted()).to eq("Hello World")
+    end
+
+    it "can be initialized with format args" do
+      subject = described_class.new("Hello World", formats: [:html])
+      expect(subject.formatted()).to eq("Hello World")
+    end
+  end
   describe "::format" do
     it "formats html links" do
       formatted = described_class.format("Hello World, enjoy <a href='http://example.com'>this</a>.")
