@@ -29,7 +29,7 @@ module Slack
 
         class << self
           def format string, opts={}
-            LinkFormatter.new(string, opts).formatted
+            LinkFormatter.new(string, **opts).formatted
           end
         end
 
