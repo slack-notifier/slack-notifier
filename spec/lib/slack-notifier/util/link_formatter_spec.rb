@@ -30,6 +30,11 @@ RSpec.describe Slack::Notifier::Util::LinkFormatter do
       expect(formatted).to eq("Hello World, enjoy [<http://example.com|this> in brackets].")
     end
 
+    it "formats markdown links in parens" do
+      formatted = described_class.format("Hello World, enjoy ([this](http://example.com)) in parens.")
+      expect(formatted).to eq("Hello World, enjoy (<http://example.com|this>) in parens.")
+    end
+
     it "formats markdown links with no title" do
       formatted = described_class.format("Hello World, enjoy [](http://example.com).")
       expect(formatted).to include("<http://example.com>")
