@@ -166,7 +166,7 @@ notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: { open_timeout: 5 }
 notifier.post text: "hello", http_options: { open_timeout: 10 }
 ```
 
-**Note**: you should only send along options that [`Net::HTTP`](http://ruby-doc.org/stdlib-2.2.0/libdoc/net/http/rdoc/Net/HTTP.html) has as setters, otherwise the option will be ignored and show a warning.
+**Note**: you should only send along options that [`Net::HTTP`](https://ruby-doc.org/stdlib-3.0.1/libdoc/net/http/rdoc/Net/HTTP.html) has as setters, otherwise the option will be ignored and show a warning.
 
 ### Proxies
 
@@ -183,7 +183,7 @@ notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: {
 
 ## Custom HTTP Client
 
-There is a packaged default client wrapping Net::HTTP, but your HTTP needs might be a little different. In that case, you can pass in your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net:HTTP.post_form](http://ruby-doc.org/stdlib-2.1.2/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form).
+There is a packaged default client wrapping Net::HTTP, but your HTTP needs might be a little different. In that case, you can pass in your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net::HTTP.post_form](https://ruby-doc.org/stdlib-3.0.1/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form).
 
 A simple example:
 ```ruby
