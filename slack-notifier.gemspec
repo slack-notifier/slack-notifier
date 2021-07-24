@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.authors       = ["Steven Sloan"]
   s.email         = ["stevenosloan@gmail.com"]
   s.homepage      = "https://github.com/slack-notifier/slack-notifier"
+  s.metadata      = { "changelog_uri" => "https://github.com/slack-notifier/slack-notifier/blob/main/changelog.md" }
   s.license       = "MIT"
 
   s.files         = Dir["{lib}/**/*.rb"]
