@@ -1,6 +1,7 @@
 A simple wrapper to send notifications to [Slack](https://slack.com/) webhooks.
 
 [![Build Status](https://travis-ci.org/slack-notifier/slack-notifier.svg?branch=master)](https://travis-ci.org/slack-notifier/slack-notifier)
+[![Build Status](https://app.travis-ci.com/slack-notifier/slack-notifier.svg?branch=main)](https://app.travis-ci.com/github/slack-notifier/slack-notifier)
 [![Code Climate](https://codeclimate.com/github/slack-notifier/slack-notifier.svg)](https://codeclimate.com/github/slack-notifier/slack-notifier)
 [![Gem Version](https://badge.fury.io/rb/slack-notifier.svg)](https://rubygems.org/gems/slack-notifier)
 [![SemVer](https://api.dependabot.com/badges/compatibility_score?dependency-name=slack-notifier&package-manager=bundler&version-scheme=semver)](https://dependabot.com/compatibility-score.html?dependency-name=slack-notifier&package-manager=bundler&version-scheme=semver)
