@@ -12,7 +12,7 @@ module Slack
           (?:.*?)>
           (.+?)
           </a>
-        }x
+        }x.freeze
 
         # the path portion of a url can contain these characters
         VALID_PATH_CHARS = '\w\-\.\~\/\?\#\='
@@ -25,7 +25,7 @@ module Slack
             \[ ([^\[\]]*?) \]
             \( ((https?://.*?) | (mailto:.*?)) \)
             (?! [#{VALID_PATH_CHARS}]* \) )
-        }x
+        }x.freeze
 
         class << self
           def format string, opts={}
