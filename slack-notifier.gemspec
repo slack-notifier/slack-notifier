@@ -5,7 +5,6 @@ require_relative "lib/slack-notifier/version"
 Gem::Specification.new do |s|
   s.name                        = "slack-notifier"
   s.version                     = Slack::Notifier::VERSION
-  s.platform                    = Gem::Platform::RUBY
   s.summary                     = "A slim ruby wrapper for posting to slack webhooks"
   s.description                 = "A slim ruby wrapper for posting to slack webhooks"
   s.authors                     = ["Steven Sloan"]
