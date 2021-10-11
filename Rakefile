@@ -6,4 +6,10 @@ RSpec::Core::RakeTask.new(:spec)
 require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
-task default: %i[spec rubocop]
+tasks = if RUBY_VERSION >= "2.3.0"
+          %i[spec rubocop]
+        else
+          %i[spec]
+        end
+
+task default: tasks
