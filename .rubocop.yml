@@ -38,9 +38,6 @@ Style/PercentLiteralDelimiters:
 
 # Layout ----------------------------------
 
-Layout/MultilineOperationIndentation:
-  EnforcedStyle: aligned
-
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: aligned
 
@@ -51,15 +48,18 @@ Layout/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 
 Layout/IndentationConsistency:
-  EnforcedStyle: rails
+  EnforcedStyle: indented_internal_methods
 
 Layout/DotPosition:
   EnforcedStyle: leading
+  
+Layout/LineLength:
+  Max: 128
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
 
 # Metrics ----------------------------------
-
-Metrics/LineLength:
-  Max: 128
 
 Metrics/AbcSize:
   Enabled: false
@@ -70,8 +70,3 @@ Metrics/MethodLength:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
-
-# Lint -------------------------------------
-
-Lint/EndAlignment:
-  EnforcedStyleAlignWith: variable
