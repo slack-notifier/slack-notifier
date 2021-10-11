@@ -1,3 +1,11 @@
+# 2.5.0
+
+- Setup of automation using Github Actions
+- README.md changes
+- Deploy of Rubygems configured to be made using Github Actions
+- Specs running in new rubies
+- Rubocop offenses fixes
+
 # 2.4.0
 
 - Make keyword argument usage compatible for ruby 3.x [@walski #123, @yuuu #119]
