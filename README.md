@@ -3,9 +3,9 @@
 [![CI](https://github.com/slack-notifier/slack-notifier/actions/workflows/ci.yml/badge.svg)](https://github.com/slack-notifier/slack-notifier/actions/workflows/ci.yml)
 [![Code Climate](https://codeclimate.com/github/slack-notifier/slack-notifier.svg)](https://codeclimate.com/github/slack-notifier/slack-notifier)
 [![Gem Version](https://badge.fury.io/rb/slack-notifier.svg)](https://rubygems.org/gems/slack-notifier)
-[![SemVer](https://api.dependabot.com/badges/compatibility_score?dependency-name=slack-notifier&package-manager=bundler&version-scheme=semver)](https://dependabot.com/compatibility-score.html?dependency-name=slack-notifier&package-manager=bundler&version-scheme=semver)
 [![Gem](https://img.shields.io/gem/dt/slack-notifier.svg)]()
 [![license](https://img.shields.io/github/license/slack-notifier/slack-notifier.svg)]()
+[![SemVer](https://api.dependabot.com/badges/compatibility_score?dependency-name=slack-notifier&package-manager=bundler&version-scheme=semver)](https://dependabot.com/compatibility-score.html?dependency-name=slack-notifier&package-manager=bundler&version-scheme=semver)
 
 A slim ruby wrapper for posting to [Slack](https://slack.com/) webhooks.
 
@@ -20,7 +20,6 @@ notifier.ping "Hello World"
 # => to the default channel you set in slack
 ```
 
-
 #### Installation
 
 Install the latest stable release:
@@ -34,7 +33,6 @@ Or with [Bundler](http://bundler.io/), add it to your Gemfile:
 ```ruby
 gem "slack-notifier"
 ```
-
 
 #### Setting Defaults
 
