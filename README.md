@@ -9,6 +9,8 @@
 
 A slim ruby wrapper for posting to [Slack](https://slack.com/) webhooks.
 
+<img style="max-width: 100%;" src="https://github.com/slack-notifier/slack-notifier/blob/main/slack_webhook.png?raw=true" height="100px" />
+
 ## Example
 
 ```ruby
