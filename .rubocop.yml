@@ -56,6 +56,9 @@ Layout/LineLength:
 
 Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
+  
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
 
 # Metrics ----------------------------------
 
@@ -68,3 +71,8 @@ Metrics/MethodLength:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
+
+# Bundler ----------------------------------
+
+Bundler/OrderedGems:
+  Enabled: false
