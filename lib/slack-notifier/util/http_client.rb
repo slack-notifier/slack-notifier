@@ -35,15 +35,11 @@ MSG
           @params       = params
         end
 
-        # rubocop:disable Layout/IndentHeredoc
         def call
           http_obj.request(request_obj).tap do |response|
-            unless response.is_a?(Net::HTTPSuccess)
-              raise Slack::Notifier::APIError.new(response)
-            end
+            raise Slack::Notifier::APIError.new(response) unless response.is_a?(Net::HTTPSuccess)
           end
         end
-        # rubocop:enable Layout/IndentHeredoc
 
         private
 
