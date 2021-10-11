@@ -70,7 +70,7 @@ Layout/HeredocIndentation:
   Enabled: false
 
 Layout/IndentationConsistency:
-  EnforcedStyle: rails
+  EnforcedStyle: indented_internal_methods
 
 # Metrics ----------------------------------
 
