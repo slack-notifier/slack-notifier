@@ -11,32 +11,55 @@ A slim ruby wrapper for posting to [Slack](https://slack.com/) webhooks.
 
 <img style="max-width: 100%;" src="https://github.com/slack-notifier/slack-notifier/blob/main/slack_webhook.png?raw=true" height="100px" />
 
-## Example
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'slack-notifier'
+```
+
+And then execute:
+
+```shell
+bundle install
+```
+
+Or install it yourself as:
+
+```shell
+gem install slack-notifier
+```
+
+## Usage
+
+### Configuration of Incoming Webhook in Slack
+
+The first step before using this gem is to configure the Incoming Webhook in Slack.
+
+For this purpose, please check the official documentation of Slack. It's listed below some useful links:
+
+- https://www.youtube.com/watch?v=6NJuntZSJVA
+- https://api.slack.com/messaging/webhooks
+- https://slack.com/intl/en-br/help/articles/115005265063-Incoming-webhooks-for-Slack
+- https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
+
+After the configuration, keep your generated Incoming Webhook URL in a secret and secure way.
+
+You will use it (the URL) in next sections of README.
+
+### Hello World example
 
 ```ruby
 require 'slack-notifier'
 
 notifier = Slack::Notifier.new "WEBHOOK_URL"
 notifier.ping "Hello World"
-# => if your webhook is setup, will message "Hello World"
-# => to the default channel you set in slack
+# Once your webhook is setup, it will send message "Hello World"
+# to the default channel you set in Slack.
 ```
 
-#### Installation
-
-Install the latest stable release:
-
-```
-$ gem install slack-notifier
-```
-
-Or with [Bundler](http://bundler.io/), add it to your Gemfile:
-
-```ruby
-gem "slack-notifier"
-```
-
-#### Setting Defaults
+### Setting Defaults
 
 On initialization you can set default payloads by calling `defaults` in an initialization block:
 
@@ -73,8 +96,7 @@ notifier.ping "Hello random", channel: "#random"
 # => will ping the "#random" channel
 ```
 
-
-## Links
+### Links
 
 Slack requires links to be formatted a certain way, so the default middlware stack of slack-notifier will look through your message and attempt to convert any html or markdown links to slack's format before posting.
 
@@ -86,7 +108,7 @@ Slack::Notifier::Util::LinkFormatter.format(message)
 # => "Hello world, <http://example.com|check> it <http://example.com|out>"
 ```
 
-## Formatting
+### Formatting
 
 Slack supports various different formatting options.  For example, if you want to alert an entire channel you include `<!channel>` in your message
 
@@ -99,7 +121,7 @@ notifier.ping message
 
 You can see [Slack's message documentation here](https://api.slack.com/docs/formatting)
 
-## Escaping
+### Escaping
 
 Since sequences starting with < have special meaning in Slack, you should use `Slack::Notifier::Util::Escape.html` if your messages may contain &, < or >.
 
@@ -109,7 +131,7 @@ message = "Write to [#{link_text}](mailto:user@example.com)"
 notifier.ping message
 ```
 
-## Blocks
+### Blocks
 
 This plugin supports the [Slack blocks format](https://app.slack.com/block-kit-builder/) and [block kit builder](https://app.slack.com/block-kit-builder/). This is useful for displaying buttons, dropdowns, and images.
 
@@ -137,7 +159,7 @@ blocks = [
 notifier.post(blocks: blocks)
 ```
 
-## Additional parameters
+### Additional parameters
 
 Any key passed to the `post` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
 
@@ -160,8 +182,7 @@ a_ok_note = {
 notifier.post text: "with an attachment", attachments: [a_ok_note]
 ```
 
-
-## HTTP options
+### HTTP options
 
 With the default HTTP client, you can send along options to customize its behavior as `:http_options` params when you post or initialize the notifier.
 
@@ -185,7 +206,7 @@ notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: {
                                                             }
 ```
 
-## Custom HTTP Client
+### Custom HTTP Client
 
 There is a packaged default client wrapping Net::HTTP, but your HTTP needs might be a little different. In that case, you can pass in your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net:HTTP.post_form](http://ruby-doc.org/stdlib-2.1.2/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form).
 
@@ -228,8 +249,7 @@ notifier = Slack::Notifier.new 'WEBHOOK_URL' do
 end
 ```
 
-
-## Middleware
+### Middleware
 
 By default slack-notifier ships with middleware to format links in the message & text field of attachments. You can configure the middleware a notifier will use on initialization:
 
@@ -364,8 +384,7 @@ end
 ```
 
 
-Versioning
-----------
+## Versioning
 
 Since version `1.0` has been released, the aim is to follow [Semantic Versioning](http://semver.org/) as much as possible. However, it is encouraged to check the [changelog](changelog.md) when updating to see what changes have been made.
 
@@ -379,36 +398,30 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PATCH version for make backwards-compatible bug fixes
 ```
 
-Testing
--------
+## Tests
+
+To execute gem tests locally, use Docker with the commands below:
 
 ```bash
-$ rspec
+git clone https://github.com/slack-notifier/slack-notifier
+cd slack-notifier
+docker build -t slack_notifier_specs .
+
+# Then, run this command how many times you want,
+# after editing local files, and so on, to get
+# feedback from test suite of gem.
+docker run --rm -v $(pwd):/app/ -it slack_notifier_specs
 ```
 
-There is also an integration test setup to just double check pinging across the supported rubies. To run:
+## Contributing
 
-1. Copy the `.env-example` file to `.env` and replace with your details.
-2. Make sure `bin/test` is executable
-3. then run and watch for the pings in your slack room
-
-```bash
-$ bin/test
-```
+Bug reports and pull requests are welcome on GitHub at https://github.com/slack-notifier/slack-notifier. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/slack-notifier/slack-notifier/blob/master/CODE_OF_CONDUCT.md).
 
 
-Contributing
-------------
+## License
 
-If there is any thing you'd like to contribute or fix, please:
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
-- Fork the repo
-- Add tests for any new functionality
-- Make your changes
-- Verify all new & existing tests pass
-- Make a pull request
+## Code of Conduct
 
-
-License
--------
-The slack-notifier gem is distributed under the MIT License.
+Everyone interacting in the slack-notifier project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/slack-notifier/slack-notifier/blob/master/CODE_OF_CONDUCT.md).
