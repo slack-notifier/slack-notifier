@@ -69,6 +69,9 @@ Layout/EmptyLineAfterGuardClause:
 Layout/HeredocIndentation:
   Enabled: false
 
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+
 # Metrics ----------------------------------
 
 Metrics/AbcSize:
@@ -85,4 +88,12 @@ Bundler/OrderedGems:
 # Gemspec ----------------------------------
 
 Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+# Lint -------------------------------------
+
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
+Lint/MissingSuper:
   Enabled: false
