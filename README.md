@@ -50,50 +50,44 @@ You will use it (the URL) in next sections of README.
 
 ### Hello World example
 
+Once your webhook is setup, the example below will send the message "Hello World" to the default channel you set in Slack.
+
+```ruby
+require 'slack-notifier'
+Slack::Notifier.new("WEBHOOK_URL").ping("Hello World")
+```
+
+### Default options
+
+The default options can be defined in three ways:
+
+- In Initialization, using a block
+
 ```ruby
 require 'slack-notifier'
 
-notifier = Slack::Notifier.new "WEBHOOK_URL"
-notifier.ping "Hello World"
-# Once your webhook is setup, it will send message "Hello World"
-# to the default channel you set in Slack.
-```
-
-### Setting Defaults
-
-On initialization you can set default payloads by calling `defaults` in an initialization block:
-
-```ruby
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
   defaults channel: "#default",
            username: "notifier"
 end
 
 notifier.ping "Hello default"
-# => will message "Hello default"
-# => to the "#default" channel as 'notifier'
 ```
 
-To get the WEBHOOK_URL you need:
-
-1. go to https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
-2. choose your team, press configure
-3. in configurations press add configuration
-4. choose channel, press "Add Incoming WebHooks integration"
-
-
-You can also set defaults through an options hash:
+- In initialization, using a hash parameter
 
 ```ruby
+require 'slack-notifier'
 notifier = Slack::Notifier.new "WEBHOOK_URL", channel: "#default",
                                               username: "notifier"
 ```
 
-These defaults are over-ridable for any individual ping.
+- In `ping` method, using a hash parameter
 
 ```ruby
-notifier.ping "Hello random", channel: "#random"
-# => will ping the "#random" channel
+require 'slack-notifier'
+notifier = Slack::Notifier.new "WEBHOOK_URL"
+notifier.ping "Hello random", channel: "#random", username: "notifier"
 ```
 
 ### Links
