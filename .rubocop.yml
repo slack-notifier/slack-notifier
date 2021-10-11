@@ -81,3 +81,8 @@ Bundler/OrderedGems:
 
 Gemspec/RequiredRubyVersion:
   Enabled: false
+
+# Lint -------------------------------------
+
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
