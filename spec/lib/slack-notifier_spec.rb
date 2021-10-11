@@ -49,8 +49,7 @@ RSpec.describe Slack::Notifier do
     def notifier_with_defaults
       mock_client = mock_http
       described_class.new "http://example.com" do
-        defaults channel: "default",
-                 user:    "rocket"
+        defaults channel: "default", user: "rocket"
         http_client mock_client
       end
     end
