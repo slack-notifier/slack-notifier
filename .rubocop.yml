@@ -54,9 +54,6 @@ Layout/MultilineOperationIndentation:
 Layout/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 
-Layout/IndentationConsistency:
-  EnforcedStyle: indented_internal_methods
-
 Layout/DotPosition:
   EnforcedStyle: leading
   
@@ -88,12 +85,4 @@ Bundler/OrderedGems:
 # Gemspec ----------------------------------
 
 Gemspec/RequiredRubyVersion:
-  Enabled: false
-
-# Lint -------------------------------------
-
-Lint/ConstantDefinitionInBlock:
-  Enabled: false
-
-Lint/MissingSuper:
   Enabled: false
