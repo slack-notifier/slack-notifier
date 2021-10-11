@@ -2,7 +2,19 @@ name: CI
 
 on: [push, pull_request]
 
-jobs:          
+jobs:
+  dockerfile:
+    name: Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build Dockerfile
+        run: docker build -t slack_notifier_specs .
+
+      - name: Run tests and lints inside Docker container
+        run: docker run --rm -v $(pwd):/app/ -i slack_notifier_specs
+
   tests:
     name: Ruby ${{ matrix.ruby-version }}
     runs-on: ubuntu-latest
