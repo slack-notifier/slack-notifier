@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require File.expand_path("lib/slack-notifier/version", __dir__)
+require_relative "lib/slack-notifier/version"
 
 Gem::Specification.new do |s|
   s.name                        = "slack-notifier"
