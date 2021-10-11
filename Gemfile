@@ -13,5 +13,4 @@ group :test do
   gem "rake"
   gem "rspec"
   gem "rubocop"
-  gem "rubocop-rails"
 end
