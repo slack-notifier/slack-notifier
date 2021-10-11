@@ -15,7 +15,7 @@ module Slack
         <<-MSG
 The slack API returned an error: #{@response.body} (HTTP Code #{@response.code})
 Check the "Handling Errors" section on https://api.slack.com/incoming-webhooks for more information
-MSG
+        MSG
       end
     end
 
