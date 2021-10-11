@@ -3,14 +3,15 @@ AllCops:
   SuggestExtensions: false
   DisplayCopNames: true
   DisplayStyleGuide: true
+  Exclude:
+    - spec/*
+    - slack-notifier.gemspec
 
 # Naming ------------------------------------
 
 Naming/FileName:
   Exclude:
     - lib/slack-notifier.rb
-    - spec/lib/slack-notifier_spec.rb
-    - slack-notifier.gemspec
     - Gemfile
 
 # Style ------------------------------------
@@ -52,7 +53,7 @@ Layout/DotPosition:
   EnforcedStyle: leading
   
 Layout/LineLength:
-  Max: 128
+  Max: 200
 
 Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
@@ -67,10 +68,6 @@ Metrics/AbcSize:
 
 Metrics/MethodLength:
   Enabled: false
-
-Metrics/BlockLength:
-  Exclude:
-    - spec/**/*
 
 # Bundler ----------------------------------
 
