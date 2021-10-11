@@ -76,3 +76,8 @@ Metrics/BlockLength:
 
 Bundler/OrderedGems:
   Enabled: false
+
+# Gemspec ----------------------------------
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
