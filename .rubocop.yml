@@ -14,10 +14,15 @@ Naming/FileName:
     - lib/slack-notifier.rb
     - Gemfile
 
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
 # Style ------------------------------------
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+  Exclude:
+    - lib/slack-notifier/util/link_formatter.rb
 
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses_except_multiline
@@ -34,6 +39,9 @@ Style/SignalException:
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%w': '[]'
+
+Style/RaiseArgs:
+  Enabled: false
 
 # Layout ----------------------------------
 
@@ -61,6 +69,9 @@ Layout/EndAlignment:
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
+Layout/HeredocIndentation:
+  Enabled: false
+
 # Metrics ----------------------------------
 
 Metrics/AbcSize:
@@ -82,4 +93,7 @@ Gemspec/RequiredRubyVersion:
 # Lint -------------------------------------
 
 Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
+Lint/MissingSuper:
   Enabled: false
