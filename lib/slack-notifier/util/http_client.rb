@@ -7,7 +7,7 @@ module Slack
     class APIError < StandardError
       attr_reader :response
 
-      def initialize(response)
+      def initialize response
         @response = response
       end
 
