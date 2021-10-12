@@ -16,7 +16,7 @@ A slim ruby wrapper for posting to [Slack](https://slack.com/) webhooks.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'slack-notifier'
+gem "slack-notifier"
 ```
 
 And then execute:
@@ -53,7 +53,7 @@ You will use it (the URL) in next sections of README.
 Once your webhook is setup, the example below will send the message "Hello World" to the default channel you set in Slack.
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 Slack::Notifier.new("WEBHOOK_URL").ping("Hello World")
 ```
 
@@ -72,7 +72,7 @@ The default options can be defined in three ways:
 - In Initialization, using a block
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
   defaults channel: "#default", username: "notifier"
@@ -84,14 +84,14 @@ notifier.ping "Hello default"
 - In initialization, using a hash parameter
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 notifier = Slack::Notifier.new "WEBHOOK_URL", channel: "#default", username: "notifier"
 ```
 
 - In method invocations that sends the message (`ping` and `post`), using a hash parameter
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 notifier = Slack::Notifier.new "WEBHOOK_URL"
 notifier.ping "Hello random", channel: "#random", username: "notifier"
 ```
@@ -103,7 +103,7 @@ Slack requires links to be formatted a certain way. Because of this, the gem has
 The example code below expose what it's doing under the covers:
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 message = "Hello world, [check](http://example.com) it <a href='http://example.com'>out</a>"
 Slack::Notifier::Util::LinkFormatter.format(message)
 # => "Hello world, <http://example.com|check> it <http://example.com|out>"
@@ -116,7 +116,7 @@ Slack supports multiple formatting options.
 If you want, for example, to alert an entire channel you can include `<!your-channel>` in your message:
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 notifier = Slack::Notifier.new "WEBHOOK_URL"
 notifier.ping "<!your-channel> hey check this out!"
 # => It will send message "@your-channel hey check this out!" in your Slack channel
@@ -129,7 +129,7 @@ You can see more formatting examples in [Slack's documentation](https://api.slac
 Since sequences starting with < have special meaning in Slack, you should use `Slack::Notifier::Util::Escape.html` if your messages may contain literals `&`, `<` or `>`.
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 link_text = Slack::Notifier::Util::Escape.html("User <user@example.com>")
 message = "Write to [#{link_text}](mailto:user@example.com)"
 notifier.ping message
@@ -140,7 +140,7 @@ notifier.ping message
 This plugin supports the [Slack blocks format](https://app.slack.com/block-kit-builder/) and [block kit builder](https://app.slack.com/block-kit-builder/). This is useful for displaying buttons, dropdowns, and images.
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 
 notifier = Slack::Notifier.new "WEBHOOK_URL"
 
@@ -170,7 +170,7 @@ Below are exposed example codes using a subset of the available additional param
 Emoji icon / URL icon
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 
 notifier = Slack::Notifier.new "WEBHOOK_URL"
 
@@ -182,7 +182,7 @@ notifier.post text: "feeling chimpy", icon_url: "http://static.mailchimp.com/web
 Attachments
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 
 notifier = Slack::Notifier.new "WEBHOOK_URL"
 
@@ -200,7 +200,7 @@ notifier.post text: "with an attachment", attachments: [a_ok_note]
 With the default HTTP client, you can send along options to customize its behavior as `:http_options` params when you post or initialize the notifier.
 
 ```ruby
-require 'slack-notifier'
+require "slack-notifier"
 notifier = Slack::Notifier.new "WEBHOOK_URL", http_options: { open_timeout: 5 }
 notifier.post text: "hello", http_options: { open_timeout: 10 }
 ```
@@ -213,6 +213,7 @@ notifier.post text: "hello", http_options: { open_timeout: 10 }
 For example, to connect through a local squid proxy the following options would be used.
 
 ```ruby
+require "slack-notifier"
 notifier = Slack::Notifier.new "WEBHOOK_URL", http_options: {
                                                               proxy_address:  'localhost',
                                                               proxy_port:     3128,
@@ -222,39 +223,41 @@ notifier = Slack::Notifier.new "WEBHOOK_URL", http_options: {
 
 ### Custom HTTP Client
 
-There is a packaged default client wrapping Net::HTTP, but your HTTP needs might be a little different. In that case, you can pass in your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net:HTTP.post_form](http://ruby-doc.org/stdlib/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form).
+There is a packaged default client wrapping Net::HTTP in gem. But there is scenarios where your HTTP needs might be a little different. In that cases, you can pass to notifier your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net:HTTP.post_form](http://ruby-doc.org/stdlib/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form):
 
-A simple example:
 ```ruby
-module Client
+require "slack-notifier"
+
+module MyOwnHTTPClient
   def self.post uri, params={}
     Net::HTTP.post_form uri, params
   end
 end
 
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
-  http_client Client
+  http_client MyOwnHTTPClient
 end
 ```
 
-It's also encouraged for any custom HTTP implementations to accept the `:http_options` key in params.
+The customization of HTTP Client is useful especially for mocking purposes, logging, request tracking and so on. But pay attention to keep the expected API desired by gem.
 
-**Setting client per post**
-
-You can also set the http_client per-post if you need to special case certain pings.
+You can also set the `http_client` per-post, if you need the customization only for certain pings/posts:
 
 ```ruby
-notifier.post text: "hello", http_client: CustomClient
+require "slack-notifier"
+notifier = Slack::Notifier.new "WEBHOOK_URL"
+notifier.post text: "hello", http_client: MyOwnHTTPClient
+notifier.post text: "bye" # => uses the default HTTP client
 ```
 
-**Setting a No-Op client**
-
-In development (or testing), you may want to watch the behavior of the notifier without posting to slack. This can be handled with a no-op client.
+You also may want to watch the behavior of the notifier without posting to slack. This can be handled with a no-op client:
 
 ```ruby
+require "slack-notifier"
+
 class NoOpHTTPClient
   def self.post uri, params={}
-    # bonus, you could log or observe posted params here
+    # You can log or observe posted params here
   end
 end
 
@@ -265,50 +268,52 @@ end
 
 ### Middleware
 
-By default slack-notifier ships with middleware to format links in the message & text field of attachments. You can configure the middleware a notifier will use on initialization:
+By default, `slack-notifier` ships with a default middleware to format links in the message and in text field of attachments.
+
+You can configure which middleware the notifier will use:
 
 ```ruby
+require "slack-notifier"
+
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
   middleware format_message: { formats: [:html] }
 end
-# this example will *only* use the format_message middleware and only format :html links
+# => This example will *only* use the format_message middleware and only format :html links
 
 notifier.post text: "Hello <a href='http://example.com'>world</a>! [visit this](http://example.com)"
-# => will post "Hello <http://example.com|world>! [visit this](http://example.com)"
+# => It will post "Hello <http://example.com|world>! [visit this](http://example.com)"
 ```
 
-The middleware can be set with a their name, or by name and options. They will be triggered in order.
+The middleware can be set with a their name, or by name and options. They will be triggered in order that them are declared:
 
 ```ruby
+require "slack-notifier"
+
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
   middleware :format_message, :format_attachments
 end
-# will run format_message then format_attachments with default options
+# => will run format_message then format_attachments with default options
 
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
-  middleware format_message: { formats: [:html] },
+  middleware format_message:     { formats: [:html]     },
              format_attachments: { formats: [:markdown] }
 end
-# will run format_message w/ formats [:html] then format_attachments with formats [:markdown]
+# => will run format_message with formats [:html] then format_attachments with formats [:markdown]
 ```
 
-Available middleware:
+The available middlewares are:
 
-**`format_message`**
+- **`format_message`**: This middleware takes the `:text` key of the payload and runs it through the [`Linkformatter`](#links). You can configure which link formats to look for with a `:formats` option. You can set `[:html]` (only html links), `[:markdown]` (only markdown links) or `[:html, :markdown]` (the default, will format both).
 
-This middleware takes the `:text` key of the payload and runs it through the [`Linkformatter`](#links). You can configure which link formats to look for with a `:formats` option. You can set `[:html]` (only html links), `[:markdown]` (only markdown links) or `[:html, :markdown]` (the default, will format both).
+- **`format_attachments`**: This middleware takes the `:text` key of any attachment and runs it through the [`Linkformatter`](#links). You can configure which link formats to look for with a `:formats` option. You can set `[:html]` (only html links), `[:markdown]` (only markdown links) or `[:html, :markdown]` (the default, will format both).
 
-**`format_attachments`**
-
-This middleware takes the `:text` key of any attachment and runs it through the [`Linkformatter`](#links). You can configure which link formats to look for with a `:formats` option. You can set `[:html]` (only html links), `[:markdown]` (only markdown links) or `[:html, :markdown]` (the default, will format both).
-
-**`at`**
-
-This simplifies the process of notifying users and rooms to messages. By adding an `:at` key to the payload w/ an array of symbols the appropriately formatted commands will be prepended to the message. It will accept a single name, or an array.
+- **`at`**: This simplifies the process of notifying users and rooms to messages. By adding an `:at` key to the payload w/ an array of symbols the appropriately formatted commands will be prepended to the message. It will accept a single name, or an array.
 
 For example:
 
 ```ruby
+require "slack-notifier"
+notifier = Slack::Notifier.new "WEBHOOK_URL"
 notifier.post text: "hello", at: :casper
 # => "<@casper> hello"
 
@@ -323,6 +328,8 @@ If the `channel` argument of a payload is an array this splits the payload to be
 For example:
 
 ```ruby
+require "slack-notifier"
+notifier = Slack::Notifier.new "WEBHOOK_URL"
 notifier.post text: "hello", channel: ["default", "all_the_things"]
 # => will post "hello" to the default and all_the_things channel
 ```
