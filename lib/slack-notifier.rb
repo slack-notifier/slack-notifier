@@ -11,8 +11,6 @@ require_relative "slack-notifier/config"
 
 module Slack
   class Notifier
-    attr_reader :endpoint
-
     def initialize webhook_url, options={}, &block
       @endpoint = URI.parse webhook_url
 
@@ -21,10 +19,6 @@ module Slack
       config.instance_exec(&block) if block_given?
 
       middleware.set config.middleware
-    end
-
-    def config
-      @_config ||= Config.new
     end
 
     def ping message, options={}
@@ -51,6 +45,12 @@ module Slack
     end
 
     private
+
+      attr_reader :endpoint
+
+      def config
+        @_config ||= Config.new
+      end
 
       def middleware
         @middleware ||= PayloadMiddleware::Stack.new(self)
