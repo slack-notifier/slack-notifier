@@ -28,17 +28,16 @@ RSpec.describe Slack::Notifier do
     { text: '<a href="mailto:john@example.com">John</a>' } =>
     { payload: { text: "<mailto:john@example.com|John>" } },
 
-    { text: "hello", channel: "hodor" } =>
-    { payload: { text: "hello", channel: "hodor" } },
+    { text: "hello" } =>
+    { payload: { text: "hello" } },
 
     { text: nil, attachments: [{ text: "attachment message" }] } =>
     { payload: { text: nil, attachments: [{ text: "attachment message" }] } },
 
-    { text: "the message", channel: "foo", attachments: [{ color: "#000",
+    { text: "the message", attachments: [{ color: "#000",
                                                            text: "attachment message",
                                                            fallback: "fallback message" }] } =>
     { payload: { text: "the message",
-                 channel: "foo",
                  attachments: [{ color: "#000",
                                  text: "attachment message",
                                  fallback: "fallback message" }] } },
