@@ -49,7 +49,6 @@ RSpec.describe Slack::Notifier do
     def notifier_with_defaults
       mock_client = mock_http
       described_class.new "http://example.com" do
-        defaults user: "rocket"
         http_client mock_client
       end
     end
@@ -59,7 +58,7 @@ RSpec.describe Slack::Notifier do
 
       expect(mock_http).to receive(:post).with(
         URI.parse("http://example.com"),
-        payload: '{"user":"rocket","text":"hello"}'
+        payload: '{"text":"hello"}'
       )
 
       subject.post text: "hello"
@@ -70,7 +69,7 @@ RSpec.describe Slack::Notifier do
 
       expect(mock_http).to receive(:post).with(
         URI.parse("http://example.com"),
-        payload: '{"user":"ship","text":"hello"}'
+        payload: '{"text":"hello"}'
       )
 
       subject.post text: "hello", user: "ship"
@@ -82,7 +81,6 @@ RSpec.describe Slack::Notifier do
       subject.instance_variable_set(:@middleware, stack)
 
       expect(stack).to receive(:call)
-        .with(user: "rocket")
         .and_return([test: "stack"])
 
       expect(mock_http).to receive(:post).with(
