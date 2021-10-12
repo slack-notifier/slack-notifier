@@ -163,7 +163,7 @@ notifier.post(blocks: blocks)
 
 ### Additional parameters
 
-Any key passed to the `post` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
+Any key passed to the `post` method is forwarded to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
 
 Below are exposed example codes using a subset of the available additional parameters that can be sent for Slack webhook endpoint:
 
@@ -171,7 +171,6 @@ Emoji icon / URL icon
 
 ```ruby
 require "slack-notifier"
-
 notifier = Slack::Notifier.new "WEBHOOK_URL"
 
 notifier.post text: "feeling spooky", icon_emoji: ":ghost:"
