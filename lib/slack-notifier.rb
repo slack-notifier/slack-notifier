@@ -11,6 +11,8 @@ require_relative "slack-notifier/config"
 
 module Slack
   class Notifier
+    attr_reader :endpoint
+
     def initialize webhook_url, options={}, &block
       @endpoint = URI.parse webhook_url
 
@@ -44,13 +46,11 @@ module Slack
       end
     end
 
+    def config
+      @_config ||= Config.new
+    end
+
     private
-
-      attr_reader :endpoint
-
-      def config
-        @_config ||= Config.new
-      end
 
       def middleware
         @middleware ||= PayloadMiddleware::Stack.new(self)
