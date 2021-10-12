@@ -193,7 +193,7 @@ With the default HTTP client, you can send along options to customize its behavi
 
 ```ruby
 require 'slack-notifier'
-notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: { open_timeout: 5 }
+notifier = Slack::Notifier.new "WEBHOOK_URL", http_options: { open_timeout: 5 }
 notifier.post text: "hello", http_options: { open_timeout: 10 }
 ```
 
@@ -205,7 +205,7 @@ notifier.post text: "hello", http_options: { open_timeout: 10 }
 For example, to connect through a local squid proxy the following options would be used.
 
 ```ruby
-notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: {
+notifier = Slack::Notifier.new "WEBHOOK_URL", http_options: {
                                                               proxy_address:  'localhost',
                                                               proxy_port:     3128,
                                                               proxy_from_env: false
@@ -224,7 +224,7 @@ module Client
   end
 end
 
-notifier = Slack::Notifier.new 'WEBHOOK_URL' do
+notifier = Slack::Notifier.new "WEBHOOK_URL" do
   http_client Client
 end
 ```
@@ -250,7 +250,7 @@ class NoOpHTTPClient
   end
 end
 
-notifier = Slack::Notifier.new 'WEBHOOK_URL' do
+notifier = Slack::Notifier.new "WEBHOOK_URL" do
   http_client NoOpHTTPClient
 end
 ```
