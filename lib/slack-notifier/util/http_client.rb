@@ -7,7 +7,7 @@ module Slack
     class APIError < StandardError
       attr_reader :response
 
-      def initialize(response)
+      def initialize response
         @response = response
       end
 
@@ -15,7 +15,7 @@ module Slack
         <<-MSG
 The slack API returned an error: #{@response.body} (HTTP Code #{@response.code})
 Check the "Handling Errors" section on https://api.slack.com/incoming-webhooks for more information
-MSG
+        MSG
       end
     end
 
@@ -35,15 +35,11 @@ MSG
           @params       = params
         end
 
-        # rubocop:disable Layout/IndentHeredoc
         def call
           http_obj.request(request_obj).tap do |response|
-            unless response.is_a?(Net::HTTPSuccess)
-              raise Slack::Notifier::APIError.new(response)
-            end
+            raise Slack::Notifier::APIError.new(response) unless response.is_a?(Net::HTTPSuccess)
           end
         end
-        # rubocop:enable Layout/IndentHeredoc
 
         private
 

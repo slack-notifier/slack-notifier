@@ -12,7 +12,7 @@ module Slack
           (?:.*?)>
           (.+?)
           </a>
-        }x
+        }x.freeze
 
         # the path portion of a url can contain these characters
         VALID_PATH_CHARS = '\w\-\.\~\/\?\#\='
@@ -25,7 +25,7 @@ module Slack
             \[ ([^\[\]]*?) \]
             \( ((https?://.*?) | (mailto:.*?)) \)
             (?! [#{VALID_PATH_CHARS}]* \) )
-        }x
+        }x.freeze
 
         class << self
           def format string, opts={}
@@ -40,16 +40,14 @@ module Slack
           @orig    = string.respond_to?(:scrub) ? string.scrub : string
         end
 
-        # rubocop:disable Lint/RescueWithoutErrorClass
         def formatted
           return @orig unless @orig.respond_to?(:gsub)
 
           sub_markdown_links(sub_html_links(@orig))
-        rescue => e
+        rescue StandardError => e
           raise e unless RUBY_VERSION < "2.1" && e.message.include?("invalid byte sequence")
           raise e, "#{e.message}. Consider including the 'string-scrub' gem to strip invalid characters"
         end
-        # rubocop:enable Lint/RescueWithoutErrorClass
 
         private
 

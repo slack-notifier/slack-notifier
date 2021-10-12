@@ -1,3 +1,12 @@
+# 3.0.0
+
+- [BREAKING] The Slack does not allow Incoming Webhook to be used in more than 1 channel. So, all multiple-channel feature present and `username`/`user` parameters in gem was erased. Be careful that Slack Incoming Webhook not works anymore with multiple channels at once. Each webhook is now related to only one channel.
+- Setup of automation using Github Actions
+- README.md changes
+- Deploy of Rubygems configured to be made using Github Actions
+- Specs running in new rubies
+- Rubocop offenses fixes
+
 # 2.4.0
 
 - Make keyword argument usage compatible for ruby 3.x [@walski #123, @yuuu #119]

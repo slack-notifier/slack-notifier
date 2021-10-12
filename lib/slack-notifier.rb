@@ -23,10 +23,6 @@ module Slack
       middleware.set config.middleware
     end
 
-    def config
-      @_config ||= Config.new
-    end
-
     def ping message, options={}
       if message.is_a?(Hash)
         options = message
@@ -48,6 +44,10 @@ module Slack
         params[:payload] = pld.to_json
         client.post endpoint, params
       end
+    end
+
+    def config
+      @_config ||= Config.new
     end
 
     private

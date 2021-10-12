@@ -10,7 +10,6 @@ module Slack
           format_message
           format_attachments
           at
-          channels
         ]
       end
 

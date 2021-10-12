@@ -15,9 +15,7 @@ module Slack
 
           attachments = wrap_array(attachments).map do |attachment|
             ["text", :text].each do |key|
-              if attachment.key?(key)
-                attachment[key] = Util::LinkFormatter.format(attachment[key], options)
-              end
+              attachment[key] = Util::LinkFormatter.format(attachment[key], options) if attachment.key?(key)
             end
 
             attachment

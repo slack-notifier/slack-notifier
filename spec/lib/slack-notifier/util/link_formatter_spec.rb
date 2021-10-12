@@ -1,19 +1,18 @@
 # frozen_string_literal: true
-# encoding: utf-8
 
-# rubocop:disable Metrics/LineLength
 RSpec.describe Slack::Notifier::Util::LinkFormatter do
   describe "initialize & formatted" do
     it "can be initialized without format args" do
       subject = described_class.new("Hello World")
-      expect(subject.formatted()).to eq("Hello World")
+      expect(subject.formatted).to eq("Hello World")
     end
 
     it "can be initialized with format args" do
       subject = described_class.new("Hello World", formats: [:html])
-      expect(subject.formatted()).to eq("Hello World")
+      expect(subject.formatted).to eq("Hello World")
     end
   end
+
   describe "::format" do
     it "formats html links" do
       formatted = described_class.format("Hello World, enjoy <a href='http://example.com'>this</a>.")
@@ -150,10 +149,12 @@ RSpec.describe Slack::Notifier::Util::LinkFormatter do
         formatted = described_class.format("Hello World, enjoy [this](http://example.com)<a href='http://example2.com'>this2</a>.", formats: [:html])
         expect(formatted).to eq "Hello World, enjoy [this](http://example.com)<http://example2.com|this2>."
       end
+
       it "only formats markdown if markdown is the only item in formats" do
         formatted = described_class.format("Hello World, enjoy [this](http://example.com)<a href='http://example2.com'>this2</a>.", formats: [:markdown])
         expect(formatted).to eq "Hello World, enjoy <http://example.com|this><a href='http://example2.com'>this2</a>."
       end
+
       it "doesn't format if formats is empty" do
         formatted = described_class.format("Hello World, enjoy [this](http://example.com)<a href='http://example2.com'>this2</a>.", formats: [])
         expect(formatted).to eq "Hello World, enjoy [this](http://example.com)<a href='http://example2.com'>this2</a>."

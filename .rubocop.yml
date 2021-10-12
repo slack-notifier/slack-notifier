@@ -1,24 +1,28 @@
 AllCops:
+  NewCops: disable
+  SuggestExtensions: false
   DisplayCopNames: true
   DisplayStyleGuide: true
-
-  Include:
-    - 'Rakefile'
-    - 'bin/test'
+  Exclude:
+    - spec/**/*
+    - slack-notifier.gemspec
 
 # Naming ------------------------------------
 
 Naming/FileName:
   Exclude:
     - lib/slack-notifier.rb
-    - spec/lib/slack-notifier_spec.rb
-    - slack-notifier.gemspec
     - Gemfile
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
 
 # Style ------------------------------------
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+  Exclude:
+    - lib/slack-notifier/util/link_formatter.rb
 
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses_except_multiline
@@ -36,10 +40,10 @@ Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%w': '[]'
 
-# Layout ----------------------------------
+Style/RaiseArgs:
+  Enabled: false
 
-Layout/MultilineOperationIndentation:
-  EnforcedStyle: aligned
+# Layout ----------------------------------
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: aligned
@@ -50,16 +54,25 @@ Layout/MultilineOperationIndentation:
 Layout/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 
-Layout/IndentationConsistency:
-  EnforcedStyle: rails
-
 Layout/DotPosition:
   EnforcedStyle: leading
+  
+Layout/LineLength:
+  Max: 200
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+  
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/HeredocIndentation:
+  Enabled: false
+
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
 
 # Metrics ----------------------------------
-
-Metrics/LineLength:
-  Max: 128
 
 Metrics/AbcSize:
   Enabled: false
@@ -67,11 +80,20 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Enabled: false
 
-Metrics/BlockLength:
-  Exclude:
-    - spec/**/*
+# Bundler ----------------------------------
+
+Bundler/OrderedGems:
+  Enabled: false
+
+# Gemspec ----------------------------------
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
 
 # Lint -------------------------------------
 
-Lint/EndAlignment:
-  EnforcedStyleAlignWith: variable
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
