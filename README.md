@@ -75,17 +75,17 @@ The default options can be defined in three ways:
 require "slack-notifier"
 
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
-  defaults channel: "#default", username: "notifier"
+  defaults my_key: "value", another_key: "another_value"
 end
 
-notifier.ping "Hello default"
+notifier.ping "Hello"
 ```
 
 - In initialization, using a hash parameter
 
 ```ruby
 require "slack-notifier"
-notifier = Slack::Notifier.new "WEBHOOK_URL", channel: "#default", username: "notifier"
+notifier = Slack::Notifier.new "WEBHOOK_URL", my_key: "value", another_key: "another_value"
 ```
 
 - In method invocations that sends the message (`ping` and `post`), using a hash parameter
@@ -93,8 +93,10 @@ notifier = Slack::Notifier.new "WEBHOOK_URL", channel: "#default", username: "no
 ```ruby
 require "slack-notifier"
 notifier = Slack::Notifier.new "WEBHOOK_URL"
-notifier.ping "Hello random", channel: "#random", username: "notifier"
+notifier.ping "Hello random", my_key: "value", another_key: "another_value"
 ```
+
+The list of complete available default options, please check the official Slack documentation. Any key defined in `defaults` will be forwarded to Slack webhook endpoint.
 
 ### Links
 
@@ -320,26 +322,13 @@ notifier.post text: "hello", at: [:here, :waldo]
 # => "<!here> <@waldo> hello"
 ```
 
-**`channels`**
+To send a message directly to a user, their username [no longer works](https://github.com/slack-notifier/slack-notifier/issues/51#issuecomment-414138622). Instead you'll need to get the user's ID and set that as the channel.
 
-If the `channel` argument of a payload is an array this splits the payload to be posted to each channel.
+One way to get a Slack user ID is:
 
-For example:
-
-```ruby
-require "slack-notifier"
-notifier = Slack::Notifier.new "WEBHOOK_URL"
-notifier.post text: "hello", channel: ["default", "all_the_things"]
-# => will post "hello" to the default and all_the_things channel
-```
-
-To send a message directly to a user, their username [no longer works](https://github.com/stevenosloan/slack-notifier/issues/51#issuecomment-414138622). Instead you'll need to get the user's ID and set that as the channel.
-
-At the time of writing, one way to get a user's ID is to:
-
-- go to their profile
-- click **...** ("More actions")
-- click **Copy Member ID**
+- Go to their Slack profile
+- Click **...** ("More actions")
+- Click **Copy Member ID**
 
 ### Writing your own Middleware
 
@@ -348,6 +337,8 @@ Middleware is fairly straightforward, it is any class that inherits from `Slack:
 For example, lets say we want to replace words in every message, we could write a middleware like this:
 
 ```ruby
+require "slack-notifier"
+
 class SwapWords < Slack::Notifier::PayloadMiddleware::Base
   middleware_name :swap_words # this is the key we use when setting
                               # the middleware stack for a notifier
@@ -383,24 +374,6 @@ end
 
 notifier.ping "hipchat is awesome!"
 # => pings slack with "slack is really awesome!"
-```
-
-If your middleware returns an array, that will split the message into multiple pings. An example for pinging multiple channels:
-
-```ruby
-class MultiChannel < Slack::Notifier::PayloadMiddleware::Base
-  middleware_name :channels
-
-  def call payload={}
-    return payload unless payload[:channel].respond_to?(:to_ary)
-
-    payload[:channel].to_ary.map do |channel|
-      pld = payload.dup
-      pld[:channel] = channel
-      pld
-    end
-  end
-end
 ```
 
 ## Tests
