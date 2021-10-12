@@ -67,8 +67,7 @@ The default options can be defined in three ways:
 require 'slack-notifier'
 
 notifier = Slack::Notifier.new "WEBHOOK_URL" do
-  defaults channel: "#default",
-           username: "notifier"
+  defaults channel: "#default", username: "notifier"
 end
 
 notifier.ping "Hello default"
@@ -78,8 +77,7 @@ notifier.ping "Hello default"
 
 ```ruby
 require 'slack-notifier'
-notifier = Slack::Notifier.new "WEBHOOK_URL", channel: "#default",
-                                              username: "notifier"
+notifier = Slack::Notifier.new "WEBHOOK_URL", channel: "#default", username: "notifier"
 ```
 
 - In `ping` method, using a hash parameter
