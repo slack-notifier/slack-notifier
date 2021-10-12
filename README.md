@@ -377,21 +377,6 @@ class MultiChannel < Slack::Notifier::PayloadMiddleware::Base
 end
 ```
 
-
-## Versioning
-
-Since version `1.0` has been released, the aim is to follow [Semantic Versioning](http://semver.org/) as much as possible. However, it is encouraged to check the [changelog](changelog.md) when updating to see what changes have been made.
-
-To summarize the reasoning for versioning:
-
-```
-Given a version number MAJOR.MINOR.PATCH, increment:
-
-- MAJOR version when incompatible API changes are made
-- MINOR version for adding functionality in a backwards-compatible manner or bug fixes that *may* change behavior
-- PATCH version for make backwards-compatible bug fixes
-```
-
 ## Tests
 
 To execute gem tests locally, use Docker with the commands below:
@@ -407,10 +392,13 @@ docker build -t slack_notifier_specs .
 docker run --rm -v $(pwd):/app/ -it slack_notifier_specs
 ```
 
+## Versioning
+
+Since version `1.0` has been released, the aim is to follow [Semantic Versioning](http://semver.org/) as much as possible. However, it is encouraged to check the [CHANGELOG](CHANGELOG.md) when updating to see what changes have been made.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/slack-notifier/slack-notifier. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/slack-notifier/slack-notifier/blob/master/CODE_OF_CONDUCT.md).
-
 
 ## License
 
