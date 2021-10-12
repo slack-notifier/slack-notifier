@@ -2,6 +2,6 @@
 
 module Slack
   class Notifier
-    VERSION = "2.5.0".freeze
+    VERSION = "2.5.0"
   end
 end
