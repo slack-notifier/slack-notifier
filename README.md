@@ -90,11 +90,12 @@ notifier.ping "Hello random", channel: "#random", username: "notifier"
 
 ### Links
 
-Slack requires links to be formatted a certain way, so the default middlware stack of slack-notifier will look through your message and attempt to convert any html or markdown links to slack's format before posting.
+Slack requires links to be formatted a certain way. Because of this, the gem has a default middleware that will look through your message and attempt to convert any html/markdown links to Slack's format before posting.
 
-Here's what it's doing under the covers:
+The example code below expose what it's doing under the covers:
 
 ```ruby
+require 'slack-notifier'
 message = "Hello world, [check](http://example.com) it <a href='http://example.com'>out</a>"
 Slack::Notifier::Util::LinkFormatter.format(message)
 # => "Hello world, <http://example.com|check> it <http://example.com|out>"
@@ -102,22 +103,25 @@ Slack::Notifier::Util::LinkFormatter.format(message)
 
 ### Formatting
 
-Slack supports various different formatting options.  For example, if you want to alert an entire channel you include `<!channel>` in your message
+Slack supports multiple formatting options.
+
+If you want, for example, to alert an entire channel you can include `<!your-channel>` in your message:
 
 ```ruby
-message = "<!channel> hey check this out"
-notifier.ping message
-
-#ends up posting "@channel hey check this out" in your Slack channel
+require 'slack-notifier'
+notifier = Slack::Notifier.new "WEBHOOK_URL"
+notifier.ping "<!your-channel> hey check this out!"
+# => It will send message "@your-channel hey check this out!" in your Slack channel
 ```
 
-You can see [Slack's message documentation here](https://api.slack.com/docs/formatting)
+You can see more formatting examples in [Slack's documentation](https://api.slack.com/docs/formatting).
 
 ### Escaping
 
-Since sequences starting with < have special meaning in Slack, you should use `Slack::Notifier::Util::Escape.html` if your messages may contain &, < or >.
+Since sequences starting with < have special meaning in Slack, you should use `Slack::Notifier::Util::Escape.html` if your messages may contain literals `&`, `<` or `>`.
 
 ```ruby
+require 'slack-notifier'
 link_text = Slack::Notifier::Util::Escape.html("User <user@example.com>")
 message = "Write to [#{link_text}](mailto:user@example.com)"
 notifier.ping message
@@ -128,23 +132,21 @@ notifier.ping message
 This plugin supports the [Slack blocks format](https://app.slack.com/block-kit-builder/) and [block kit builder](https://app.slack.com/block-kit-builder/). This is useful for displaying buttons, dropdowns, and images.
 
 ```ruby
+require 'slack-notifier'
+
+notifier = Slack::Notifier.new "WEBHOOK_URL"
+
 blocks = [
   {
     "type": "image",
-    "title": {
-      "type": "plain_text",
-      "text": "image1",
-      "emoji": true
-    },
+    "title": { "type": "plain_text", "text": "image1", "emoji": true },
     "image_url": "https://api.slack.com/img/blocks/bkb_template_images/onboardingComplex.jpg",
     "alt_text": "image1"
   },
+
   {
     "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "Hey there 👋 I'm TaskBot. I'm here to help you create and manage tasks in Slack.\nThere are two ways to quickly create tasks:"
-    }
+    "text": { "type": "mrkdwn", "text": "Hey there 👋 I'm TaskBot.\nThere are two ways to quickly create tasks:" }
   }
 ]
 
@@ -155,22 +157,33 @@ notifier.post(blocks: blocks)
 
 Any key passed to the `post` method is posted to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
 
-Setting an icon:
+Below are exposed example codes using a subset of the available additional parameters that can be sent for Slack webhook endpoint:
+
+Emoji icon / URL icon
 
 ```ruby
+require 'slack-notifier'
+
+notifier = Slack::Notifier.new "WEBHOOK_URL"
+
 notifier.post text: "feeling spooky", icon_emoji: ":ghost:"
 # or
 notifier.post text: "feeling chimpy", icon_url: "http://static.mailchimp.com/web/favicon.png"
 ```
 
-Adding attachments:
+Attachments
 
 ```ruby
+require 'slack-notifier'
+
+notifier = Slack::Notifier.new "WEBHOOK_URL"
+
 a_ok_note = {
   fallback: "Everything looks peachy",
   text: "Everything looks peachy",
   color: "good"
 }
+
 notifier.post text: "with an attachment", attachments: [a_ok_note]
 ```
 
@@ -179,11 +192,12 @@ notifier.post text: "with an attachment", attachments: [a_ok_note]
 With the default HTTP client, you can send along options to customize its behavior as `:http_options` params when you post or initialize the notifier.
 
 ```ruby
+require 'slack-notifier'
 notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: { open_timeout: 5 }
 notifier.post text: "hello", http_options: { open_timeout: 10 }
 ```
 
-**Note**: you should only send along options that [`Net::HTTP`](http://ruby-doc.org/stdlib-2.2.0/libdoc/net/http/rdoc/Net/HTTP.html) has as setters, otherwise the option will be ignored and show a warning.
+**Note**: you should only send along options that [`Net::HTTP`](http://ruby-doc.org/stdlib/libdoc/net/http/rdoc/Net/HTTP.html) has as setters, otherwise the option will be ignored and show a warning.
 
 ### Proxies
 
@@ -200,7 +214,7 @@ notifier = Slack::Notifier.new 'WEBHOOK_URL', http_options: {
 
 ### Custom HTTP Client
 
-There is a packaged default client wrapping Net::HTTP, but your HTTP needs might be a little different. In that case, you can pass in your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net:HTTP.post_form](http://ruby-doc.org/stdlib-2.1.2/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form).
+There is a packaged default client wrapping Net::HTTP, but your HTTP needs might be a little different. In that case, you can pass in your own wrapper to handle sending the notifications. It just needs to respond to `::post` with the arguments of the endpoint URI, and the payload [pretty much the same as Net:HTTP.post_form](http://ruby-doc.org/stdlib/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form).
 
 A simple example:
 ```ruby
