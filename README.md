@@ -163,6 +163,27 @@ blocks = [
 notifier.post(blocks: blocks)
 ```
 
+### Reply in thread
+
+To reply a thread in the channel associated with the Incoming Webhook, you need the message ID.
+
+From Slack UI, if you right click the dots  and select "Copy link", you can extract the message ID (aka `ts`) and use it as a `thread_ts` parameter in notifier object:
+
+![Screenshot 2020-03-09 at 10 46 57](https://user-images.githubusercontent.com/7388889/76201322-5e952000-61f3-11ea-9e47-4e7f80b22d2b.png)
+
+Important note: In order to work correctly, you **must** only use the message that **started** the thread, and not any reply sent in this thread.
+
+```ruby
+require "slack-notifier"
+notifier = Slack::Notifier.new "WEBHOOK_URL"
+
+                             # "https://myworkspace.slack.com/archives/[Channel ID]/p[Message TS without dot]"
+slack_thread_full_url        = "https://myworkspace.slack.com/archives/DD3F2GGG4/p1583742420167800"
+thread_ts_extracted_from_url = slack_thread_full_url[/[^\/p]*$/].insert(-7, '.')
+
+notifier.ping("Reply in thread", thread_ts: thread_ts_extracted_from_url)
+```
+
 ### Additional parameters
 
 Any key passed to the `post` method is forwarded to the webhook endpoint. Check out the [Slack webhook documentation](https://api.slack.com/incoming-webhooks) for the available parameters.
