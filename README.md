@@ -50,7 +50,7 @@ You will use it (the URL) in next sections of README.
 
 ### Hello World example
 
-Once your webhook is setup, the example below will send the message "Hello World" to the default channel you set in Slack.
+Once your webhook is setup, the example below will send the message "Hello World" to the channel you have associated with Webhook.
 
 ```ruby
 require "slack-notifier"
