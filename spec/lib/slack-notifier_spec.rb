@@ -72,7 +72,7 @@ RSpec.describe Slack::Notifier do
         payload: '{"text":"hello"}'
       )
 
-      subject.post text: "hello", user: "ship"
+      subject.post text: "hello"
     end
 
     it "calls the middleware stack with the payload" do
