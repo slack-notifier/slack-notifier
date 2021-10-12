@@ -80,7 +80,7 @@ require 'slack-notifier'
 notifier = Slack::Notifier.new "WEBHOOK_URL", channel: "#default", username: "notifier"
 ```
 
-- In `ping` method, using a hash parameter
+- In method invocations that sends the message (`ping` and `post`), using a hash parameter
 
 ```ruby
 require 'slack-notifier'
