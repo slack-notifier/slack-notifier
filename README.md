@@ -57,6 +57,14 @@ require 'slack-notifier'
 Slack::Notifier.new("WEBHOOK_URL").ping("Hello World")
 ```
 
+### Gem public interface
+
+The `Slack::Notifier` class has 3 main methods:
+
+- `new`: Initialization of notifier
+- `ping`: Simple invocation of Incoming Webhook API, passing a text message and additional paramters
+- `post`: Advanced invocation of Incoming Webhook API, passing a text message and additional paramters
+
 ### Default options
 
 The default options can be defined in three ways:
