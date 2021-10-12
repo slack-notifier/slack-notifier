@@ -115,16 +115,16 @@ Slack::Notifier::Util::LinkFormatter.format(message)
 
 Slack supports multiple formatting options.
 
-If you want, for example, to alert an entire channel you can include `<!your-channel>` in your message:
+If you want, for example, to alert the entire associated channel you can include `<!channel^CHANNEL_ID>` in your message:
 
 ```ruby
 require "slack-notifier"
 notifier = Slack::Notifier.new "WEBHOOK_URL"
-notifier.ping "<!your-channel> hey check this out!"
-# => It will send message "@your-channel hey check this out!" in your Slack channel
+notifier.ping "<!channel^CHANNEL_ID> hey check this out!"
+# => It will send message "@channel hey check this out!" in your Slack channel
 ```
 
-You can see more formatting examples in [Slack's documentation](https://api.slack.com/docs/formatting).
+You can see more formatting examples (just like `<!here>`, `<!user^USER_ID>` and others) in [Slack's documentation](https://api.slack.com/docs/formatting).
 
 ### Escaping
 
