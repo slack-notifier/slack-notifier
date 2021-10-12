@@ -62,8 +62,8 @@ Slack::Notifier.new("WEBHOOK_URL").ping("Hello World")
 The `Slack::Notifier` class has 3 main methods:
 
 - `new`: Initialization of notifier
-- `ping`: Simple invocation of Incoming Webhook API, passing a text message and additional paramters
-- `post`: Advanced invocation of Incoming Webhook API, passing a text message and additional paramters
+- `ping`: Simple invocation of Incoming Webhook API, passing a text message and additional parameters
+- `post`: Advanced invocation of Incoming Webhook API, passing the available accepted parameters
 
 ### Default options
 
