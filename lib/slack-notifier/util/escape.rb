@@ -4,11 +4,8 @@ module Slack
   class Notifier
     module Util
       module Escape
-        HTML_REGEXP  = /[&><]/
-        HTML_REPLACE = { "&" => "&amp;", ">" => "&gt;", "<" => "&lt;" }.freeze
-
         def self.html string
-          string.gsub(HTML_REGEXP, HTML_REPLACE)
+          string.encode(xml: :text)
         end
       end
     end
