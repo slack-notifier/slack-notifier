@@ -8,6 +8,7 @@ before_install:
   - "gem install bundler"
 
 rvm:
+  - 3.1
   - 3.0
   - 2.7
   - 2.6
